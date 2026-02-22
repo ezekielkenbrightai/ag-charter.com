@@ -10,7 +10,12 @@
     "type": "git",
     "url": "git+https://github.com/ezekielkenbrightai/ag-charter.com.git"
   },
-  "keywords": ["kenya", "attorney-general", "legal", "governance"],
+  "keywords": [
+    "kenya",
+    "attorney-general",
+    "legal",
+    "governance"
+  ],
   "author": "OAG Kenya",
   "license": "ISC",
   "type": "commonjs",
@@ -22,6 +27,6 @@
   },
   "homepage": "https://github.com/ezekielkenbrightai/ag-charter.com#readme",
   "dependencies": {
-    "express": "^5.2.1"
+    "express": "^4.22.1"
   }
 }
