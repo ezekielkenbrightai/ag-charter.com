@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OAG Kenya - Development Partners Window</title>
+    <link rel="stylesheet" href="charter.css">
+    <link rel="stylesheet" href="dev-partners.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+<header class="header">
+    <div class="header-inner">
+        <div class="header-left">
+            <div class="coat-of-arms">AG</div>
+            <div>
+                <h1>Development Partners Window</h1>
+                <p>Office of the Attorney General &mdash; Republic of Kenya</p>
+            </div>
+        </div>
+        <div class="header-right">
+            <a href="index.html" class="btn btn-outline">Dashboard</a>
+            <a href="charter.html" class="btn btn-outline">Service Charter</a>
+        </div>
+    </div>
+    <nav class="charter-nav" id="charterNav">
+        <a href="#exec-dash" class="nav-link active">Executive Dashboard</a>
+        <a href="#agreements" class="nav-link">Agreements & Treaties</a>
+        <a href="#process-tracker" class="nav-link">Process Tracker</a>
+        <a href="#programmes" class="nav-link">Programmes & Projects</a>
+        <a href="#spend" class="nav-link">Financial Tracking</a>
+        <a href="#me" class="nav-link">M&E Framework</a>
+        <a href="#officers" class="nav-link">Assigned Officers</a>
+    </nav>
+</header>
+
+<main class="main">
+
+<!-- ===== EXECUTIVE DASHBOARD ===== -->
+<section id="exec-dash" class="section">
+    <div class="section-title-bar green">
+        <h2>Executive Dashboard &mdash; Attorney General Overview</h2>
+        <span class="subtitle">Development Partner Engagement Summary</span>
+    </div>
+
+    <div class="kpi-row">
+        <div class="kpi-card border-green">
+            <div class="kpi-label">Active Agreements</div>
+            <div class="kpi-value">34</div>
+            <div class="kpi-sub">Treaties, MoUs, Loan Agreements</div>
+        </div>
+        <div class="kpi-card border-blue">
+            <div class="kpi-label">Active Programmes</div>
+            <div class="kpi-value">12</div>
+            <div class="kpi-sub">6 Grants, 4 Loans, 2 Hybrid</div>
+        </div>
+        <div class="kpi-card border-gold">
+            <div class="kpi-label">Total Portfolio Value</div>
+            <div class="kpi-value">KSh 8.4B</div>
+            <div class="kpi-sub">USD 64.6M equivalent</div>
+        </div>
+        <div class="kpi-card border-red">
+            <div class="kpi-label">Disbursement Rate</div>
+            <div class="kpi-value">67%</div>
+            <div class="kpi-sub">KSh 5.6B of 8.4B disbursed</div>
+        </div>
+    </div>
+    <div class="kpi-row">
+        <div class="kpi-card border-teal">
+            <div class="kpi-label">Pending at OAG</div>
+            <div class="kpi-value">8</div>
+            <div class="kpi-sub">Awaiting legal review/clearance</div>
+        </div>
+        <div class="kpi-card border-purple">
+            <div class="kpi-label">Pending at Treasury</div>
+            <div class="kpi-value">5</div>
+            <div class="kpi-sub">Budget/fiscal clearance</div>
+        </div>
+        <div class="kpi-card border-orange">
+            <div class="kpi-label">Pending at MDA</div>
+            <div class="kpi-value">6</div>
+            <div class="kpi-sub">Technical inputs awaited</div>
+        </div>
+        <div class="kpi-card border-green">
+            <div class="kpi-label">Avg. Processing Time</div>
+            <div class="kpi-value">42 days</div>
+            <div class="kpi-sub">Target: 30 days</div>
+        </div>
+    </div>
+
+    <div class="grid-2">
+        <div class="card">
+            <h3>Portfolio by Development Partner</h3>
+            <canvas id="chartPartnerPortfolio"></canvas>
+        </div>
+        <div class="card">
+            <h3>Agreement Pipeline Status</h3>
+            <canvas id="chartPipelineStatus"></canvas>
+        </div>
+    </div>
+    <div class="grid-2">
+        <div class="card">
+            <h3>Disbursement Trend (KSh Billions)</h3>
+            <canvas id="chartDisbursement"></canvas>
+        </div>
+        <div class="card">
+            <h3>Programme Performance (M&E Score %)</h3>
+            <canvas id="chartMEScores"></canvas>
+        </div>
+    </div>
+</section>
+
+<!-- ===== AGREEMENTS & TREATIES ===== -->
+<section id="agreements" class="section">
+    <div class="section-title-bar blue">
+        <h2>Agreements, Treaties & Negotiations</h2>
+        <span class="subtitle">Tracked from receipt to delivery across all parties</span>
+    </div>
+
+    <div class="filter-bar">
+        <select id="agTypeFilter" onchange="filterAgreements()">
+            <option value="">All Types</option>
+            <option>Bilateral Treaty</option>
+            <option>Multilateral Treaty</option>
+            <option>Loan Agreement</option>
+            <option>Grant Agreement</option>
+            <option>MoU</option>
+            <option>Technical Cooperation</option>
+        </select>
+        <select id="agStatusFilter" onchange="filterAgreements()">
+            <option value="">All Statuses</option>
+            <option>Drafting</option>
+            <option>OAG Legal Review</option>
+            <option>Treasury Clearance</option>
+            <option>MDA Technical Review</option>
+            <option>Partner Negotiation</option>
+            <option>Cabinet Approval</option>
+            <option>Signed</option>
+            <option>Ratified</option>
+        </select>
+        <select id="agPartnerFilter" onchange="filterAgreements()">
+            <option value="">All Partners</option>
+            <option>World Bank</option>
+            <option>UNDP</option>
+            <option>EU</option>
+            <option>USAID</option>
+            <option>AfDB</option>
+            <option>JICA</option>
+            <option>GIZ</option>
+            <option>DFID/FCDO</option>
+            <option>IMF</option>
+            <option>DANIDA</option>
+        </select>
+        <input type="text" id="agSearch" placeholder="Search agreements..." oninput="filterAgreements()">
+        <button class="btn btn-primary" onclick="openModal('newAgreementModal')">+ New Agreement</button>
+    </div>
+
+    <div class="table-wrap">
+        <table class="dtable" id="agreementsTable">
+            <thead>
+                <tr>
+                    <th>Ref No.</th>
+                    <th>Title</th>
+                    <th>Type</th>
+                    <th>Dev. Partner</th>
+                    <th>Lead MDA</th>
+                    <th>Value</th>
+                    <th>Current Stage</th>
+                    <th>Days in Stage</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="agreementsBody"></tbody>
+        </table>
+    </div>
+</section>
+
+<!-- ===== 4-PARTY PROCESS TRACKER ===== -->
+<section id="process-tracker" class="section">
+    <div class="section-title-bar gold">
+        <h2>4-Party Process Tracker</h2>
+        <span class="subtitle">OAG &bull; Lead Ministry/Department/Agency &bull; Development Partner &bull; National Treasury</span>
+    </div>
+
+    <p class="section-desc">Select an agreement to view the full process map showing the role and status of each party at every stage.</p>
+
+    <div class="filter-bar">
+        <select id="processAgreementSelect" onchange="renderProcessTracker()">
+            <option value="">-- Select Agreement --</option>
+        </select>
+    </div>
+
+    <div id="processTrackerContainer" class="process-container">
+        <div class="process-empty">Select an agreement above to view its 4-party process map</div>
+    </div>
+
+    <!-- SOP PROCESS MAP -->
+    <div class="card" style="margin-top:24px;">
+        <h3>Standard Process Flow: Agreement/Treaty from Receipt to Delivery</h3>
+        <div class="process-sop">
+            <div class="sop-step">
+                <div class="step-num">1</div>
+                <div class="step-body">
+                    <h4>Receipt & Registration</h4>
+                    <div class="step-parties">
+                        <span class="party oag">OAG</span> receives draft agreement from <span class="party mda">MDA</span> or <span class="party dp">Dev. Partner</span>. Logged in ICMS within 1 day.
+                    </div>
+                    <div class="step-sla">SLA: 1 working day</div>
+                </div>
+            </div>
+            <div class="sop-step">
+                <div class="step-num">2</div>
+                <div class="step-body">
+                    <h4>OAG Legal Review & Analysis</h4>
+                    <div class="step-parties">
+                        <span class="party oag">OAG</span> International Law Dept. reviews for Constitutional compliance, sovereignty, national interest, and legal risk. Issues legal opinion.
+                    </div>
+                    <div class="step-sla">SLA: 14 working days</div>
+                </div>
+            </div>
+            <div class="sop-step">
+                <div class="step-num">3</div>
+                <div class="step-body">
+                    <h4>MDA Technical Review</h4>
+                    <div class="step-parties">
+                        <span class="party mda">Lead MDA</span> reviews technical provisions, implementation feasibility, capacity requirements, and alignment with sector policy.
+                    </div>
+                    <div class="step-sla">SLA: 14 working days</div>
+                </div>
+            </div>
+            <div class="sop-step">
+                <div class="step-num">4</div>
+                <div class="step-body">
+                    <h4>Treasury Fiscal & Budget Clearance</h4>
+                    <div class="step-parties">
+                        <span class="party treasury">National Treasury</span> reviews fiscal implications, debt sustainability, budget alignment, and counter-part funding requirements.
+                    </div>
+                    <div class="step-sla">SLA: 14 working days</div>
+                </div>
+            </div>
+            <div class="sop-step">
+                <div class="step-num">5</div>
+                <div class="step-body">
+                    <h4>Negotiation with Development Partner</h4>
+                    <div class="step-parties">
+                        Joint negotiation between <span class="party oag">OAG</span>, <span class="party mda">MDA</span>, <span class="party treasury">Treasury</span> and <span class="party dp">Dev. Partner</span>. OAG leads on legal terms; MDA on technical; Treasury on financial.
+                    </div>
+                    <div class="step-sla">SLA: 21 working days (may extend)</div>
+                </div>
+            </div>
+            <div class="sop-step">
+                <div class="step-num">6</div>
+                <div class="step-body">
+                    <h4>Final OAG Legal Clearance</h4>
+                    <div class="step-parties">
+                        <span class="party oag">OAG</span> reviews final negotiated text. Issues legal clearance certificate confirming Constitutional and legal compliance.
+                    </div>
+                    <div class="step-sla">SLA: 7 working days</div>
+                </div>
+            </div>
+            <div class="sop-step">
+                <div class="step-num">7</div>
+                <div class="step-body">
+                    <h4>Cabinet Approval & Signing</h4>
+                    <div class="step-parties">
+                        <span class="party oag">AG</span> presents to Cabinet for approval (treaties). Upon approval, signing ceremony arranged. <span class="party dp">Dev. Partner</span> counter-signs.
+                    </div>
+                    <div class="step-sla">SLA: Per Cabinet schedule</div>
+                </div>
+            </div>
+            <div class="sop-step">
+                <div class="step-num">8</div>
+                <div class="step-body">
+                    <h4>Ratification & Gazettement</h4>
+                    <div class="step-parties">
+                        For treaties: <span class="party oag">OAG</span> facilitates Parliamentary ratification per Art. 2(6). Gazetted upon ratification. <span class="party mda">MDA</span> commences implementation.
+                    </div>
+                    <div class="step-sla">SLA: Per Parliamentary calendar</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== PROGRAMMES & PROJECTS ===== -->
+<section id="programmes" class="section">
+    <div class="section-title-bar red">
+        <h2>Development Partner Support &mdash; Programmes & Projects</h2>
+        <span class="subtitle">Tracking OAG-supported programmes from inception to completion</span>
+    </div>
+
+    <div class="filter-bar">
+        <select id="progTypeFilter" onchange="filterProgrammes()">
+            <option value="">All Types</option>
+            <option>Grant</option>
+            <option>Loan</option>
+            <option>Hybrid</option>
+            <option>Technical Assistance</option>
+        </select>
+        <select id="progStatusFilter" onchange="filterProgrammes()">
+            <option value="">All Statuses</option>
+            <option>Pipeline</option>
+            <option>Active</option>
+            <option>Closing</option>
+            <option>Completed</option>
+        </select>
+        <input type="text" id="progSearch" placeholder="Search programmes..." oninput="filterProgrammes()">
+        <button class="btn btn-primary" onclick="openModal('newProgrammeModal')">+ Register Programme</button>
+    </div>
+
+    <div class="table-wrap">
+        <table class="dtable" id="programmesTable">
+            <thead>
+                <tr>
+                    <th>Project ID</th>
+                    <th>Programme / Project</th>
+                    <th>Dev. Partner</th>
+                    <th>Type</th>
+                    <th>Total Amount</th>
+                    <th>Disbursed</th>
+                    <th>Duration</th>
+                    <th>M&E Score</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="programmesBody"></tbody>
+        </table>
+    </div>
+</section>
+
+<!-- ===== FINANCIAL TRACKING ===== -->
+<section id="spend" class="section">
+    <div class="section-title-bar green">
+        <h2>Financial Tracking &mdash; Spend Analysis</h2>
+        <span class="subtitle">Budget, disbursement, and expenditure tracking across all programmes</span>
+    </div>
+
+    <div class="kpi-row">
+        <div class="kpi-card border-green">
+            <div class="kpi-label">Total Committed</div>
+            <div class="kpi-value">KSh 8.4B</div>
+            <div class="kpi-sub">Across 12 programmes</div>
+        </div>
+        <div class="kpi-card border-blue">
+            <div class="kpi-label">Total Disbursed</div>
+            <div class="kpi-value">KSh 5.6B</div>
+            <div class="kpi-sub">67% disbursement rate</div>
+        </div>
+        <div class="kpi-card border-gold">
+            <div class="kpi-label">Total Spent</div>
+            <div class="kpi-value">KSh 4.8B</div>
+            <div class="kpi-sub">86% absorption rate</div>
+        </div>
+        <div class="kpi-card border-red">
+            <div class="kpi-label">Unspent Balance</div>
+            <div class="kpi-value">KSh 0.8B</div>
+            <div class="kpi-sub">Requires acceleration</div>
+        </div>
+    </div>
+
+    <div class="grid-2">
+        <div class="card">
+            <h3>Spend by Programme (KSh Millions)</h3>
+            <canvas id="chartSpendByProg"></canvas>
+        </div>
+        <div class="card">
+            <h3>Quarterly Disbursement vs Spend</h3>
+            <canvas id="chartQuarterlySpend"></canvas>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Financial Summary by Programme</h3>
+        <table class="dtable">
+            <thead>
+                <tr><th>Programme</th><th>Partner</th><th>Type</th><th>Committed (KSh M)</th><th>Disbursed (KSh M)</th><th>Spent (KSh M)</th><th>Balance (KSh M)</th><th>Absorption %</th></tr>
+            </thead>
+            <tbody id="financialBody"></tbody>
+        </table>
+    </div>
+</section>
+
+<!-- ===== M&E FRAMEWORK ===== -->
+<section id="me" class="section">
+    <div class="section-title-bar blue">
+        <h2>Monitoring & Evaluation Framework</h2>
+        <span class="subtitle">Dual-track M&E: Development Partner side &amp; OAG side</span>
+    </div>
+
+    <div class="me-dual-header">
+        <div class="me-side me-dp-side">
+            <h3>Development Partner Perspective</h3>
+            <p>Results framework, disbursement-linked indicators, fiduciary compliance, audit findings</p>
+        </div>
+        <div class="me-side me-oag-side">
+            <h3>OAG Perspective</h3>
+            <p>Strategic alignment, legal compliance, institutional capacity outcomes, citizen impact</p>
+        </div>
+    </div>
+
+    <div class="card" style="margin-top:20px;">
+        <h3>Programme M&E Scorecard</h3>
+        <table class="dtable" id="meTable">
+            <thead>
+                <tr>
+                    <th>Programme</th>
+                    <th>DP Rating</th>
+                    <th>DP: Disbursement Compliance</th>
+                    <th>DP: Fiduciary Risk</th>
+                    <th>OAG: Strategic Alignment</th>
+                    <th>OAG: Institutional Impact</th>
+                    <th>OAG: Citizen Outcome</th>
+                    <th>Overall Score</th>
+                </tr>
+            </thead>
+            <tbody id="meBody"></tbody>
+        </table>
+    </div>
+
+    <div class="grid-2">
+        <div class="card">
+            <h3>M&E Scores: DP vs OAG Perspective</h3>
+            <canvas id="chartMEDual"></canvas>
+        </div>
+        <div class="card">
+            <h3>Risk Heat Map</h3>
+            <div class="risk-grid" id="riskGrid"></div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== ASSIGNED OFFICERS ===== -->
+<section id="officers" class="section">
+    <div class="section-title-bar gold">
+        <h2>Assigned Officers</h2>
+        <span class="subtitle">Programme focal points and agreement leads</span>
+    </div>
+
+    <div class="card">
+        <table class="dtable">
+            <thead>
+                <tr><th>Officer</th><th>Role</th><th>Department</th><th>Assigned Programmes</th><th>Assigned Agreements</th><th>Contact</th><th>Workload</th></tr>
+            </thead>
+            <tbody id="officersBody"></tbody>
+        </table>
+    </div>
+</section>
+
+<!-- ===== MODALS ===== -->
+<div class="modal-overlay" id="newAgreementModal">
+    <div class="modal">
+        <div class="modal-header"><h3>Register New Agreement / Treaty</h3><button class="modal-close" onclick="closeModal('newAgreementModal')">&times;</button></div>
+        <div class="modal-body">
+            <div class="form-grid">
+                <div class="form-group"><label>Title</label><input type="text" placeholder="Agreement title"></div>
+                <div class="form-group"><label>Type</label><select><option>Bilateral Treaty</option><option>Multilateral Treaty</option><option>Loan Agreement</option><option>Grant Agreement</option><option>MoU</option><option>Technical Cooperation</option></select></div>
+                <div class="form-group"><label>Development Partner</label><input type="text" placeholder="e.g. World Bank, UNDP"></div>
+                <div class="form-group"><label>Lead MDA</label><input type="text" placeholder="Ministry / Agency"></div>
+                <div class="form-group"><label>Estimated Value</label><input type="text" placeholder="KSh or USD"></div>
+                <div class="form-group"><label>Date Received</label><input type="date"></div>
+                <div class="form-group full-width"><label>Description</label><textarea rows="3" placeholder="Brief description..."></textarea></div>
+            </div>
+        </div>
+        <div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal('newAgreementModal')">Cancel</button><button class="btn btn-primary" onclick="closeModal('newAgreementModal')">Register</button></div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="newProgrammeModal">
+    <div class="modal">
+        <div class="modal-header"><h3>Register New Programme / Project</h3><button class="modal-close" onclick="closeModal('newProgrammeModal')">&times;</button></div>
+        <div class="modal-body">
+            <div class="form-grid">
+                <div class="form-group"><label>Programme Name</label><input type="text" placeholder="Programme/project name"></div>
+                <div class="form-group"><label>Development Partner</label><input type="text" placeholder="e.g. EU, USAID"></div>
+                <div class="form-group"><label>Type</label><select><option>Grant</option><option>Loan</option><option>Hybrid</option><option>Technical Assistance</option></select></div>
+                <div class="form-group"><label>Total Amount (KSh)</label><input type="number" placeholder="Amount"></div>
+                <div class="form-group"><label>Start Date</label><input type="date"></div>
+                <div class="form-group"><label>End Date</label><input type="date"></div>
+                <div class="form-group"><label>Assigned Officer</label><input type="text" placeholder="Lead officer"></div>
+                <div class="form-group"><label>OAG Component</label><select><option>Legal Aid & Access to Justice</option><option>Digitization</option><option>Capacity Building</option><option>Anti-Corruption</option><option>Decentralization</option><option>Legal Education Reform</option></select></div>
+            </div>
+        </div>
+        <div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal('newProgrammeModal')">Cancel</button><button class="btn btn-primary" onclick="closeModal('newProgrammeModal')">Register</button></div>
+    </div>
+</div>
+
+</main>
+
+<script src="dev-partners.js"></script>
+</body>
+</html>

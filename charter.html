@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OAG Kenya - Service Charter & Workplan</title>
+    <link rel="stylesheet" href="charter.css">
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header class="header">
+    <div class="header-inner">
+        <div class="header-left">
+            <div class="coat-of-arms">AG</div>
+            <div>
+                <h1>Office of the Attorney General & Department of Justice</h1>
+                <p>Republic of Kenya</p>
+            </div>
+        </div>
+        <div class="header-right">
+            <a href="index.html" class="btn btn-outline">Back to Dashboard</a>
+            <button class="btn btn-primary" onclick="window.print()">Print Charter</button>
+        </div>
+    </div>
+    <nav class="charter-nav" id="charterNav">
+        <a href="#preamble" class="nav-link active">Preamble</a>
+        <a href="#services" class="nav-link">Service Charter</a>
+        <a href="#workplan-ag" class="nav-link">AG Workplan</a>
+        <a href="#workplan-slo" class="nav-link">State Law Office</a>
+        <a href="#workplan-justice" class="nav-link">Dept of Justice</a>
+        <a href="#sops" class="nav-link">SOPs</a>
+        <a href="#complaints-feedback" class="nav-link">Feedback</a>
+    </nav>
+</header>
+
+<main class="main">
+
+<!-- ============================================================ -->
+<!-- SECTION 1: PREAMBLE                                          -->
+<!-- ============================================================ -->
+<section id="preamble" class="section">
+    <div class="section-title-bar green">
+        <h2>Service Charter</h2>
+        <span class="subtitle">Office of the Attorney General & Department of Justice</span>
+    </div>
+
+    <div class="charter-intro">
+        <div class="intro-card">
+            <h3>Our Mandate</h3>
+            <p>Established under <strong>Article 156 of the Constitution of Kenya</strong> and the <strong>Office of the Attorney General Act (Cap 6A)</strong>, the OAG serves as the Government's Principal Legal Advisor, responsible for legal representation, human rights protection, anti-corruption, and legal aid initiatives.</p>
+        </div>
+        <div class="intro-card">
+            <h3>Our Vision</h3>
+            <p>To be the best institution in the region in the provision of public legal services and promotion of a just, democratic and corruption-free nation.</p>
+        </div>
+        <div class="intro-card">
+            <h3>Our Mission</h3>
+            <p>To facilitate the realization of good governance and respect for the rule of law through the provision of public legal services, protection and promotion of human rights and upholding of ethics and integrity.</p>
+        </div>
+    </div>
+
+    <div class="values-strip">
+        <h3>Core Values</h3>
+        <div class="values-grid">
+            <span class="value-badge">Professionalism</span>
+            <span class="value-badge">Integrity</span>
+            <span class="value-badge">Transparency & Accountability</span>
+            <span class="value-badge">Efficiency & Effectiveness</span>
+            <span class="value-badge">Equity & Fairness</span>
+            <span class="value-badge">Teamwork</span>
+            <span class="value-badge">Courtesy & Customer Focus</span>
+            <span class="value-badge">Non-discrimination</span>
+        </div>
+    </div>
+
+    <div class="org-structure">
+        <h3>Organizational Structure</h3>
+        <div class="org-three-col">
+            <div class="org-col">
+                <h4 class="org-col-title green-bg">Executive Office of the Attorney General</h4>
+                <ul>
+                    <li>Office of the Attorney General</li>
+                    <li>Office of the Solicitor General</li>
+                    <li>Civil Litigation Department</li>
+                    <li>Government Transactions Department</li>
+                    <li>International Law Department</li>
+                    <li>Legislative Drafting Department</li>
+                    <li>Legal Advisory & Research Department</li>
+                </ul>
+            </div>
+            <div class="org-col">
+                <h4 class="org-col-title red-bg">State Law Office</h4>
+                <ul>
+                    <li>Registrar General's Office</li>
+                    <li>Public Trustee's Office</li>
+                    <li>Advocates Complaints Commission</li>
+                    <li>National Legal Aid Service (NLAS)</li>
+                    <li>Business Registration Service</li>
+                </ul>
+            </div>
+            <div class="org-col">
+                <h4 class="org-col-title blue-bg">State Dept. of Justice, Human Rights & Constitutional Affairs</h4>
+                <ul>
+                    <li>Department of Justice</li>
+                    <li>Kenya School of Law</li>
+                    <li>Council of Legal Education</li>
+                    <li>Kenya Law Reform Commission</li>
+                    <li>National Council for Law Reporting</li>
+                    <li>Witness Protection Agency</li>
+                    <li>Victims Protection Board</li>
+                    <li>NCIC / Anti-corruption Campaign Committee</li>
+                    <li>Nairobi Centre for International Arbitration</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 2: SERVICE CHARTER TABLE                              -->
+<!-- ============================================================ -->
+<section id="services" class="section">
+    <div class="section-title-bar red">
+        <h2>Comprehensive Service Charter</h2>
+        <span class="subtitle">Services, Requirements, Timelines & Costs</span>
+    </div>
+
+    <div class="filter-bar">
+        <select id="divisionFilter" onchange="filterServices()">
+            <option value="">All Divisions</option>
+            <option value="civil-lit">Civil Litigation</option>
+            <option value="govt-trans">Government Transactions</option>
+            <option value="intl-law">International Law</option>
+            <option value="leg-draft">Legislative Drafting</option>
+            <option value="legal-advisory">Legal Advisory & Research</option>
+            <option value="registrar">Registrar General</option>
+            <option value="trustee">Public Trustee</option>
+            <option value="acc">Advocates Complaints Commission</option>
+            <option value="nlas">National Legal Aid Service</option>
+            <option value="brs">Business Registration Service</option>
+        </select>
+        <input type="text" id="serviceSearch" placeholder="Search services..." oninput="filterServices()">
+    </div>
+
+    <!-- CIVIL LITIGATION -->
+    <div class="service-division" data-division="civil-lit">
+        <h3 class="division-header" onclick="toggleDivision(this)">
+            <span class="toggle-icon">&#9660;</span>
+            Civil Litigation Department
+            <span class="division-badge">State Law Office</span>
+        </h3>
+        <div class="division-body open">
+            <table class="charter-table">
+                <thead><tr><th>Service</th><th>Description / How It Is Done</th><th>Requirements</th><th>Timeline</th><th>Cost (KSh)</th></tr></thead>
+                <tbody>
+                    <tr><td>Representation of Government in Civil Matters</td><td>OAG receives instructions from MDAs, assigns State Counsel, prepares pleadings, appears in court, and pursues resolution through litigation or settlement.</td><td>Written instructions from the MDA; full set of relevant documents; witness statements</td><td>Case-dependent; initial response within <strong>14 days</strong> of instruction</td><td>Free (Government service)</td></tr>
+                    <tr><td>Defence of Constitutional Petitions</td><td>Receives petition notification, analyses constitutional issues, drafts response, represents Government interest in court.</td><td>Copy of petition; background briefing from relevant MDA</td><td>Response filed within statutory <strong>21 days</strong></td><td>Free</td></tr>
+                    <tr><td>Arbitration & Alternative Dispute Resolution</td><td>Represents Government in domestic/international arbitration proceedings. Evaluates claims, prepares submissions, engages with arbitral tribunals.</td><td>Arbitration notice/claim; contract documents; MDA instructions</td><td>Varies by forum; initial review within <strong>14 days</strong></td><td>Free (Arbitrator fees borne per contract terms)</td></tr>
+                    <tr><td>Mediation of Government Disputes</td><td>Facilitates mediation between Government and opposing parties to achieve early resolution, avoiding protracted litigation.</td><td>Written consent of parties; case brief</td><td>Mediation scheduled within <strong>30 days</strong> of referral</td><td>Free</td></tr>
+                    <tr><td>Case Monitoring & Reporting</td><td>Tracks all active Government litigation, produces quarterly reports for the AG and relevant MDAs on case status, risk assessment, and outcomes.</td><td>Case file reference; ICMS access</td><td>Quarterly reports; real-time on ICMS</td><td>Free</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- GOVERNMENT TRANSACTIONS -->
+    <div class="service-division" data-division="govt-trans">
+        <h3 class="division-header" onclick="toggleDivision(this)">
+            <span class="toggle-icon">&#9660;</span>
+            Government Transactions Department
+            <span class="division-badge">State Law Office</span>
+        </h3>
+        <div class="division-body open">
+            <table class="charter-table">
+                <thead><tr><th>Service</th><th>Description / How It Is Done</th><th>Requirements</th><th>Timeline</th><th>Cost (KSh)</th></tr></thead>
+                <tbody>
+                    <tr><td>Vetting of Government Contracts</td><td>Reviews procurement contracts for legal compliance, identifies risks, recommends amendments, and issues legal clearance certificate.</td><td>Draft contract; procurement documentation; Board resolution; budget confirmation</td><td><strong>14 working days</strong> from receipt of complete documents</td><td>Free (Government service)</td></tr>
+                    <tr><td>Review of Government Leases & Conveyances</td><td>Examines land transactions involving Government, ensures title compliance, drafts/reviews lease instruments.</td><td>Title documents; survey records; valuation report; MDA approval</td><td><strong>21 working days</strong></td><td>Free</td></tr>
+                    <tr><td>Clearance of Loan & Grant Agreements</td><td>Reviews terms of bilateral/multilateral financing agreements for compliance with Kenyan law, Constitutional requirements, and Government policy.</td><td>Draft agreement; National Treasury brief; Cabinet memorandum</td><td><strong>14 working days</strong></td><td>Free</td></tr>
+                    <tr><td>Review of MoUs & Government Agreements</td><td>Reviews memoranda of understanding and inter-governmental agreements for legal sufficiency and Government interest protection.</td><td>Draft MoU; background notes; MDA instructions</td><td><strong>10 working days</strong></td><td>Free</td></tr>
+                    <tr><td>Legal Clearance for Procurement</td><td>Provides legal clearance on major government procurement processes to ensure compliance with the Public Procurement and Asset Disposal Act.</td><td>Procurement records; tender evaluation report; contract award letter</td><td><strong>7 working days</strong></td><td>Free</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- INTERNATIONAL LAW -->
+    <div class="service-division" data-division="intl-law">
+        <h3 class="division-header" onclick="toggleDivision(this)">
+            <span class="toggle-icon">&#9660;</span>
+            International Law Department
+            <span class="division-badge">State Law Office</span>
+        </h3>
+        <div class="division-body open">
+            <table class="charter-table">
+                <thead><tr><th>Service</th><th>Description / How It Is Done</th><th>Requirements</th><th>Timeline</th><th>Cost (KSh)</th></tr></thead>
+                <tbody>
+                    <tr><td>Review of Treaties & International Agreements</td><td>Analyses proposed treaties for consistency with the Constitution, existing legislation, and national interest. Advises Cabinet on ratification implications.</td><td>Draft treaty text; policy brief from lead MDA; impact assessment</td><td><strong>21 working days</strong></td><td>Free</td></tr>
+                    <tr><td>International Litigation Representation</td><td>Represents Kenya before international courts, tribunals, and dispute resolution bodies (ICJ, EAC, ICSID, etc.).</td><td>Notice of claim/petition; background documentation; Cabinet authority</td><td>Per tribunal timelines; initial brief within <strong>30 days</strong></td><td>Free (External counsel fees as approved)</td></tr>
+                    <tr><td>Extradition & Mutual Legal Assistance</td><td>Processes extradition requests and mutual legal assistance requests in criminal matters between Kenya and other states.</td><td>Formal request through diplomatic channels; supporting evidence</td><td><strong>30-90 days</strong> depending on complexity</td><td>Free</td></tr>
+                    <tr><td>Preparation of State Reports</td><td>Coordinates Government reports to UN treaty bodies, African Commission, UPR, and other human rights mechanisms.</td><td>Inputs from relevant MDAs; data from KNBS/KNCHR</td><td><strong>60 days</strong> before submission deadline</td><td>Free</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- LEGISLATIVE DRAFTING -->
+    <div class="service-division" data-division="leg-draft">
+        <h3 class="division-header" onclick="toggleDivision(this)">
+            <span class="toggle-icon">&#9660;</span>
+            Legislative Drafting Department
+            <span class="division-badge">State Law Office</span>
+        </h3>
+        <div class="division-body open">
+            <table class="charter-table">
+                <thead><tr><th>Service</th><th>Description / How It Is Done</th><th>Requirements</th><th>Timeline</th><th>Cost (KSh)</th></tr></thead>
+                <tbody>
+                    <tr><td>Drafting of Bills</td><td>Receives policy proposals, drafts Bills in proper legislative form, ensures Constitutional compliance, coordinates inter-ministerial consultations, prepares memorandum of objects and reasons.</td><td>Approved policy/Cabinet memo; MDA instructions; stakeholder input</td><td><strong>30-60 working days</strong> depending on complexity</td><td>Free</td></tr>
+                    <tr><td>Drafting of Subsidiary Legislation</td><td>Drafts regulations, rules, orders, and other statutory instruments to operationalize Acts of Parliament.</td><td>Enabling Act reference; policy framework; MDA instructions</td><td><strong>21 working days</strong></td><td>Free</td></tr>
+                    <tr><td>Revision & Consolidation of Laws</td><td>Reviews existing legislation for consistency, eliminates conflicts, consolidates amendments into revised editions.</td><td>Subject legislation; amendment history; Commissioner for revision direction</td><td><strong>60-90 working days</strong></td><td>Free</td></tr>
+                    <tr><td>Legislative Compliance Audit</td><td>Reviews MDA proposed policies and regulations for compliance with existing statutory framework and the Constitution.</td><td>Draft policy/regulation; background brief</td><td><strong>14 working days</strong></td><td>Free</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- LEGAL ADVISORY & RESEARCH -->
+    <div class="service-division" data-division="legal-advisory">
+        <h3 class="division-header" onclick="toggleDivision(this)">
+            <span class="toggle-icon">&#9660;</span>
+            Legal Advisory & Research Department
+            <span class="division-badge">State Law Office</span>
+        </h3>
+        <div class="division-body open">
+            <table class="charter-table">
+                <thead><tr><th>Service</th><th>Description / How It Is Done</th><th>Requirements</th><th>Timeline</th><th>Cost (KSh)</th></tr></thead>
+                <tbody>
+                    <tr><td>Legal Opinions to Government</td><td>Researches legal questions, analyses applicable law, and issues authoritative written legal opinions to MDAs and Constitutional Commissions.</td><td>Written request specifying the legal question; supporting facts and documents</td><td><strong>14 working days</strong> (standard); <strong>7 days</strong> (urgent)</td><td>Free</td></tr>
+                    <tr><td>Legal Research & Policy Analysis</td><td>Conducts comparative legal research on emerging issues to inform Government policy, including AI governance, digital assets, climate law.</td><td>Research brief from AG/SG or MDA request</td><td><strong>21-30 working days</strong></td><td>Free</td></tr>
+                    <tr><td>Gazette Notice Publication</td><td>Prepares and facilitates publication of legal and official notices in the Kenya Gazette.</td><td>Draft notice content; authorizing officer's approval</td><td><strong>5 working days</strong> (preparation); publication per Kenya Gazette schedule</td><td>Per Gazette rates</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- REGISTRAR GENERAL -->
+    <div class="service-division" data-division="registrar">
+        <h3 class="division-header" onclick="toggleDivision(this)">
+            <span class="toggle-icon">&#9660;</span>
+            Registrar General's Office
+            <span class="division-badge">Registrations & Public Services</span>
+        </h3>
+        <div class="division-body open">
+            <table class="charter-table">
+                <thead><tr><th>Service</th><th>Description / How It Is Done</th><th>Requirements</th><th>Timeline</th><th>Cost (KSh)</th></tr></thead>
+                <tbody>
+                    <tr><td>Marriage Registration (Civil)</td><td>Parties file notice of marriage, 21-day notice period, marriage solemnized by Registrar, certificate issued.</td><td>National IDs/passports of both parties; 2 witnesses; parental consent (if under 21)</td><td><strong>21 days</strong> (notice period) + <strong>1 day</strong> ceremony</td><td>KSh 3,500 (Standard)<br>KSh 15,000 (Premium VIP Room)</td></tr>
+                    <tr><td>Marriage Registration (Customary/Islamic/Hindu)</td><td>Parties present proof of customary/religious ceremony. Registrar verifies and issues registration certificate.</td><td>Affidavit of marriage; witness statements; IDs; religious certificate (where applicable)</td><td><strong>7 working days</strong></td><td>KSh 1,500</td></tr>
+                    <tr><td>Divorce Registration</td><td>Court decree is presented, verified, and recorded. Certificate of divorce issued.</td><td>Certified court decree; marriage certificate; IDs</td><td><strong>7 working days</strong></td><td>KSh 1,000</td></tr>
+                    <tr><td>Society Registration</td><td>Application reviewed for compliance with Societies Act, name search conducted, Registrar issues certificate of registration.</td><td>Constitution of the society; list of office bearers; postal address; minutes of formation meeting</td><td><strong>30 working days</strong></td><td>KSh 5,000</td></tr>
+                    <tr><td>Registration of Coat of Arms</td><td>Application for grant of armorial bearings reviewed by the College of Arms Advisory Committee, heraldic design approved, letters patent issued.</td><td>Written application; proposed design; background on applicant organization</td><td><strong>60-90 working days</strong></td><td>KSh 10,000</td></tr>
+                    <tr><td>Registration of Child Adoption</td><td>Court adoption order registered. Adoption certificate and amended birth certificate issued.</td><td>Court adoption order; original birth certificate; adopters' IDs</td><td><strong>14 working days</strong></td><td>KSh 500</td></tr>
+                    <tr><td>Issuance of Certified Copies</td><td>Applicant requests certified copy of any registered instrument (marriage, society, etc.). Registry searches and issues certified copy.</td><td>Application form; proof of entitlement; original registration details</td><td><strong>3-5 working days</strong></td><td>KSh 500 per copy</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- PUBLIC TRUSTEE -->
+    <div class="service-division" data-division="trustee">
+        <h3 class="division-header" onclick="toggleDivision(this)">
+            <span class="toggle-icon">&#9660;</span>
+            Public Trustee's Office
+            <span class="division-badge">Estates & Trusts</span>
+        </h3>
+        <div class="division-body open">
+            <table class="charter-table">
+                <thead><tr><th>Service</th><th>Description / How It Is Done</th><th>Requirements</th><th>Timeline</th><th>Cost (KSh)</th></tr></thead>
+                <tbody>
+                    <tr><td>Administration of Deceased Estates</td><td>Public Trustee applies for grant of letters of administration, collects assets, pays debts, distributes estate to beneficiaries per law of succession.</td><td>Death certificate; proof of relationship; asset inventory; court petition (where required)</td><td><strong>90-180 days</strong> (simple estate); complex estates may take longer</td><td>Commission of up to 5% of estate value (statutory cap)</td></tr>
+                    <tr><td>Management of Trust Funds</td><td>Holds and manages funds on behalf of minors, persons of unsound mind, and other beneficiaries as directed by court orders.</td><td>Court order; trust instrument; beneficiary identification</td><td>Ongoing management; disbursement within <strong>14 days</strong> of maturity/court order</td><td>Commission per Public Trustee Act</td></tr>
+                    <tr><td>Collection of Small Estates</td><td>Collects and distributes estates valued below the statutory threshold without requiring formal court process.</td><td>Death certificate; proof of kinship; asset details</td><td><strong>30-60 days</strong></td><td>Nominal fee per schedule</td></tr>
+                    <tr><td>Safe Custody of Documents</td><td>Stores wills, title deeds, and other valuable documents for safekeeping on behalf of the public.</td><td>Original documents; depositor's ID; completed deposit form</td><td><strong>Same day</strong> (deposit); <strong>1 working day</strong> (retrieval)</td><td>KSh 500 per document per annum</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- ACC -->
+    <div class="service-division" data-division="acc">
+        <h3 class="division-header" onclick="toggleDivision(this)">
+            <span class="toggle-icon">&#9660;</span>
+            Advocates Complaints Commission (ACC)
+            <span class="division-badge">Professional Conduct</span>
+        </h3>
+        <div class="division-body open">
+            <table class="charter-table">
+                <thead><tr><th>Service</th><th>Description / How It Is Done</th><th>Requirements</th><th>Timeline</th><th>Cost (KSh)</th></tr></thead>
+                <tbody>
+                    <tr><td>Receipt & Investigation of Complaints</td><td>Receives complaints against advocates, evaluates prima facie case, investigates the complaint through document review, interviews, and enquiries.</td><td>Written complaint; supporting evidence (receipts, correspondence, contracts); complainant's ID</td><td>Acknowledgement within <strong>3 working days</strong>; investigation within <strong>90 days</strong></td><td>Free</td></tr>
+                    <tr><td>In-House Alternative Dispute Resolution (IHADR)</td><td>Offers mediation/conciliation between complainant and advocate to reach an amicable settlement before formal prosecution.</td><td>Consent of both parties; summary of issues</td><td><strong>30-60 days</strong></td><td>Free</td></tr>
+                    <tr><td>Prosecution of Advocates</td><td>Files formal charges before the Advocates Disciplinary Tribunal. Presents evidence and seeks appropriate sanctions (reprimand, fine, striking off).</td><td>Investigation report; evidence file; Tribunal charge sheet</td><td>Per Tribunal scheduling; OAG filing within <strong>14 days</strong> of investigation completion</td><td>Free</td></tr>
+                    <tr><td>Recovery of Client Funds</td><td>Through investigation and IHADR/prosecution, facilitates recovery of funds wrongfully withheld by advocates.</td><td>Proof of payment/deposit; client-advocate agreement</td><td>Varies; IHADR resolution within <strong>60 days</strong></td><td>Free</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- NLAS -->
+    <div class="service-division" data-division="nlas">
+        <h3 class="division-header" onclick="toggleDivision(this)">
+            <span class="toggle-icon">&#9660;</span>
+            National Legal Aid Service (NLAS) - Sheria Mtaani
+            <span class="division-badge">Access to Justice</span>
+        </h3>
+        <div class="division-body open">
+            <table class="charter-table">
+                <thead><tr><th>Service</th><th>Description / How It Is Done</th><th>Requirements</th><th>Timeline</th><th>Cost (KSh)</th></tr></thead>
+                <tbody>
+                    <tr><td>Legal Aid (Representation)</td><td>Assigns State Counsel or accredited legal aid provider to represent indigent persons in court proceedings (land disputes, probate, children matters, criminal defence).</td><td>Means test (proof of indigence); case merit assessment; national ID; case documents</td><td>Assignment within <strong>7 working days</strong> of approval</td><td>Free</td></tr>
+                    <tr><td>Legal Advice Clinics</td><td>Walk-in and Sheria Mtaani mobile clinics provide free legal advice on rights, procedures, and options. No court representation.</td><td>Walk-in; national ID (or alternative identification)</td><td><strong>Same day</strong> (walk-in); scheduled clinic days for Sheria Mtaani</td><td>Free</td></tr>
+                    <tr><td>Community Legal Education & Sensitization</td><td>Conducts outreach programs in underserved communities to educate citizens on their legal rights and available services.</td><td>Community request or NLAS schedule</td><td>Per annual outreach calendar</td><td>Free</td></tr>
+                    <tr><td>Case Referral System</td><td>Links beneficiaries to partner agencies (DCI, ODPP, Judiciary, LSK pro bono) for specialized assistance beyond NLAS capacity.</td><td>NLAS intake assessment; consent of beneficiary</td><td>Referral within <strong>3 working days</strong></td><td>Free</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- BRS -->
+    <div class="service-division" data-division="brs">
+        <h3 class="division-header" onclick="toggleDivision(this)">
+            <span class="toggle-icon">&#9660;</span>
+            Business Registration Service (BRS)
+            <span class="division-badge">e-Citizen Integrated</span>
+        </h3>
+        <div class="division-body open">
+            <table class="charter-table">
+                <thead><tr><th>Service</th><th>Description / How It Is Done</th><th>Requirements</th><th>Timeline</th><th>Cost (KSh)</th></tr></thead>
+                <tbody>
+                    <tr><td>Company Registration</td><td>Online application via e-Citizen/BRS portal. Name search, document upload, compliance check, certificate of incorporation issued electronically.</td><td>Proposed company name; memorandum & articles of association; directors' IDs/KRA PINs; registered office address</td><td><strong>3-5 working days</strong></td><td>KSh 10,650 (Private company)<br>KSh 20,100 (Public company)</td></tr>
+                    <tr><td>Business Name Registration</td><td>Online application for sole proprietor/partnership trading names. Name search and certificate issued.</td><td>Applicant's ID/KRA PIN; proposed business name; postal address</td><td><strong>1-3 working days</strong></td><td>KSh 950</td></tr>
+                    <tr><td>Limited Liability Partnership (LLP)</td><td>Application filed online, partnership agreement reviewed, certificate issued.</td><td>LLP agreement; partners' IDs and KRA PINs; registered office</td><td><strong>5 working days</strong></td><td>KSh 10,000</td></tr>
+                    <tr><td>Filing of Annual Returns</td><td>Companies submit annual returns via BRS portal confirming current details of directors, shareholders, and registered office.</td><td>Completed return form; updated register of members/directors</td><td><strong>1 working day</strong> (online processing)</td><td>KSh 5,000</td></tr>
+                    <tr><td>Company Search & Certified Extracts</td><td>Public search of company records. Certified extracts issued on request.</td><td>Company name or registration number; application</td><td><strong>Same day</strong> (online); <strong>3 days</strong> (manual)</td><td>KSh 500 (search); KSh 1,000 (certified extract)</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 3: WORKPLAN - AG EXECUTIVE OFFICE                     -->
+<!-- ============================================================ -->
+<section id="workplan-ag" class="section">
+    <div class="section-title-bar green">
+        <h2>Workplan: Executive Office of the Attorney General</h2>
+        <span class="subtitle">Strategic Transformation Agenda 2024-2027</span>
+    </div>
+
+    <table class="workplan-table">
+        <thead>
+            <tr><th>Strategic Pillar</th><th>Key Activity</th><th>Output / Deliverable</th><th>Timeline</th><th>Responsible</th><th>KPI / Target</th></tr>
+        </thead>
+        <tbody>
+            <tr class="pillar-row"><td colspan="6">Government Litigation Reform</td></tr>
+            <tr><td></td><td>Revise Government litigation approach and strategy</td><td>Approved Government Litigation Strategy document</td><td>Q2 2025</td><td>AG / Solicitor General</td><td>Strategy endorsed by Cabinet</td></tr>
+            <tr><td></td><td>Activate the Critical Litigation Committee</td><td>Committee operational; quarterly triage meetings held</td><td>Q1 2025</td><td>AG / SG / Chief Litigator</td><td>4 meetings per year; 100% critical cases triaged</td></tr>
+            <tr><td></td><td>Develop Litigation Policy Guidebook</td><td>Published guidebook distributed to all State Counsel</td><td>Q3 2025</td><td>Legal Advisory & Research</td><td>100% of counsel trained on guidebook</td></tr>
+            <tr><td></td><td>Standardize litigation positions across MDAs</td><td>MDA litigation coordination framework</td><td>Q4 2025</td><td>Civil Litigation / Advisory</td><td>Reduce inconsistent positions by 80%</td></tr>
+            <tr><td></td><td>Deploy Integrated Case Management System (ICMS)</td><td>ICMS live for all litigation files</td><td>Q2 2026</td><td>ICT / Civil Litigation</td><td>100% of active cases on ICMS</td></tr>
+
+            <tr class="pillar-row"><td colspan="6">Good Governance & Anti-Corruption</td></tr>
+            <tr><td></td><td>Strengthen ethics and anti-corruption ecosystem</td><td>Anti-corruption compliance framework for MDAs</td><td>Q3 2025</td><td>AG / Ethics & Integrity Unit</td><td>Framework adopted by 50% of MDAs by 2026</td></tr>
+            <tr><td></td><td>Institute Performance Management system</td><td>Performance contracting for all State Counsel</td><td>Q1 2026</td><td>AG / HRM</td><td>100% of staff on performance contracts</td></tr>
+            <tr><td></td><td>Capacitate justice officers in emerging governance areas</td><td>Training workshops on AI governance, digital assets, climate law</td><td>Ongoing from Q2 2025</td><td>Training Chambers</td><td>5 new curricula by 2026</td></tr>
+            <tr><td></td><td>Pursue transparency through proactive disclosure</td><td>Quarterly public reports on OAG performance</td><td>Quarterly from Q1 2025</td><td>Strategic Communication</td><td>4 reports published per year</td></tr>
+
+            <tr class="pillar-row"><td colspan="6">Strategic Communication</td></tr>
+            <tr><td></td><td>Review existing communication protocols</td><td>Communication audit report</td><td>Q1 2025</td><td>AG / Communication Unit</td><td>Audit completed</td></tr>
+            <tr><td></td><td>Develop and operationalize Strategic Communication Policy</td><td>Approved communication strategy with implementation plan</td><td>Q2 2025</td><td>Communication Unit</td><td>Policy operational by Q3 2025</td></tr>
+            <tr><td></td><td>Establish strategic media partnerships</td><td>MoUs with 5+ media houses for public legal education</td><td>Q3 2025</td><td>Communication Unit</td><td>5 media partnerships active</td></tr>
+            <tr><td></td><td>Launch OAG digital presence upgrade</td><td>Revamped website; active social media channels</td><td>Q4 2025</td><td>ICT / Communication</td><td>Website traffic +100%; social media engagement +200%</td></tr>
+
+            <tr class="pillar-row"><td colspan="6">Leadership Development</td></tr>
+            <tr><td></td><td>Mentorship programme for women in justice sector</td><td>Structured mentorship matching 50 mentees per year</td><td>Q2 2025 onwards</td><td>AG / Gender Unit</td><td>50 mentees matched per year</td></tr>
+            <tr><td></td><td>Leadership development programmes for senior counsel</td><td>Annual leadership retreat and executive coaching</td><td>Annually from 2025</td><td>HRM / Training</td><td>100% of senior counsel participate</td></tr>
+        </tbody>
+    </table>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 4: WORKPLAN - STATE LAW OFFICE                        -->
+<!-- ============================================================ -->
+<section id="workplan-slo" class="section">
+    <div class="section-title-bar red">
+        <h2>Workplan: State Law Office</h2>
+        <span class="subtitle">Registries, Legal Aid, ACC & Business Registration</span>
+    </div>
+
+    <table class="workplan-table">
+        <thead>
+            <tr><th>Strategic Pillar</th><th>Key Activity</th><th>Output / Deliverable</th><th>Timeline</th><th>Responsible</th><th>KPI / Target</th></tr>
+        </thead>
+        <tbody>
+            <tr class="pillar-row"><td colspan="6">Digitization & Digitalization</td></tr>
+            <tr><td></td><td>Fully digitize marriage, society, estate, and business registries</td><td>100% digital registries with e-Citizen integration</td><td>Q4 2026</td><td>Registrar General / ICT</td><td>100% digitization by 2026</td></tr>
+            <tr><td></td><td>Deploy Learning Management System (LMS)</td><td>LMS operational for CPD tracking and online courses</td><td>Q2 2026</td><td>ICT / Training Chambers</td><td>100% of staff onboarded on LMS</td></tr>
+            <tr><td></td><td>Automate internal workflows (clearance, approvals, tracking)</td><td>20 workflows digitized end-to-end</td><td>Q4 2026</td><td>ICT / All Departments</td><td>Reduce turnaround time by 60%</td></tr>
+            <tr><td></td><td>Attain ISO/data security certification</td><td>ISO 27001 certification for OAG digital systems</td><td>Q4 2027</td><td>ICT / Quality Assurance</td><td>Certification achieved</td></tr>
+            <tr><td></td><td>Revamp OAG website and integrate service portal</td><td>New website with case tracking, service status, and FAQ</td><td>Q3 2025</td><td>ICT / Communication</td><td>Website live; e-Citizen coverage for all services</td></tr>
+
+            <tr class="pillar-row"><td colspan="6">Operationalization of Legal Aid (Sheria Mtaani)</td></tr>
+            <tr><td></td><td>Recruit and deploy 90 State Counsel for legal aid</td><td>90 additional State Counsel deployed to justice centres</td><td>Q4 2025</td><td>NLAS / HRM</td><td>90 counsel recruited and deployed</td></tr>
+            <tr><td></td><td>Operationalize 47 Justice Centres (all counties)</td><td>Legal aid desks in all 47 counties</td><td>Q4 2027</td><td>NLAS / Decentralization Unit</td><td>47 centres operational</td></tr>
+            <tr><td></td><td>Launch Sheria Mtaani container clinics</td><td>Mobile legal aid clinics in 20 underserved sub-counties</td><td>Q2 2026</td><td>NLAS</td><td>20 mobile clinics deployed</td></tr>
+            <tr><td></td><td>Establish case referral system (NLAS-DCI-ODPP-Judiciary)</td><td>Functional referral protocol and MoU with partners</td><td>Q4 2026</td><td>NLAS / Inter-agency</td><td>Referral system live by 2026</td></tr>
+            <tr><td></td><td>Annual public awareness drives</td><td>Sensitization of 150,000+ citizens per year</td><td>Annually</td><td>NLAS / Communication</td><td>+50% YoY reach; 150K aided by 2027</td></tr>
+
+            <tr class="pillar-row"><td colspan="6">Advocates Complaints Commission Strengthening</td></tr>
+            <tr><td></td><td>Scale IHADR (In-House Alternative Dispute Resolution)</td><td>IHADR capacity doubled; circuit ADR sessions in counties</td><td>Q3 2025</td><td>ACC</td><td>Resolve 60% of complaints via IHADR</td></tr>
+            <tr><td></td><td>Deepen inter-agency coordination (IRA, LSK)</td><td>Joint investigation protocols; data sharing agreements</td><td>Q2 2025</td><td>ACC / IRA / LSK</td><td>MoUs signed; quarterly coordination meetings</td></tr>
+            <tr><td></td><td>Digitize ACC case management</td><td>Online complaint filing and tracking system</td><td>Q4 2025</td><td>ACC / ICT</td><td>80% of new complaints filed online by 2026</td></tr>
+
+            <tr class="pillar-row"><td colspan="6">Business Registration Service Enhancement</td></tr>
+            <tr><td></td><td>Complete e-Citizen integration for all BRS services</td><td>Full online service delivery for company/business registration</td><td>Q2 2025</td><td>BRS / ICT</td><td>100% of services on e-Citizen</td></tr>
+            <tr><td></td><td>Reduce registration turnaround times</td><td>Streamlined processes; automated name searches</td><td>Q4 2025</td><td>BRS</td><td>Company registration in 3 days (from 7)</td></tr>
+            <tr><td></td><td>Revenue optimization from registration services</td><td>Revenue collection target of KSh 4B per year</td><td>FY 2025/26</td><td>BRS / Finance</td><td>KSh 4B revenue target</td></tr>
+        </tbody>
+    </table>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 5: WORKPLAN - DEPT OF JUSTICE                         -->
+<!-- ============================================================ -->
+<section id="workplan-justice" class="section">
+    <div class="section-title-bar blue">
+        <h2>Workplan: State Dept. of Justice, Human Rights & Constitutional Affairs</h2>
+        <span class="subtitle">Access to Justice, Legal Education, Staff Welfare</span>
+    </div>
+
+    <table class="workplan-table">
+        <thead>
+            <tr><th>Strategic Pillar</th><th>Key Activity</th><th>Output / Deliverable</th><th>Timeline</th><th>Responsible</th><th>KPI / Target</th></tr>
+        </thead>
+        <tbody>
+            <tr class="pillar-row"><td colspan="6">Access to Justice</td></tr>
+            <tr><td></td><td>Decentralize AG services to all 47 counties</td><td>AG offices operational in all counties</td><td>Q4 2027</td><td>Principal Secretary / Admin</td><td>100% county coverage by 2027</td></tr>
+            <tr><td></td><td>Develop county coordination frameworks</td><td>County justice dashboards for service monitoring</td><td>Q4 2026</td><td>ICT / Decentralization</td><td>47 dashboards live by 2026</td></tr>
+            <tr><td></td><td>Drive Criminal Justice Administrative Reforms</td><td>CJAR implementation plan within GJLOS framework</td><td>Q2 2025</td><td>Dept of Justice / Inter-agency</td><td>Reform plan approved; 3 pilot counties</td></tr>
+            <tr><td></td><td>Institutionalize ADR across MDAs</td><td>ADR default policy adopted by MDAs; NCIA capacity expanded</td><td>Q4 2026</td><td>NCIA / Dept of Justice</td><td>30% reduction in court filings by MDAs</td></tr>
+            <tr><td></td><td>Reduce citizen travel time and transaction costs</td><td>Services delivered at county level; digital applications</td><td>Q4 2027</td><td>All service departments</td><td>50% reduction in travel time/costs</td></tr>
+
+            <tr class="pillar-row"><td colspan="6">Legal Education Reforms</td></tr>
+            <tr><td></td><td>Review institutional frameworks for legal education</td><td>Comprehensive review report on CLE, KSL, legal training</td><td>Q3 2025</td><td>CLE / KSL / Dept of Justice</td><td>Review completed and recommendations gazetted</td></tr>
+            <tr><td></td><td>Implement reform recommendations</td><td>Revised curricula; new accreditation standards</td><td>Q2 2026</td><td>CLE / KSL</td><td>New standards operational by 2026</td></tr>
+            <tr><td></td><td>Align CPD framework with OAG competency needs</td><td>Mandatory CPD aligned with emerging legal domains</td><td>Q1 2026</td><td>CLE / Training Chambers</td><td>100% of State Counsel complete CPD annually</td></tr>
+
+            <tr class="pillar-row"><td colspan="6">Training & Capacity Building</td></tr>
+            <tr><td></td><td>Operationalize OAG Training Chambers (Sheria Training Institute)</td><td>Permanent training facility; annual training calendar</td><td>Q2 2025</td><td>Training Chambers / HRM</td><td>Facility operational; 4 training cycles per year</td></tr>
+            <tr><td></td><td>Deliver annual training on AI Governance, ADR, Cyber Law, Legislative Drafting</td><td>Training modules delivered; certificates issued</td><td>Annually</td><td>Training Chambers</td><td>5 new curricula by 2026; 25% quality improvement</td></tr>
+            <tr><td></td><td>Train legal and non-legal public officers</td><td>Cross-functional training on Human Rights, rule of law</td><td>Quarterly</td><td>Training Chambers / NLAS</td><td>500+ officers trained per year</td></tr>
+
+            <tr class="pillar-row"><td colspan="6">Staff Welfare</td></tr>
+            <tr><td></td><td>Embed staff wellness and mental health programmes</td><td>Employee Assistance Programme (EAP); counselling access</td><td>Q2 2025</td><td>HRM / Welfare Unit</td><td>EAP active; quarterly wellness events</td></tr>
+            <tr><td></td><td>Standardize and rationalize justice officer pay</td><td>Pay harmonization proposal submitted to SRC</td><td>Q4 2025</td><td>HRM / PS</td><td>SRC submission made; review commenced</td></tr>
+            <tr><td></td><td>Targeted recruitment to fill 335 vacancies</td><td>Recruitment drives; deployment of recruited counsel</td><td>Phased 2025-2027</td><td>HRM / PSC</td><td>335 vacancies filled by 2027</td></tr>
+
+            <tr class="pillar-row"><td colspan="6">Institutional Capacity Building</td></tr>
+            <tr><td></td><td>Enhanced Human Resource administration & management</td><td>Modernized HR policies; automated HR processes</td><td>Q3 2025</td><td>HRM</td><td>HR manual updated; HRMIS deployed</td></tr>
+            <tr><td></td><td>Leverage ICT for enhanced service delivery</td><td>OAG ICT Master Plan; digital infrastructure upgrade</td><td>Q4 2025</td><td>ICT</td><td>ICT Master Plan approved; budget allocated</td></tr>
+        </tbody>
+    </table>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 6: STANDARD OPERATING PROCEDURES                      -->
+<!-- ============================================================ -->
+<section id="sops" class="section">
+    <div class="section-title-bar gold">
+        <h2>Standard Operating Procedures (SOPs)</h2>
+        <span class="subtitle">Uniform procedures ensuring consistent, auditable service delivery</span>
+    </div>
+
+    <div class="sop-grid">
+
+        <div class="sop-card">
+            <div class="sop-number">SOP-001</div>
+            <h4>Case Intake & Assignment</h4>
+            <div class="sop-scope">Civil Litigation | International Law</div>
+            <ol>
+                <li><strong>Receipt:</strong> Written instructions received from MDA via ICMS or official correspondence. Logged by Registry within 1 working day.</li>
+                <li><strong>Triage:</strong> Head of Department reviews case within 2 days, classifies priority (Critical / High / Medium / Low) and assigns to State Counsel.</li>
+                <li><strong>Acknowledgement:</strong> Assigned counsel acknowledges receipt and sends written confirmation to instructing MDA within 3 days of assignment.</li>
+                <li><strong>Case Plan:</strong> Counsel prepares case strategy memo within 7 days, submitting to supervisor for approval.</li>
+                <li><strong>Monitoring:</strong> Case tracked on ICMS with milestones. Quarterly review by Critical Litigation Committee for high-priority cases.</li>
+                <li><strong>Closure:</strong> Upon resolution, counsel files closure report. Case archived digitally. Client satisfaction survey sent to MDA.</li>
+            </ol>
+            <div class="sop-timeline">Total SLA: Initial response within 14 days of instruction</div>
+        </div>
+
+        <div class="sop-card">
+            <div class="sop-number">SOP-002</div>
+            <h4>Government Contract Vetting</h4>
+            <div class="sop-scope">Government Transactions</div>
+            <ol>
+                <li><strong>Submission:</strong> MDA submits draft contract with all procurement documentation via workflow system. Registry logs within 1 day.</li>
+                <li><strong>Completeness Check:</strong> Registry verifies all required documents received within 2 days. Returns incomplete files with checklist.</li>
+                <li><strong>Legal Review:</strong> Assigned counsel reviews contract for legal compliance, risk, and value-for-money within 7 working days.</li>
+                <li><strong>Quality Assurance:</strong> Senior counsel / HOD reviews draft opinion within 3 working days.</li>
+                <li><strong>Clearance / Advisory:</strong> Legal clearance certificate issued, or advisory letter with recommended amendments sent to MDA.</li>
+                <li><strong>Follow-Up:</strong> If amendments required, MDA resubmits. Amended contract reviewed within 5 working days.</li>
+            </ol>
+            <div class="sop-timeline">Total SLA: 14 working days (complete submission)</div>
+        </div>
+
+        <div class="sop-card">
+            <div class="sop-number">SOP-003</div>
+            <h4>Marriage Registration (Civil)</h4>
+            <div class="sop-scope">Registrar General</div>
+            <ol>
+                <li><strong>Application:</strong> Parties attend Registrar's office or apply via e-Citizen. Application form completed with supporting documents.</li>
+                <li><strong>Document Verification:</strong> Registrar verifies IDs, confirms eligibility (age, capacity, no existing marriage). Same day.</li>
+                <li><strong>Notice Publication:</strong> Marriage notice posted for 21 days. Any objections investigated within the notice period.</li>
+                <li><strong>Ceremony:</strong> Marriage solemnized by Registrar in the presence of 2 witnesses. Marriage register signed.</li>
+                <li><strong>Certificate Issuance:</strong> Marriage certificate issued on the day of ceremony or collected within 3 working days.</li>
+                <li><strong>Digitization:</strong> Marriage record entered into digital registry within 1 working day. Available for certified copy requests.</li>
+            </ol>
+            <div class="sop-timeline">Total SLA: 21 days (notice) + 1 day (ceremony)</div>
+        </div>
+
+        <div class="sop-card">
+            <div class="sop-number">SOP-004</div>
+            <h4>Legal Aid Application Processing</h4>
+            <div class="sop-scope">National Legal Aid Service (NLAS)</div>
+            <ol>
+                <li><strong>Intake:</strong> Applicant visits Justice Centre, Sheria Mtaani clinic, or applies online. Intake officer records details and documents.</li>
+                <li><strong>Means Test:</strong> Eligibility assessed based on income, assets, and vulnerability criteria within 3 working days.</li>
+                <li><strong>Merit Assessment:</strong> Legal officer reviews case merit (reasonable prospects of success, public interest) within 5 working days.</li>
+                <li><strong>Approval:</strong> NLAS Approving Officer makes determination. Approved applicants notified within 2 days.</li>
+                <li><strong>Counsel Assignment:</strong> State Counsel or accredited provider assigned. Introduction meeting scheduled within 7 days of approval.</li>
+                <li><strong>Case Management:</strong> Regular progress updates to beneficiary. Case tracked on ICMS. Closure report filed upon resolution.</li>
+            </ol>
+            <div class="sop-timeline">Total SLA: 7 working days (intake to assignment)</div>
+        </div>
+
+        <div class="sop-card">
+            <div class="sop-number">SOP-005</div>
+            <h4>Advocates Complaint Investigation</h4>
+            <div class="sop-scope">Advocates Complaints Commission</div>
+            <ol>
+                <li><strong>Receipt:</strong> Complaint received in writing (physical/online). Acknowledged within 3 working days with reference number.</li>
+                <li><strong>Screening:</strong> ACC Secretariat screens complaint for jurisdiction and prima facie merit within 7 days.</li>
+                <li><strong>IHADR Offer:</strong> Both parties offered In-House ADR. If accepted, mediation scheduled within 14 days.</li>
+                <li><strong>Investigation:</strong> If IHADR declined or fails, formal investigation commenced. Advocate notified and given 14 days to respond.</li>
+                <li><strong>Investigation Report:</strong> Investigating officer completes report within 60 days of commencement.</li>
+                <li><strong>Prosecution / Closure:</strong> If charges warranted, filed before Disciplinary Tribunal within 14 days. If not, complainant notified of closure with reasons.</li>
+            </ol>
+            <div class="sop-timeline">Total SLA: 90 days (complaint to determination)</div>
+        </div>
+
+        <div class="sop-card">
+            <div class="sop-number">SOP-006</div>
+            <h4>Business / Company Registration</h4>
+            <div class="sop-scope">Business Registration Service</div>
+            <ol>
+                <li><strong>Name Search:</strong> Applicant submits proposed name via e-Citizen. BRS conducts name availability search within 1 working day.</li>
+                <li><strong>Name Reservation:</strong> Approved name reserved for 30 days. Applicant notified electronically.</li>
+                <li><strong>Document Submission:</strong> Applicant uploads memorandum, articles, directors' details, KRA PINs via BRS portal.</li>
+                <li><strong>Compliance Review:</strong> BRS officer verifies documents for Companies Act compliance within 2 working days.</li>
+                <li><strong>Certificate Issuance:</strong> Certificate of Incorporation generated electronically and delivered via e-Citizen portal.</li>
+                <li><strong>Post-Registration:</strong> Company details published. KRA, NHIF, NSSF cross-registration facilitated.</li>
+            </ol>
+            <div class="sop-timeline">Total SLA: 3-5 working days</div>
+        </div>
+
+        <div class="sop-card">
+            <div class="sop-number">SOP-007</div>
+            <h4>Legislative Drafting Process</h4>
+            <div class="sop-scope">Legislative Drafting Department</div>
+            <ol>
+                <li><strong>Policy Receipt:</strong> Approved Cabinet memo / policy brief received from sponsoring MDA. Logged within 1 day.</li>
+                <li><strong>Drafting Brief:</strong> Chief Parliamentary Counsel assigns drafting counsel. Drafting brief meeting with MDA within 5 days.</li>
+                <li><strong>First Draft:</strong> Counsel prepares draft Bill within 21 working days, ensuring Constitutional and legal consistency.</li>
+                <li><strong>Inter-Ministerial Review:</strong> Draft circulated to relevant MDAs for comment. 14-day comment window.</li>
+                <li><strong>Revision & Finalization:</strong> Comments incorporated, final draft prepared. Quality review by senior counsel.</li>
+                <li><strong>Submission:</strong> Final Bill with Memorandum of Objects submitted to AG for approval and onward transmission to Parliament.</li>
+            </ol>
+            <div class="sop-timeline">Total SLA: 30-60 working days</div>
+        </div>
+
+        <div class="sop-card">
+            <div class="sop-number">SOP-008</div>
+            <h4>Estate Administration (Public Trustee)</h4>
+            <div class="sop-scope">Public Trustee's Office</div>
+            <ol>
+                <li><strong>Application:</strong> Next of kin or interested party applies to Public Trustee with death certificate and relationship proof.</li>
+                <li><strong>Asset Investigation:</strong> Public Trustee identifies and documents all assets and liabilities within 30 days.</li>
+                <li><strong>Grant Application:</strong> Petition for grant of letters of administration filed in court. Hearing within court schedule.</li>
+                <li><strong>Asset Collection:</strong> Upon grant, Trustee collects assets, notifies debtors and creditors. Creditors given 90 days to file claims.</li>
+                <li><strong>Distribution:</strong> After settling debts, assets distributed per succession law or will. Distribution account filed with court.</li>
+                <li><strong>Closure:</strong> Estate file closed upon completion. Beneficiaries issued final accounting statement.</li>
+            </ol>
+            <div class="sop-timeline">Total SLA: 90-180 days (simple estate)</div>
+        </div>
+
+        <div class="sop-card">
+            <div class="sop-number">SOP-009</div>
+            <h4>Legal Opinion Issuance</h4>
+            <div class="sop-scope">Legal Advisory & Research</div>
+            <ol>
+                <li><strong>Request Receipt:</strong> Written request from MDA received and logged. Completeness check within 1 day.</li>
+                <li><strong>Assignment:</strong> HOD assigns research counsel within 2 days based on subject expertise.</li>
+                <li><strong>Research:</strong> Counsel researches applicable law, comparative analysis, and precedents within 7 working days.</li>
+                <li><strong>Draft Opinion:</strong> Written legal opinion drafted with clear recommendation within 3 working days of research completion.</li>
+                <li><strong>Review & Approval:</strong> Senior counsel reviews for quality and consistency. Submitted to SG/AG for signature.</li>
+                <li><strong>Dispatch:</strong> Signed opinion dispatched to requesting MDA. Copy filed digitally.</li>
+            </ol>
+            <div class="sop-timeline">Total SLA: 14 working days (standard); 7 days (urgent)</div>
+        </div>
+
+        <div class="sop-card">
+            <div class="sop-number">SOP-010</div>
+            <h4>Workflow Approval Process (Digital)</h4>
+            <div class="sop-scope">All Departments (Cross-Cutting)</div>
+            <ol>
+                <li><strong>Submission:</strong> Initiator submits request via OAG Workflow System with all supporting documents attached.</li>
+                <li><strong>Auto-Routing:</strong> System routes to appropriate reviewer based on request type and value thresholds.</li>
+                <li><strong>Level 1 Review:</strong> Assigned officer reviews within 3 working days. Approves, returns for correction, or escalates.</li>
+                <li><strong>Level 2 Review:</strong> Senior officer / HOD reviews within 2 working days for quality assurance.</li>
+                <li><strong>Final Approval:</strong> SG or AG approves within 2 working days. Digital signature applied.</li>
+                <li><strong>Notification:</strong> All parties notified of outcome. Audit trail logged automatically.</li>
+            </ol>
+            <div class="sop-timeline">Total SLA: 7 working days (standard); 3 days (urgent)</div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- SECTION 7: COMPLAINTS & FEEDBACK                              -->
+<!-- ============================================================ -->
+<section id="complaints-feedback" class="section">
+    <div class="section-title-bar green">
+        <h2>Service Delivery Complaints & Feedback</h2>
+        <span class="subtitle">Your voice matters - help us serve you better</span>
+    </div>
+
+    <div class="feedback-grid">
+        <div class="feedback-card">
+            <h4>How to Provide Feedback</h4>
+            <ul>
+                <li><strong>In Person:</strong> Any OAG county office or Sheria Mtaani clinic</li>
+                <li><strong>Online:</strong> www.ag.go.ke/feedback</li>
+                <li><strong>Email:</strong> feedback@ag.go.ke</li>
+                <li><strong>Telephone:</strong> +254-20-2227461 / Toll-free: 0800-720-201</li>
+                <li><strong>Post:</strong> P.O. Box 40112-00100, Nairobi</li>
+            </ul>
+        </div>
+        <div class="feedback-card">
+            <h4>Our Commitment</h4>
+            <ul>
+                <li>Acknowledge your complaint within <strong>3 working days</strong></li>
+                <li>Investigate and respond within <strong>14 working days</strong></li>
+                <li>Escalate unresolved complaints to the Head of Division within <strong>21 days</strong></li>
+                <li>Final resolution by the Solicitor General within <strong>30 days</strong></li>
+                <li>All complaints handled with confidentiality and without discrimination</li>
+            </ul>
+        </div>
+        <div class="feedback-card">
+            <h4>Service Standards We Commit To</h4>
+            <ul>
+                <li>Treat all clients with courtesy, dignity, and respect</li>
+                <li>Provide clear, accurate, and timely information</li>
+                <li>Process all applications within published timelines</li>
+                <li>Maintain transparency in fees and charges</li>
+                <li>Protect client confidentiality and privacy</li>
+                <li>Continuously improve through data and citizen feedback</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="charter-footer">
+        <p><strong>This Service Charter is a public commitment by the Office of the Attorney General & Department of Justice, Republic of Kenya.</strong></p>
+        <p>Approved by: <strong>Hon. Dorcas A. Oduor, SC, EGH</strong> - Attorney General of the Republic of Kenya</p>
+        <p>Effective Date: February 2026 | Review Date: February 2027</p>
+        <p>www.ag.go.ke</p>
+    </div>
+</section>
+
+</main>
+
+<script src="charter.js"></script>
+</body>
+</html>

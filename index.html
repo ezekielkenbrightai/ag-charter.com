@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OAG Kenya - Digital Transformation Platform</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <div class="logo-icon">AG</div>
+                <div class="logo-text">
+                    <strong>Office of the Attorney General</strong>
+                    <span>Republic of Kenya</span>
+                </div>
+            </div>
+        </div>
+        <ul class="nav-menu">
+            <li class="nav-item active" data-page="dashboard">
+                <span class="nav-icon">&#9632;</span> Dashboard
+            </li>
+            <li class="nav-item" data-page="cases">
+                <span class="nav-icon">&#9998;</span> Case Management
+            </li>
+            <li class="nav-item" data-page="legal-aid">
+                <span class="nav-icon">&#9878;</span> Legal Aid Services
+            </li>
+            <li class="nav-item" data-page="counties">
+                <span class="nav-icon">&#9873;</span> County Offices
+            </li>
+            <li class="nav-item" data-page="training">
+                <span class="nav-icon">&#9734;</span> Training & CPD
+            </li>
+            <li class="nav-item" data-page="workflows">
+                <span class="nav-icon">&#8635;</span> Workflow Automation
+            </li>
+            <li class="nav-item" data-page="registries">
+                <span class="nav-icon">&#9776;</span> Digital Registries
+            </li>
+            <li class="nav-item" data-page="complaints">
+                <span class="nav-icon">&#9888;</span> Advocates Complaints
+            </li>
+            <li class="nav-item" data-page="performance">
+                <span class="nav-icon">&#9670;</span> Performance Mgmt
+            </li>
+            <li class="nav-item" onclick="window.location.href='charter.html'" style="border-top:1px solid rgba(255,255,255,0.1); margin-top:8px; padding-top:14px;">
+                <span class="nav-icon">&#9997;</span> Service Charter
+            </li>
+            <li class="nav-item" onclick="window.location.href='dev-partners.html'">
+                <span class="nav-icon">&#127760;</span> Dev. Partners
+            </li>
+            <li class="nav-item" onclick="window.location.href='public-participation.html'">
+                <span class="nav-icon">&#128483;</span> Public Participation
+            </li>
+        </ul>
+        <div class="sidebar-footer">
+            <div class="user-info">
+                <div class="user-avatar">DO</div>
+                <div>
+                    <strong>Admin User</strong>
+                    <span>State Counsel</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Bar -->
+        <header class="topbar">
+            <button class="menu-toggle" id="menuToggle">&#9776;</button>
+            <h1 class="page-title" id="pageTitle">Executive Dashboard</h1>
+            <div class="topbar-actions">
+                <div class="search-box">
+                    <input type="text" placeholder="Search cases, files, staff...">
+                </div>
+                <div class="notifications" title="Notifications">
+                    <span class="notif-icon">&#128276;</span>
+                    <span class="notif-badge">5</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Page Container -->
+        <div class="page-container" id="pageContainer">
+
+            <!-- ==================== DASHBOARD ==================== -->
+            <section class="page active" id="page-dashboard">
+                <div class="kpi-row">
+                    <div class="kpi-card kpi-green">
+                        <div class="kpi-label">Cases Active</div>
+                        <div class="kpi-value">2,847</div>
+                        <div class="kpi-change up">+12% vs last quarter</div>
+                    </div>
+                    <div class="kpi-card kpi-blue">
+                        <div class="kpi-label">Legal Aid Beneficiaries</div>
+                        <div class="kpi-value">91,727</div>
+                        <div class="kpi-change up">Target: 150,000 by 2027</div>
+                    </div>
+                    <div class="kpi-card kpi-orange">
+                        <div class="kpi-label">Counties Covered</div>
+                        <div class="kpi-value">33 / 47</div>
+                        <div class="kpi-change">70% coverage</div>
+                    </div>
+                    <div class="kpi-card kpi-red">
+                        <div class="kpi-label">Staff Deployed</div>
+                        <div class="kpi-value">691</div>
+                        <div class="kpi-change down">335 vacancies remaining</div>
+                    </div>
+                </div>
+                <div class="kpi-row">
+                    <div class="kpi-card kpi-purple">
+                        <div class="kpi-label">Businesses Registered</div>
+                        <div class="kpi-value">314,000+</div>
+                        <div class="kpi-change up">KSh 2.95B revenue</div>
+                    </div>
+                    <div class="kpi-card kpi-teal">
+                        <div class="kpi-label">Marriages Registered</div>
+                        <div class="kpi-value">1.6M+</div>
+                        <div class="kpi-change">153,874 since 2022</div>
+                    </div>
+                    <div class="kpi-card kpi-green">
+                        <div class="kpi-label">Contracts Vetted</div>
+                        <div class="kpi-value">373</div>
+                        <div class="kpi-change up">Government contracts</div>
+                    </div>
+                    <div class="kpi-card kpi-blue">
+                        <div class="kpi-label">Legal Opinions</div>
+                        <div class="kpi-value">500+</div>
+                        <div class="kpi-change">Advisory services issued</div>
+                    </div>
+                </div>
+
+                <div class="grid-2col">
+                    <div class="card">
+                        <h3>Case Resolution Trend</h3>
+                        <canvas id="chartCasesTrend"></canvas>
+                    </div>
+                    <div class="card">
+                        <h3>Service Turnaround Time (Days)</h3>
+                        <canvas id="chartTurnaround"></canvas>
+                    </div>
+                </div>
+                <div class="grid-2col">
+                    <div class="card">
+                        <h3>County Coverage Progress</h3>
+                        <canvas id="chartCountyCoverage"></canvas>
+                    </div>
+                    <div class="card">
+                        <h3>Strategic Agenda Progress</h3>
+                        <div class="agenda-progress">
+                            <div class="agenda-item">
+                                <span>Decentralization</span>
+                                <div class="progress-bar"><div class="progress-fill" style="width:70%">70%</div></div>
+                            </div>
+                            <div class="agenda-item">
+                                <span>Legal Aid Operationalization</span>
+                                <div class="progress-bar"><div class="progress-fill" style="width:61%">61%</div></div>
+                            </div>
+                            <div class="agenda-item">
+                                <span>Digitization & Digitalization</span>
+                                <div class="progress-bar"><div class="progress-fill" style="width:55%">55%</div></div>
+                            </div>
+                            <div class="agenda-item">
+                                <span>Training & Capacity Building</span>
+                                <div class="progress-bar"><div class="progress-fill" style="width:48%">48%</div></div>
+                            </div>
+                            <div class="agenda-item">
+                                <span>Government Litigation Reform</span>
+                                <div class="progress-bar"><div class="progress-fill" style="width:40%">40%</div></div>
+                            </div>
+                            <div class="agenda-item">
+                                <span>Staff Welfare</span>
+                                <div class="progress-bar"><div class="progress-fill" style="width:35%">35%</div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== CASE MANAGEMENT ==================== -->
+            <section class="page" id="page-cases">
+                <div class="page-header">
+                    <h2>Integrated Case Management System (ICMS)</h2>
+                    <button class="btn btn-primary" onclick="openModal('newCaseModal')">+ New Case</button>
+                </div>
+                <div class="filters-bar">
+                    <select id="caseTypeFilter">
+                        <option value="">All Case Types</option>
+                        <option>Civil Litigation</option>
+                        <option>Government Transactions</option>
+                        <option>International Law</option>
+                        <option>Constitutional Petition</option>
+                        <option>Arbitration</option>
+                        <option>Legal Advisory</option>
+                    </select>
+                    <select id="caseStatusFilter">
+                        <option value="">All Statuses</option>
+                        <option>Open</option>
+                        <option>In Progress</option>
+                        <option>Under Review</option>
+                        <option>Resolved</option>
+                        <option>Closed</option>
+                    </select>
+                    <select id="casePriorityFilter">
+                        <option value="">All Priorities</option>
+                        <option>Critical</option>
+                        <option>High</option>
+                        <option>Medium</option>
+                        <option>Low</option>
+                    </select>
+                    <select id="caseCountyFilter">
+                        <option value="">All Counties</option>
+                    </select>
+                    <input type="text" placeholder="Search by case number or title..." id="caseSearch">
+                </div>
+                <div class="table-container">
+                    <table class="data-table" id="casesTable">
+                        <thead>
+                            <tr>
+                                <th>Case No.</th>
+                                <th>Title</th>
+                                <th>Type</th>
+                                <th>County</th>
+                                <th>Priority</th>
+                                <th>Status</th>
+                                <th>Assigned To</th>
+                                <th>Filed</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="casesTableBody"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- ==================== LEGAL AID ==================== -->
+            <section class="page" id="page-legal-aid">
+                <div class="page-header">
+                    <h2>Legal Aid Services - Sheria Mtaani</h2>
+                    <button class="btn btn-primary" onclick="openModal('newAidModal')">+ Register Beneficiary</button>
+                </div>
+                <div class="kpi-row">
+                    <div class="kpi-card kpi-green">
+                        <div class="kpi-label">Total Aided</div>
+                        <div class="kpi-value" id="legalAidTotal">91,727</div>
+                        <div class="kpi-change">Target: 150,000 by 2027</div>
+                    </div>
+                    <div class="kpi-card kpi-blue">
+                        <div class="kpi-label">Sensitized</div>
+                        <div class="kpi-value">774,981</div>
+                        <div class="kpi-change up">+50% YoY target</div>
+                    </div>
+                    <div class="kpi-card kpi-orange">
+                        <div class="kpi-label">Justice Centres</div>
+                        <div class="kpi-value">33</div>
+                        <div class="kpi-change">Target: 47 by 2027</div>
+                    </div>
+                    <div class="kpi-card kpi-teal">
+                        <div class="kpi-label">Mobile Clinics</div>
+                        <div class="kpi-value">12</div>
+                        <div class="kpi-change">Sheria Mtaani active</div>
+                    </div>
+                </div>
+                <div class="grid-2col">
+                    <div class="card">
+                        <h3>Legal Aid by Category</h3>
+                        <canvas id="chartLegalAidCategory"></canvas>
+                    </div>
+                    <div class="card">
+                        <h3>Monthly Beneficiary Intake</h3>
+                        <canvas id="chartLegalAidMonthly"></canvas>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Recent Beneficiaries</h3>
+                    <table class="data-table">
+                        <thead>
+                            <tr><th>ID</th><th>Name</th><th>County</th><th>Category</th><th>Status</th><th>Assigned Counsel</th><th>Date</th></tr>
+                        </thead>
+                        <tbody id="legalAidTableBody"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- ==================== COUNTIES ==================== -->
+            <section class="page" id="page-counties">
+                <div class="page-header">
+                    <h2>County Office Decentralization</h2>
+                    <div>
+                        <span class="badge badge-green">Operational: 33</span>
+                        <span class="badge badge-orange">Opening 2025: 7</span>
+                        <span class="badge badge-red">Planned: 7</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Target: All 47 Counties by 2027</h3>
+                    <div class="county-grid" id="countyGrid"></div>
+                </div>
+                <div class="grid-2col">
+                    <div class="card">
+                        <h3>Services per County Office</h3>
+                        <ul class="service-list">
+                            <li>Civil Litigation representation</li>
+                            <li>Legal Advisory & Research</li>
+                            <li>Marriage & Divorce Registration</li>
+                            <li>Society Registration</li>
+                            <li>Business Registration (e-Citizen)</li>
+                            <li>Estates & Trusts Management</li>
+                            <li>Legal Aid (Sheria Mtaani clinics)</li>
+                            <li>Advocates Complaints intake</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>Coverage Metrics</h3>
+                        <canvas id="chartCountyStatus"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== TRAINING ==================== -->
+            <section class="page" id="page-training">
+                <div class="page-header">
+                    <h2>Training & Capacity Building - Sheria Training Institute</h2>
+                    <button class="btn btn-primary" onclick="openModal('newTrainingModal')">+ Schedule Training</button>
+                </div>
+                <div class="kpi-row">
+                    <div class="kpi-card kpi-green">
+                        <div class="kpi-label">CPD Compliance Rate</div>
+                        <div class="kpi-value">72%</div>
+                        <div class="kpi-change">Target: 100% annually</div>
+                    </div>
+                    <div class="kpi-card kpi-blue">
+                        <div class="kpi-label">Trainings Completed</div>
+                        <div class="kpi-value">48</div>
+                        <div class="kpi-change up">This year</div>
+                    </div>
+                    <div class="kpi-card kpi-purple">
+                        <div class="kpi-label">New Curricula</div>
+                        <div class="kpi-value">3 / 5</div>
+                        <div class="kpi-change">Target: 5 by 2026</div>
+                    </div>
+                    <div class="kpi-card kpi-orange">
+                        <div class="kpi-label">Staff Trained</div>
+                        <div class="kpi-value">423</div>
+                        <div class="kpi-change up">Of 691 total staff</div>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Training Programs</h3>
+                    <table class="data-table">
+                        <thead>
+                            <tr><th>Program</th><th>Domain</th><th>Duration</th><th>Enrolled</th><th>Completed</th><th>Status</th></tr>
+                        </thead>
+                        <tbody id="trainingTableBody"></tbody>
+                    </table>
+                </div>
+                <div class="grid-2col">
+                    <div class="card">
+                        <h3>Training by Domain</h3>
+                        <canvas id="chartTrainingDomain"></canvas>
+                    </div>
+                    <div class="card">
+                        <h3>CPD Hours per Department</h3>
+                        <canvas id="chartCPDHours"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== WORKFLOWS ==================== -->
+            <section class="page" id="page-workflows">
+                <div class="page-header">
+                    <h2>Workflow Automation</h2>
+                    <button class="btn btn-primary" onclick="openModal('newWorkflowModal')">+ New Request</button>
+                </div>
+                <div class="kpi-row">
+                    <div class="kpi-card kpi-green">
+                        <div class="kpi-label">Avg. Turnaround</div>
+                        <div class="kpi-value">4.2 days</div>
+                        <div class="kpi-change down">Target: 60% reduction</div>
+                    </div>
+                    <div class="kpi-card kpi-blue">
+                        <div class="kpi-label">Pending Approvals</div>
+                        <div class="kpi-value">28</div>
+                        <div class="kpi-change">Across all workflows</div>
+                    </div>
+                    <div class="kpi-card kpi-orange">
+                        <div class="kpi-label">Digitized Workflows</div>
+                        <div class="kpi-value">12 / 20</div>
+                        <div class="kpi-change">60% complete</div>
+                    </div>
+                    <div class="kpi-card kpi-teal">
+                        <div class="kpi-label">e-Citizen Integrated</div>
+                        <div class="kpi-value">8</div>
+                        <div class="kpi-change">Services online</div>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Active Workflows</h3>
+                    <table class="data-table">
+                        <thead>
+                            <tr><th>Request ID</th><th>Type</th><th>Requester</th><th>Current Step</th><th>Assigned</th><th>Days Open</th><th>Status</th><th>Actions</th></tr>
+                        </thead>
+                        <tbody id="workflowTableBody"></tbody>
+                    </table>
+                </div>
+                <div class="card">
+                    <h3>Workflow Pipeline</h3>
+                    <div class="workflow-pipeline">
+                        <div class="pipeline-stage">
+                            <h4>Submitted</h4>
+                            <div class="pipeline-count">14</div>
+                        </div>
+                        <div class="pipeline-arrow">&#8594;</div>
+                        <div class="pipeline-stage">
+                            <h4>Under Review</h4>
+                            <div class="pipeline-count">8</div>
+                        </div>
+                        <div class="pipeline-arrow">&#8594;</div>
+                        <div class="pipeline-stage">
+                            <h4>Legal Clearance</h4>
+                            <div class="pipeline-count">6</div>
+                        </div>
+                        <div class="pipeline-arrow">&#8594;</div>
+                        <div class="pipeline-stage">
+                            <h4>SG Approval</h4>
+                            <div class="pipeline-count">4</div>
+                        </div>
+                        <div class="pipeline-arrow">&#8594;</div>
+                        <div class="pipeline-stage stage-complete">
+                            <h4>Completed</h4>
+                            <div class="pipeline-count">142</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== REGISTRIES ==================== -->
+            <section class="page" id="page-registries">
+                <div class="page-header">
+                    <h2>Digital Registries</h2>
+                </div>
+                <div class="kpi-row">
+                    <div class="kpi-card kpi-green">
+                        <div class="kpi-label">Businesses Registered</div>
+                        <div class="kpi-value">314,000+</div>
+                        <div class="kpi-change up">KSh 2.95B revenue</div>
+                    </div>
+                    <div class="kpi-card kpi-blue">
+                        <div class="kpi-label">Marriages</div>
+                        <div class="kpi-value">153,874</div>
+                        <div class="kpi-change">Since 2022</div>
+                    </div>
+                    <div class="kpi-card kpi-purple">
+                        <div class="kpi-label">Societies</div>
+                        <div class="kpi-value">2,668</div>
+                        <div class="kpi-change">2024-25 registrations</div>
+                    </div>
+                    <div class="kpi-card kpi-orange">
+                        <div class="kpi-label">Estates Finalized</div>
+                        <div class="kpi-value">10,069</div>
+                        <div class="kpi-change up">16,700 digitized files</div>
+                    </div>
+                </div>
+                <div class="grid-2col">
+                    <div class="card">
+                        <h3>Registry Digitization Progress</h3>
+                        <div class="agenda-progress">
+                            <div class="agenda-item"><span>Business Registration</span><div class="progress-bar"><div class="progress-fill" style="width:92%">92%</div></div></div>
+                            <div class="agenda-item"><span>Marriage Registration</span><div class="progress-bar"><div class="progress-fill" style="width:85%">85%</div></div></div>
+                            <div class="agenda-item"><span>Society Registration</span><div class="progress-bar"><div class="progress-fill" style="width:70%">70%</div></div></div>
+                            <div class="agenda-item"><span>Estates & Trusts</span><div class="progress-bar"><div class="progress-fill" style="width:60%">60%</div></div></div>
+                            <div class="agenda-item"><span>Coat of Arms</span><div class="progress-bar"><div class="progress-fill" style="width:45%">45%</div></div></div>
+                            <div class="agenda-item"><span>Child Adoption</span><div class="progress-bar"><div class="progress-fill" style="width:38%">38%</div></div></div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3>Monthly Registrations</h3>
+                        <canvas id="chartRegistrations"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== COMPLAINTS ==================== -->
+            <section class="page" id="page-complaints">
+                <div class="page-header">
+                    <h2>Advocates Complaints Commission</h2>
+                    <button class="btn btn-primary" onclick="openModal('newComplaintModal')">+ File Complaint</button>
+                </div>
+                <div class="kpi-row">
+                    <div class="kpi-card kpi-green">
+                        <div class="kpi-label">Total Recovered</div>
+                        <div class="kpi-value">KSh 155M</div>
+                        <div class="kpi-change up">Over 3 years</div>
+                    </div>
+                    <div class="kpi-card kpi-blue">
+                        <div class="kpi-label">Disputes Resolved (IHADR)</div>
+                        <div class="kpi-value">1,042</div>
+                        <div class="kpi-change up">In-house ADR</div>
+                    </div>
+                    <div class="kpi-card kpi-orange">
+                        <div class="kpi-label">Active Complaints</div>
+                        <div class="kpi-value">336</div>
+                        <div class="kpi-change">FY 2024/25</div>
+                    </div>
+                    <div class="kpi-card kpi-red">
+                        <div class="kpi-label">Top Issue</div>
+                        <div class="kpi-value">Withholding Funds</div>
+                        <div class="kpi-change">65% of complaints</div>
+                    </div>
+                </div>
+                <div class="grid-2col">
+                    <div class="card">
+                        <h3>Complaints by Nature</h3>
+                        <canvas id="chartComplaints"></canvas>
+                    </div>
+                    <div class="card">
+                        <h3>Recovery Trend (KSh Millions)</h3>
+                        <canvas id="chartRecovery"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== PERFORMANCE ==================== -->
+            <section class="page" id="page-performance">
+                <div class="page-header">
+                    <h2>Performance Management</h2>
+                </div>
+                <div class="kpi-row">
+                    <div class="kpi-card kpi-green">
+                        <div class="kpi-label">Overall Score</div>
+                        <div class="kpi-value">74%</div>
+                        <div class="kpi-change up">+8% from last review</div>
+                    </div>
+                    <div class="kpi-card kpi-blue">
+                        <div class="kpi-label">Case Success Rate</div>
+                        <div class="kpi-value">68%</div>
+                        <div class="kpi-change">Target: +25%</div>
+                    </div>
+                    <div class="kpi-card kpi-purple">
+                        <div class="kpi-label">Drafting Quality</div>
+                        <div class="kpi-value">71%</div>
+                        <div class="kpi-change up">Target: +25%</div>
+                    </div>
+                    <div class="kpi-card kpi-orange">
+                        <div class="kpi-label">Client Satisfaction</div>
+                        <div class="kpi-value">76%</div>
+                        <div class="kpi-change up">Target: +30% by 2027</div>
+                    </div>
+                </div>
+                <div class="grid-2col">
+                    <div class="card">
+                        <h3>Department Performance Scores</h3>
+                        <canvas id="chartDeptPerformance"></canvas>
+                    </div>
+                    <div class="card">
+                        <h3>Quarterly Targets vs Actual</h3>
+                        <canvas id="chartQuarterlyTargets"></canvas>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>Staff Performance Summary</h3>
+                    <table class="data-table">
+                        <thead>
+                            <tr><th>Staff</th><th>Department</th><th>Cases Handled</th><th>Success Rate</th><th>CPD Hours</th><th>Rating</th></tr>
+                        </thead>
+                        <tbody id="performanceTableBody"></tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Modals -->
+    <div class="modal-overlay" id="newCaseModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Register New Case</h3>
+                <button class="modal-close" onclick="closeModal('newCaseModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-grid">
+                    <div class="form-group"><label>Case Title</label><input type="text" placeholder="Enter case title"></div>
+                    <div class="form-group"><label>Case Type</label><select><option>Civil Litigation</option><option>Government Transactions</option><option>International Law</option><option>Constitutional Petition</option><option>Arbitration</option><option>Legal Advisory</option></select></div>
+                    <div class="form-group"><label>County</label><select id="caseModalCounty"></select></div>
+                    <div class="form-group"><label>Priority</label><select><option>Low</option><option>Medium</option><option>High</option><option>Critical</option></select></div>
+                    <div class="form-group"><label>Assigned Counsel</label><input type="text" placeholder="State Counsel name"></div>
+                    <div class="form-group"><label>Filing Date</label><input type="date"></div>
+                    <div class="form-group full-width"><label>Description</label><textarea rows="3" placeholder="Brief case description..."></textarea></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('newCaseModal')">Cancel</button>
+                <button class="btn btn-primary" onclick="closeModal('newCaseModal')">Register Case</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="newAidModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Register Legal Aid Beneficiary</h3>
+                <button class="modal-close" onclick="closeModal('newAidModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-grid">
+                    <div class="form-group"><label>Full Name</label><input type="text" placeholder="Beneficiary name"></div>
+                    <div class="form-group"><label>ID Number</label><input type="text" placeholder="National ID"></div>
+                    <div class="form-group"><label>County</label><select id="aidModalCounty"></select></div>
+                    <div class="form-group"><label>Category</label><select><option>Land Disputes</option><option>Probate & Administration</option><option>Children in Conflict with Law</option><option>Family Law</option><option>Employment Disputes</option><option>Criminal Defense</option></select></div>
+                    <div class="form-group"><label>Referred By</label><select><option>Walk-in</option><option>Sheria Mtaani Clinic</option><option>DCI Referral</option><option>ODPP Referral</option><option>Judiciary Referral</option></select></div>
+                    <div class="form-group"><label>Date</label><input type="date"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('newAidModal')">Cancel</button>
+                <button class="btn btn-primary" onclick="closeModal('newAidModal')">Register</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="newTrainingModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Schedule Training Program</h3>
+                <button class="modal-close" onclick="closeModal('newTrainingModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-grid">
+                    <div class="form-group"><label>Program Title</label><input type="text" placeholder="Training title"></div>
+                    <div class="form-group"><label>Domain</label><select><option>Human Rights & Rule of Law</option><option>AI Governance</option><option>ADR & Mediation</option><option>Legislative Drafting</option><option>Cyber Law</option><option>Anti-Corruption</option><option>International Law</option></select></div>
+                    <div class="form-group"><label>Duration</label><input type="text" placeholder="e.g. 5 days"></div>
+                    <div class="form-group"><label>Target Audience</label><select><option>State Counsel</option><option>Legal Clerks</option><option>All Legal Staff</option><option>Non-Legal Officers</option><option>All Staff</option></select></div>
+                    <div class="form-group"><label>Start Date</label><input type="date"></div>
+                    <div class="form-group"><label>Max Enrollment</label><input type="number" placeholder="50"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('newTrainingModal')">Cancel</button>
+                <button class="btn btn-primary" onclick="closeModal('newTrainingModal')">Schedule</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="newWorkflowModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Submit Workflow Request</h3>
+                <button class="modal-close" onclick="closeModal('newWorkflowModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-grid">
+                    <div class="form-group"><label>Request Type</label><select><option>Contract Clearance</option><option>Legal Opinion</option><option>Treaty Review</option><option>Legislative Draft</option><option>Marriage Certificate</option><option>Society Registration</option><option>Estate Administration</option></select></div>
+                    <div class="form-group"><label>Requester</label><input type="text" placeholder="Ministry / Department"></div>
+                    <div class="form-group full-width"><label>Details</label><textarea rows="3" placeholder="Request details..."></textarea></div>
+                    <div class="form-group"><label>Urgency</label><select><option>Standard</option><option>Expedited</option><option>Urgent</option></select></div>
+                    <div class="form-group"><label>Attachments</label><input type="file" multiple></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('newWorkflowModal')">Cancel</button>
+                <button class="btn btn-primary" onclick="closeModal('newWorkflowModal')">Submit Request</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="newComplaintModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>File Advocate Complaint</h3>
+                <button class="modal-close" onclick="closeModal('newComplaintModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-grid">
+                    <div class="form-group"><label>Complainant Name</label><input type="text" placeholder="Full name"></div>
+                    <div class="form-group"><label>Advocate Name</label><input type="text" placeholder="Advocate's name"></div>
+                    <div class="form-group"><label>Nature of Complaint</label><select><option>Withholding Funds</option><option>Failure to Account</option><option>Failure to Render Professional Services</option><option>Failure to Inform Clients</option><option>Overcharging</option><option>Practicing Without License</option><option>Dishonored Cheque</option><option>Acting Without Instructions</option></select></div>
+                    <div class="form-group"><label>Amount Involved (KSh)</label><input type="number" placeholder="0"></div>
+                    <div class="form-group full-width"><label>Details</label><textarea rows="3" placeholder="Describe the complaint..."></textarea></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('newComplaintModal')">Cancel</button>
+                <button class="btn btn-primary" onclick="closeModal('newComplaintModal')">File Complaint</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OAG Kenya - Public Participation Portal</title>
+    <link rel="stylesheet" href="charter.css">
+    <link rel="stylesheet" href="public-participation.css">
+</head>
+<body>
+
+<header class="header">
+    <div class="header-inner">
+        <div class="header-left">
+            <div class="coat-of-arms">AG</div>
+            <div>
+                <h1>Public Participation Portal</h1>
+                <p>Office of the Attorney General &mdash; Republic of Kenya</p>
+            </div>
+        </div>
+        <div class="header-right">
+            <a href="index.html" class="btn btn-outline">Dashboard</a>
+            <a href="charter.html" class="btn btn-outline">Service Charter</a>
+            <a href="dev-partners.html" class="btn btn-outline">Dev. Partners</a>
+        </div>
+    </div>
+    <nav class="charter-nav" id="charterNav">
+        <a href="#overview" class="nav-link active">Overview</a>
+        <a href="#open-bills" class="nav-link">Open for Comment</a>
+        <a href="#closed-bills" class="nav-link">Closed Bills</a>
+        <a href="#submit-comment" class="nav-link">Submit Comment</a>
+        <a href="#tracker" class="nav-link">Comment Tracker</a>
+        <a href="#resources" class="nav-link">Resources</a>
+    </nav>
+</header>
+
+<main class="main">
+
+<!-- ===== OVERVIEW ===== -->
+<section id="overview" class="section">
+    <div class="section-title-bar green">
+        <h2>Public Participation &mdash; Your Voice in Law-Making</h2>
+        <span class="subtitle">Article 10 & 118, Constitution of Kenya 2010</span>
+    </div>
+
+    <div class="pp-hero">
+        <div class="hero-content">
+            <h3>How Public Participation Works</h3>
+            <p>Under the Constitution of Kenya, public participation is a national value and principle of governance. The Office of the Attorney General publishes Bills and proposed legislation for public comment before they are presented to Parliament or County Assemblies.</p>
+            <div class="hero-steps">
+                <div class="hero-step">
+                    <div class="hero-step-num">1</div>
+                    <div>
+                        <strong>Bill Published</strong>
+                        <span>OAG publishes the Bill with an explanatory memorandum</span>
+                    </div>
+                </div>
+                <div class="hero-step">
+                    <div class="hero-step-num">2</div>
+                    <div>
+                        <strong>Public Comment Period</strong>
+                        <span>Minimum 14 days for citizens, CSOs, professionals to comment</span>
+                    </div>
+                </div>
+                <div class="hero-step">
+                    <div class="hero-step-num">3</div>
+                    <div>
+                        <strong>Comments Analysed</strong>
+                        <span>OAG reviews, categorises and responds to all submissions</span>
+                    </div>
+                </div>
+                <div class="hero-step">
+                    <div class="hero-step-num">4</div>
+                    <div>
+                        <strong>Report Published</strong>
+                        <span>Summary of comments and how they were addressed is published</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="pp-stats-row">
+        <div class="pp-stat">
+            <div class="pp-stat-value">4</div>
+            <div class="pp-stat-label">Bills Open for Comment</div>
+        </div>
+        <div class="pp-stat">
+            <div class="pp-stat-value">12</div>
+            <div class="pp-stat-label">Bills Closed in 2025/26</div>
+        </div>
+        <div class="pp-stat">
+            <div class="pp-stat-value">2,847</div>
+            <div class="pp-stat-label">Total Comments Received</div>
+        </div>
+        <div class="pp-stat">
+            <div class="pp-stat-value">89%</div>
+            <div class="pp-stat-label">Comments Addressed</div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== OPEN BILLS ===== -->
+<section id="open-bills" class="section">
+    <div class="section-title-bar red">
+        <h2>Bills Currently Open for Public Comment</h2>
+        <span class="subtitle">Submit your views before the deadline</span>
+    </div>
+
+    <div class="filter-bar">
+        <select id="billCategoryFilter" onchange="filterBills()">
+            <option value="">All Categories</option>
+            <option>Constitutional & Governance</option>
+            <option>Criminal Justice</option>
+            <option>Commercial & Trade</option>
+            <option>Land & Environment</option>
+            <option>Human Rights & Social</option>
+            <option>Public Finance</option>
+            <option>Technology & Digital</option>
+        </select>
+        <input type="text" id="billSearch" placeholder="Search bills..." oninput="filterBills()">
+    </div>
+
+    <div class="bills-grid" id="openBillsGrid"></div>
+</section>
+
+<!-- ===== CLOSED BILLS ===== -->
+<section id="closed-bills" class="section">
+    <div class="section-title-bar blue">
+        <h2>Recently Closed &mdash; Completed Public Participation</h2>
+        <span class="subtitle">View participation reports and how your comments were addressed</span>
+    </div>
+
+    <div class="table-wrap">
+        <table class="dtable" id="closedBillsTable">
+            <thead>
+                <tr>
+                    <th>Bill Title</th>
+                    <th>Category</th>
+                    <th>Comment Period</th>
+                    <th>Comments Received</th>
+                    <th>Comments Adopted</th>
+                    <th>Current Status</th>
+                    <th>Report</th>
+                </tr>
+            </thead>
+            <tbody id="closedBillsBody"></tbody>
+        </table>
+    </div>
+</section>
+
+<!-- ===== SUBMIT COMMENT ===== -->
+<section id="submit-comment" class="section">
+    <div class="section-title-bar gold">
+        <h2>Submit Your Comment</h2>
+        <span class="subtitle">Have your say on proposed legislation</span>
+    </div>
+
+    <div class="comment-form-container">
+        <div class="comment-form-card">
+            <div class="form-notice">
+                <strong>Submission Guidelines</strong>
+                <ul>
+                    <li>Comments must relate to a specific Bill currently open for public participation</li>
+                    <li>Provide specific clause/section references where possible</li>
+                    <li>Include reasons and evidence to support your position</li>
+                    <li>Submissions are public and form part of the official record</li>
+                    <li>All comments are acknowledged within 3 working days</li>
+                </ul>
+            </div>
+            <form id="commentForm" onsubmit="submitComment(event)">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Select Bill *</label>
+                        <select id="commentBill" required>
+                            <option value="">-- Select a Bill --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Submitter Type *</label>
+                        <select id="submitterType" required>
+                            <option value="">-- Select --</option>
+                            <option>Individual Citizen</option>
+                            <option>Civil Society Organisation</option>
+                            <option>Professional Body</option>
+                            <option>Academic/Research Institution</option>
+                            <option>Faith-Based Organisation</option>
+                            <option>Private Sector</option>
+                            <option>County Government</option>
+                            <option>Other Government Agency</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Full Name / Organisation *</label>
+                        <input type="text" id="commentName" placeholder="Your name or organisation" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address *</label>
+                        <input type="email" id="commentEmail" placeholder="email@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone (Optional)</label>
+                        <input type="tel" id="commentPhone" placeholder="+254 7XX XXX XXX">
+                    </div>
+                    <div class="form-group">
+                        <label>County</label>
+                        <select id="commentCounty">
+                            <option value="">-- Select County --</option>
+                        </select>
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Specific Clause/Section Reference</label>
+                        <input type="text" id="commentClause" placeholder="e.g. Section 12(3), Clause 4(a)">
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Position *</label>
+                        <select id="commentPosition" required>
+                            <option value="">-- Select Position --</option>
+                            <option>Support the Bill as drafted</option>
+                            <option>Support with amendments</option>
+                            <option>Oppose specific provisions</option>
+                            <option>Oppose the Bill entirely</option>
+                            <option>Neutral / Providing information only</option>
+                        </select>
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Your Comment / Submission *</label>
+                        <textarea id="commentText" rows="6" placeholder="Provide your detailed comment, including reasons and any evidence or references..." required></textarea>
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Proposed Alternative Wording (Optional)</label>
+                        <textarea id="commentAlternative" rows="3" placeholder="If you propose amended wording, provide it here..."></textarea>
+                    </div>
+                </div>
+                <div style="margin-top:16px; display:flex; gap:12px; align-items:center;">
+                    <label style="font-size:12px; display:flex; gap:8px; align-items:start; cursor:pointer;">
+                        <input type="checkbox" id="commentConsent" required>
+                        <span>I understand that this submission is public and will form part of the official record of public participation. I consent to my name/organisation being published alongside this comment.</span>
+                    </label>
+                </div>
+                <div style="margin-top:16px; display:flex; gap:12px;">
+                    <button type="submit" class="btn btn-primary">Submit Comment</button>
+                    <button type="reset" class="btn btn-secondary">Clear Form</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- ===== COMMENT TRACKER ===== -->
+<section id="tracker" class="section">
+    <div class="section-title-bar green">
+        <h2>Comment Tracker</h2>
+        <span class="subtitle">Track the status of public comments</span>
+    </div>
+
+    <div class="filter-bar">
+        <input type="text" id="trackerSearch" placeholder="Search by reference, name, or bill..." oninput="filterTracker()">
+        <select id="trackerStatus" onchange="filterTracker()">
+            <option value="">All Statuses</option>
+            <option>Received</option>
+            <option>Under Review</option>
+            <option>Adopted</option>
+            <option>Partially Adopted</option>
+            <option>Noted</option>
+            <option>Rejected with Reasons</option>
+        </select>
+    </div>
+
+    <div class="table-wrap">
+        <table class="dtable" id="trackerTable">
+            <thead>
+                <tr>
+                    <th>Ref. No.</th>
+                    <th>Bill</th>
+                    <th>Submitter</th>
+                    <th>Type</th>
+                    <th>Date</th>
+                    <th>Clause Ref.</th>
+                    <th>Position</th>
+                    <th>Status</th>
+                    <th>OAG Response</th>
+                </tr>
+            </thead>
+            <tbody id="trackerBody"></tbody>
+        </table>
+    </div>
+</section>
+
+<!-- ===== RESOURCES ===== -->
+<section id="resources" class="section">
+    <div class="section-title-bar blue">
+        <h2>Resources & Legal Framework</h2>
+        <span class="subtitle">Understanding your right to participate</span>
+    </div>
+
+    <div class="resources-grid">
+        <div class="resource-card">
+            <div class="resource-icon">&#9878;</div>
+            <h4>Constitutional Basis</h4>
+            <ul>
+                <li><strong>Article 10:</strong> National values include public participation</li>
+                <li><strong>Article 118:</strong> Parliament to facilitate public participation</li>
+                <li><strong>Article 196:</strong> County assemblies to facilitate public participation</li>
+                <li><strong>Article 201:</strong> Public finance principles include openness</li>
+            </ul>
+        </div>
+        <div class="resource-card">
+            <div class="resource-icon">&#128214;</div>
+            <h4>Relevant Legislation</h4>
+            <ul>
+                <li>Public Participation Act (proposed)</li>
+                <li>Statutory Instruments Act, 2013</li>
+                <li>Fair Administrative Action Act, 2015</li>
+                <li>Access to Information Act, 2016</li>
+                <li>County Governments Act, 2012 (Part VIII)</li>
+            </ul>
+        </div>
+        <div class="resource-card">
+            <div class="resource-icon">&#128221;</div>
+            <h4>How to Submit Effectively</h4>
+            <ul>
+                <li>Read the full Bill and explanatory memorandum</li>
+                <li>Reference specific sections or clauses</li>
+                <li>Provide evidence or reasoning for your position</li>
+                <li>Suggest alternative wording where you disagree</li>
+                <li>Be concise, factual and respectful</li>
+            </ul>
+        </div>
+        <div class="resource-card">
+            <div class="resource-icon">&#128100;</div>
+            <h4>Who Can Participate</h4>
+            <ul>
+                <li>Any Kenyan citizen (individual)</li>
+                <li>Civil society organisations</li>
+                <li>Professional and trade bodies</li>
+                <li>Academic and research institutions</li>
+                <li>County governments and state agencies</li>
+                <li>Faith-based and community organisations</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+</main>
+
+<footer class="charter-footer">
+    <p><strong>Office of the Attorney General & Department of Justice</strong></p>
+    <p>Sheria House, Harambee Avenue, Nairobi &bull; P.O. Box 40112-00100</p>
+    <p>Tel: +254 20 2227461 &bull; Email: ag@ag.go.ke &bull; publicparticipation@ag.go.ke</p>
+</footer>
+
+<div class="modal-overlay" id="submissionSuccess">
+    <div class="modal">
+        <div class="modal-header"><h3>Comment Submitted Successfully</h3><button class="modal-close" onclick="closeModal('submissionSuccess')">&times;</button></div>
+        <div class="modal-body" style="text-align:center;padding:30px;">
+            <div style="font-size:48px;margin-bottom:12px;">&#9989;</div>
+            <p style="font-size:15px;font-weight:600;margin-bottom:8px;">Thank you for your submission!</p>
+            <p style="font-size:13px;color:#5a6474;">Your comment has been received and assigned reference number:</p>
+            <p id="submissionRef" style="font-size:20px;font-weight:800;color:#1a5632;margin:12px 0;"></p>
+            <p style="font-size:13px;color:#5a6474;">You will receive an acknowledgement email within 3 working days. Use the reference number above to track your comment in the Comment Tracker section.</p>
+        </div>
+        <div class="modal-footer"><button class="btn btn-primary" onclick="closeModal('submissionSuccess')">Close</button></div>
+    </div>
+</div>
+
+<script src="public-participation.js"></script>
+</body>
+</html>
