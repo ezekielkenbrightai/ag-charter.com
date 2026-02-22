@@ -1,0 +1,27 @@
+{
+  "name": "oag-kenya-platform",
+  "version": "1.0.0",
+  "description": "Office of the Attorney General Kenya - Digital Transformation Platform",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ezekielkenbrightai/ag-charter.com.git"
+  },
+  "keywords": ["kenya", "attorney-general", "legal", "governance"],
+  "author": "OAG Kenya",
+  "license": "ISC",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "bugs": {
+    "url": "https://github.com/ezekielkenbrightai/ag-charter.com/issues"
+  },
+  "homepage": "https://github.com/ezekielkenbrightai/ag-charter.com#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
