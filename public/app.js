@@ -17,28 +17,56 @@ const ALL_COUNTIES = [...COUNTIES.operational, ...COUNTIES.opening, ...COUNTIES.
 /* ========== PAGE NAVIGATION ========== */
 const pageTitles = {
     dashboard: 'Executive Dashboard',
+    'org-structure': 'Organizational Structure',
+    'legal-framework': 'Legal Framework & Mandate',
+    performance: 'Performance Contract — FY 2025/26',
     cases: 'Integrated Case Management System',
-    'legal-aid': 'Legal Aid Services - Sheria Mtaani',
-    counties: 'County Office Decentralization',
-    training: 'Training & Capacity Building',
     workflows: 'Workflow Automation',
     registries: 'Digital Registries',
     complaints: 'Advocates Complaints Commission',
-    performance: 'Performance Management'
+    'legal-aid': 'Legal Aid Services — Sheria Mtaani',
+    counties: 'County Office Decentralization',
+    training: 'Training & Capacity Building',
+    sdjhca: 'State Department for Justice, Human Rights & Constitutional Affairs',
+    users: 'User Management'
 };
+
+// Track which pages have been initialized (lazy rendering)
+const pageInitialized = {};
 
 document.querySelectorAll('.nav-item').forEach(item => {
     item.addEventListener('click', () => {
         const page = item.dataset.page;
+        if (!page) return; // External links (charter, dev-partners, etc.)
         document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
         item.classList.add('active');
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.getElementById('page-' + page).classList.add('active');
+        const pageEl = document.getElementById('page-' + page);
+        if (pageEl) pageEl.classList.add('active');
         document.getElementById('pageTitle').textContent = pageTitles[page] || '';
+        // Lazy-initialize page content
+        if (!pageInitialized[page]) {
+            initPage(page);
+            pageInitialized[page] = true;
+        }
         // close mobile sidebar
         document.getElementById('sidebar').classList.remove('open');
     });
 });
+
+/* ========== TIER-BASED NAV VISIBILITY ========== */
+function applyTierVisibility() {
+    const user = window.__oagUser;
+    if (!user) return;
+    document.querySelectorAll('[data-max-tier]').forEach(el => {
+        const maxTier = parseInt(el.getAttribute('data-max-tier'));
+        if (user.tier_level > maxTier) {
+            el.style.display = 'none';
+        }
+    });
+}
+// Apply on load (wait for auth guard to set __oagUser)
+setTimeout(applyTierVisibility, 500);
 
 document.getElementById('menuToggle').addEventListener('click', () => {
     document.getElementById('sidebar').classList.toggle('open');
@@ -347,28 +375,262 @@ new Chart(document.getElementById('chartRecovery'), {
     options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
 });
 
-// Dept Performance
-new Chart(document.getElementById('chartDeptPerformance'), {
-    type: 'radar',
-    data: {
-        labels: ['Case Success','Turnaround Time','CPD Compliance','Client Satisfaction','Drafting Quality','Digitization'],
-        datasets: [
-            { label: 'Current', data: [68, 55, 72, 76, 71, 55], borderColor: chartColors.primary, backgroundColor: 'rgba(26,86,50,0.15)' },
-            { label: 'Target 2027', data: [93, 85, 100, 100, 96, 100], borderColor: chartColors.gold, backgroundColor: 'rgba(212,160,23,0.1)', borderDash: [5, 5] }
-        ]
-    },
-    options: { responsive: true, scales: { r: { beginAtZero: true, max: 100 } }, plugins: { legend: { position: 'bottom' } } }
-});
+/* ========== LAZY PAGE INITIALIZATION ========== */
+function initPage(page) {
+    switch(page) {
+        case 'org-structure': renderOrgStructure(); break;
+        case 'legal-framework': renderLegalFramework(); break;
+        case 'sdjhca': renderSDJHCA(); break;
+        case 'performance': renderPerformanceContract(); break;
+        case 'users': renderUserManagement(); break;
+    }
+}
 
-// Quarterly Targets
-new Chart(document.getElementById('chartQuarterlyTargets'), {
-    type: 'bar',
-    data: {
-        labels: ['Q1 2025','Q2 2025','Q3 2025','Q4 2025','Q1 2026'],
-        datasets: [
-            { label: 'Target', data: [75, 78, 80, 83, 85], backgroundColor: 'rgba(229,231,235,0.8)' },
-            { label: 'Actual', data: [70, 73, 76, 79, 82], backgroundColor: chartColors.primary }
-        ]
-    },
-    options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
-});
+/* ========== ORG STRUCTURE PAGE ========== */
+function renderOrgStructure() {
+    if (!window.OAG) return;
+    const container = document.getElementById('org-chart-container');
+    const org = OAG.ORG;
+
+    container.innerHTML = `
+        <div class="org-tiers">
+            <!-- Executive Office -->
+            <div class="org-tier" style="border-left:4px solid ${org.EXECUTIVE.color}">
+                <h3 style="color:${org.EXECUTIVE.color}">${org.EXECUTIVE.name}</h3>
+                <p class="org-head">${org.EXECUTIVE.head.title}: ${org.EXECUTIVE.head.name}</p>
+                <div class="dept-grid">
+                    ${org.EXECUTIVE.units.map(u => `
+                        <div class="dept-card" style="border-top:3px solid ${org.EXECUTIVE.color}">
+                            <strong>${u.name}</strong><br><small>${u.head}</small>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+
+            <!-- State Law Office -->
+            <div class="org-tier" style="border-left:4px solid ${org.SLO.color}">
+                <h3 style="color:${org.SLO.color}">${org.SLO.name}</h3>
+                <p class="org-head">${org.SLO.head.title}: ${org.SLO.head.name}</p>
+                <h4>Legal Divisions</h4>
+                <div class="dept-grid">
+                    ${org.SLO.divisions.map(d => `
+                        <div class="dept-card" style="border-top:3px solid ${org.SLO.color}">
+                            <strong>${d.name}</strong><br><small>${d.head}</small>
+                        </div>
+                    `).join('')}
+                </div>
+                <h4>Support Departments</h4>
+                <div class="dept-grid">
+                    ${org.SLO.support.map(d => `
+                        <div class="dept-card dept-card-support">
+                            <strong>${d.name}</strong><br><small>${d.head}</small>
+                        </div>
+                    `).join('')}
+                </div>
+                <h4>Semi-Autonomous Agencies (SAGAs)</h4>
+                <div class="dept-grid">
+                    ${org.SLO.sagas.map(s => `
+                        <div class="dept-card dept-card-saga">
+                            <strong>${s.short}</strong> — ${s.name}<br><small>${s.head}</small>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+
+            <!-- SDJHCA -->
+            <div class="org-tier" style="border-left:4px solid ${org.SDJHCA.color}">
+                <h3 style="color:${org.SDJHCA.color}">${org.SDJHCA.name}</h3>
+                <p class="org-head">${org.SDJHCA.head.title}: ${org.SDJHCA.head.name}</p>
+                <h4>Directorates</h4>
+                <div class="dept-grid">
+                    ${org.SDJHCA.directorates.map(d => `
+                        <div class="dept-card" style="border-top:3px solid ${org.SDJHCA.color}">
+                            <strong>${d.name}</strong><br><small>${d.head}</small>
+                            <p class="dept-focus">${d.focus}</p>
+                        </div>
+                    `).join('')}
+                </div>
+                <h4>Agencies</h4>
+                <div class="dept-grid">
+                    ${org.SDJHCA.agencies.map(a => `
+                        <div class="dept-card dept-card-saga">
+                            <strong>${a.short}</strong> — ${a.name}<br><small>${a.head}</small>
+                            <p class="dept-focus">${a.mandate}</p>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+/* ========== LEGAL FRAMEWORK PAGE ========== */
+function renderLegalFramework() {
+    if (!window.OAG) return;
+    const legal = OAG.LEGAL;
+
+    // Articles
+    document.getElementById('legal-articles').innerHTML = legal.ARTICLES.map(a => `
+        <div class="legal-article-card">
+            <div class="article-badge">Art. ${a.article}</div>
+            <div><strong>${a.title}</strong><p>${a.text}</p></div>
+        </div>
+    `).join('');
+
+    // Key Functions
+    document.getElementById('key-functions').innerHTML = OAG.KEY_FUNCTIONS.map(f => `
+        <div class="function-card">
+            <div class="function-icon">${f.icon}</div>
+            <strong>${f.name}</strong>
+            <p>${f.desc}</p>
+        </div>
+    `).join('');
+
+    // Statutes
+    document.getElementById('statutes-body').innerHTML = legal.STATUTES.map(s => `
+        <tr><td><strong>${s.name}</strong></td><td>${s.cap}</td><td>${s.purpose}</td></tr>
+    `).join('');
+
+    // Timeline
+    document.getElementById('legal-timeline').innerHTML = legal.TIMELINE.map(t => `
+        <div class="timeline-item timeline-${t.type}">
+            <div class="timeline-year">${t.year}</div>
+            <div class="timeline-event">${t.event}</div>
+        </div>
+    `).join('');
+}
+
+/* ========== SDJHCA PAGE ========== */
+function renderSDJHCA() {
+    if (!window.OAG) return;
+    const sdjhca = OAG.ORG.SDJHCA;
+
+    document.getElementById('sdjhca-directorates').innerHTML = sdjhca.directorates.map(d => `
+        <div class="dept-card" style="border-top:3px solid ${sdjhca.color}">
+            <strong>${d.name}</strong><br><small>${d.head}</small>
+            <p class="dept-focus">${d.focus}</p>
+        </div>
+    `).join('');
+
+    document.getElementById('sdjhca-agencies').innerHTML = sdjhca.agencies.map(a => `
+        <div class="dept-card dept-card-saga">
+            <strong>${a.short}</strong> — ${a.name}<br><small>${a.head}</small>
+            <p class="dept-focus">${a.mandate}</p>
+        </div>
+    `).join('');
+}
+
+/* ========== PERFORMANCE CONTRACT PAGE (API-driven) ========== */
+function renderPerformanceContract() {
+    fetch('/api/performance/summary')
+        .then(r => r.json())
+        .then(data => {
+            document.getElementById('pc-overall-score').textContent = data.overall_score + '%';
+            document.getElementById('pc-indicator-count').textContent =
+                data.categories.reduce((s, c) => s + parseInt(c.total_indicators), 0);
+        });
+
+    fetch('/api/performance/indicators')
+        .then(r => r.json())
+        .then(data => {
+            // Group by category
+            const groups = {};
+            data.indicators.forEach(ind => {
+                const key = ind.category_code;
+                if (!groups[key]) groups[key] = { name: ind.category_name, code: key, indicators: [] };
+                groups[key].indicators.push(ind);
+            });
+
+            const container = document.getElementById('pc-categories-container');
+            container.innerHTML = Object.values(groups).map(cat => `
+                <div class="pc-category">
+                    <div class="pc-category-header" onclick="this.parentElement.classList.toggle('open')">
+                        <span class="pc-cat-code">${cat.code}</span>
+                        <span class="pc-cat-name">${cat.name}</span>
+                        <span class="pc-cat-count">${cat.indicators.length} indicator${cat.indicators.length !== 1 ? 's' : ''}</span>
+                        <span class="pc-cat-arrow">&#9660;</span>
+                    </div>
+                    <div class="pc-category-body">
+                        <table class="data-table pc-table">
+                            <thead><tr><th>Code</th><th>Indicator</th><th>Target</th><th>Status</th><th>Weight</th></tr></thead>
+                            <tbody>
+                                ${cat.indicators.map(ind => `
+                                    <tr>
+                                        <td><code>${ind.indicator_code}</code></td>
+                                        <td>${ind.name}</td>
+                                        <td>${ind.target_value} ${ind.unit_of_measure || ''}</td>
+                                        <td>${statusBadge(ind.status === 'in_progress' ? 'In Progress' :
+                                            ind.status === 'completed' ? 'Resolved' :
+                                            ind.status === 'overdue' ? 'Open' : 'Under Review')}</td>
+                                        <td>${ind.weight}%</td>
+                                    </tr>
+                                    ${ind.sub_indicators && ind.sub_indicators.length ? ind.sub_indicators.map(sub => `
+                                        <tr class="pc-sub-row">
+                                            <td></td>
+                                            <td class="pc-sub-desc">${sub.description}</td>
+                                            <td>${sub.target_value} ${sub.unit_of_measure || ''}</td>
+                                            <td></td>
+                                            <td>${sub.weight_pct ? sub.weight_pct + '%' : ''}</td>
+                                        </tr>
+                                    `).join('') : ''}
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `).join('');
+        })
+        .catch(() => {
+            document.getElementById('pc-categories-container').innerHTML =
+                '<p class="error-text">Failed to load performance data. Please try again.</p>';
+        });
+}
+
+/* ========== USER MANAGEMENT PAGE ========== */
+function renderUserManagement() {
+    loadUsers();
+
+    // Search/filter handlers
+    ['userTierFilter', 'userStatusFilter'].forEach(id => {
+        document.getElementById(id).addEventListener('change', loadUsers);
+    });
+    let searchTimeout;
+    document.getElementById('userSearch').addEventListener('input', () => {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(loadUsers, 300);
+    });
+}
+
+function loadUsers() {
+    const tier = document.getElementById('userTierFilter').value;
+    const active = document.getElementById('userStatusFilter').value;
+    const search = document.getElementById('userSearch').value;
+
+    let url = '/api/users?';
+    if (tier) url += 'tier_level=' + tier + '&';
+    if (active) url += 'is_active=' + active + '&';
+    if (search) url += 'search=' + encodeURIComponent(search) + '&';
+
+    fetch(url)
+        .then(r => r.json())
+        .then(data => {
+            const tbody = document.getElementById('usersTableBody');
+            if (!data.users || data.users.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#6b7280">No users found</td></tr>';
+                return;
+            }
+            tbody.innerHTML = data.users.map(u => `<tr>
+                <td><code>${u.staff_id}</code></td>
+                <td><strong>${u.full_name}</strong></td>
+                <td>${u.title || '-'}</td>
+                <td>${u.department_short || u.department_name || '-'}</td>
+                <td><span class="badge badge-${u.tier_level <= 2 ? 'green' : u.tier_level <= 4 ? 'blue' : u.tier_level <= 6 ? 'orange' : 'gray'}">Tier ${u.tier_level}</span></td>
+                <td>${u.is_active ? '<span class="badge badge-green">Active</span>' : '<span class="badge badge-gray">Inactive</span>'}</td>
+                <td><button class="btn btn-sm btn-primary" onclick="alert('Edit user: ${u.staff_id}')">Edit</button></td>
+            </tr>`).join('');
+        })
+        .catch(() => {
+            document.getElementById('usersTableBody').innerHTML =
+                '<tr><td colspan="7" class="error-text">Failed to load users</td></tr>';
+        });
+}

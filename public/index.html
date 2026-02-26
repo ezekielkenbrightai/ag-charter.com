@@ -4,13 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OAG Kenya - Digital Transformation Platform</title>
-    <script>if(sessionStorage.getItem('oag_authenticated')!=='1')window.location.replace('login.html');</script>
+    <script>
+    // Auth guard: verify server session on page load
+    fetch('/api/auth/me').then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(d){
+        window.__oagUser=d.user;
+    }).catch(function(){window.location.replace('login.html')});
+    </script>
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="data/oag-data.js"></script>
 </head>
 <body>
+    <a href="#pageContainer" class="skip-nav">Skip to main content</a>
     <!-- Sidebar Navigation -->
-    <nav class="sidebar" id="sidebar">
+    <nav class="sidebar" id="sidebar" aria-label="Main navigation">
         <div class="sidebar-header">
             <div class="logo">
                 <div class="logo-icon">AG</div>
@@ -21,11 +28,37 @@
             </div>
         </div>
         <ul class="nav-menu">
+            <!-- Overview Group -->
+            <li class="nav-group-label">Overview</li>
             <li class="nav-item active" data-page="dashboard">
                 <span class="nav-icon">&#9632;</span> Dashboard
             </li>
+            <li class="nav-item" data-page="org-structure">
+                <span class="nav-icon">&#127970;</span> Org Structure
+            </li>
+            <li class="nav-item" data-page="legal-framework">
+                <span class="nav-icon">&#128220;</span> Legal Framework
+            </li>
+            <li class="nav-item" data-page="performance">
+                <span class="nav-icon">&#9670;</span> Performance Contract
+            </li>
+
+            <!-- Executive Office Group -->
+            <li class="nav-group-label">Executive Office</li>
             <li class="nav-item" data-page="cases">
                 <span class="nav-icon">&#9998;</span> Case Management
+            </li>
+            <li class="nav-item" data-page="workflows">
+                <span class="nav-icon">&#8635;</span> Workflow Automation
+            </li>
+
+            <!-- State Law Office Group -->
+            <li class="nav-group-label">State Law Office</li>
+            <li class="nav-item" data-page="registries">
+                <span class="nav-icon">&#9776;</span> Digital Registries
+            </li>
+            <li class="nav-item" data-page="complaints">
+                <span class="nav-icon">&#9888;</span> Advocates Complaints
             </li>
             <li class="nav-item" data-page="legal-aid">
                 <span class="nav-icon">&#9878;</span> Legal Aid Services
@@ -36,19 +69,22 @@
             <li class="nav-item" data-page="training">
                 <span class="nav-icon">&#9734;</span> Training & CPD
             </li>
-            <li class="nav-item" data-page="workflows">
-                <span class="nav-icon">&#8635;</span> Workflow Automation
+
+            <!-- SDJHCA Group -->
+            <li class="nav-group-label">SDJHCA</li>
+            <li class="nav-item" data-page="sdjhca">
+                <span class="nav-icon">&#128101;</span> Human Rights & Justice
             </li>
-            <li class="nav-item" data-page="registries">
-                <span class="nav-icon">&#9776;</span> Digital Registries
+
+            <!-- Administration Group (Tier 1-2 only) -->
+            <li class="nav-group-label nav-admin-only" data-max-tier="2">Administration</li>
+            <li class="nav-item nav-admin-only" data-page="users" data-max-tier="2">
+                <span class="nav-icon">&#128100;</span> User Management
             </li>
-            <li class="nav-item" data-page="complaints">
-                <span class="nav-icon">&#9888;</span> Advocates Complaints
-            </li>
-            <li class="nav-item" data-page="performance">
-                <span class="nav-icon">&#9670;</span> Performance Mgmt
-            </li>
-            <li class="nav-item" onclick="window.location.href='charter.html'" style="border-top:1px solid rgba(255,255,255,0.1); margin-top:8px; padding-top:14px;">
+
+            <!-- External Portals -->
+            <li class="nav-group-label">External Portals</li>
+            <li class="nav-item" onclick="window.location.href='charter.html'">
                 <span class="nav-icon">&#9997;</span> Service Charter
             </li>
             <li class="nav-item" onclick="window.location.href='dev-partners.html'">
@@ -66,14 +102,14 @@
                     <span id="user-role">State Counsel</span>
                 </div>
             </div>
-            <button onclick="sessionStorage.clear();window.location.replace('login.html');" style="margin-top:10px;width:100%;padding:8px;background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.7);border:1px solid rgba(255,255,255,0.15);border-radius:6px;cursor:pointer;font-size:12px;font-family:inherit;transition:all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.15)';this.style.color='#fff'" onmouseout="this.style.background='rgba(255,255,255,0.1)';this.style.color='rgba(255,255,255,0.7)'">&#x2192; Sign Out</button>
+            <button id="btn-signout" style="margin-top:10px;width:100%;padding:8px;background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.7);border:1px solid rgba(255,255,255,0.15);border-radius:6px;cursor:pointer;font-size:12px;font-family:inherit;transition:all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.15)';this.style.color='#fff'" onmouseout="this.style.background='rgba(255,255,255,0.1)';this.style.color='rgba(255,255,255,0.7)'">&#x2192; Sign Out</button>
         </div>
     </nav>
 
     <!-- Main Content -->
-    <main class="main-content">
+    <main class="main-content" role="main">
         <!-- Top Bar -->
-        <header class="topbar">
+        <header class="topbar" role="banner">
             <button class="menu-toggle" id="menuToggle">&#9776;</button>
             <h1 class="page-title" id="pageTitle">Executive Dashboard</h1>
             <div class="topbar-actions">
@@ -527,50 +563,124 @@
                 </div>
             </section>
 
-            <!-- ==================== PERFORMANCE ==================== -->
+            <!-- ==================== PERFORMANCE CONTRACT (API-driven) ==================== -->
             <section class="page" id="page-performance">
                 <div class="page-header">
-                    <h2>Performance Management</h2>
+                    <h2>Performance Contract — FY 2025/26</h2>
                 </div>
-                <div class="kpi-row">
+                <div class="kpi-row" id="pc-summary-kpis">
                     <div class="kpi-card kpi-green">
                         <div class="kpi-label">Overall Score</div>
-                        <div class="kpi-value">74%</div>
-                        <div class="kpi-change up">+8% from last review</div>
+                        <div class="kpi-value" id="pc-overall-score">--</div>
+                        <div class="kpi-change">Weighted completion</div>
                     </div>
                     <div class="kpi-card kpi-blue">
-                        <div class="kpi-label">Case Success Rate</div>
-                        <div class="kpi-value">68%</div>
-                        <div class="kpi-change">Target: +25%</div>
+                        <div class="kpi-label">Total Budget</div>
+                        <div class="kpi-value">KSh 4.009B</div>
+                        <div class="kpi-change">Dev: 250M + Rec: 3.759B</div>
                     </div>
                     <div class="kpi-card kpi-purple">
-                        <div class="kpi-label">Drafting Quality</div>
-                        <div class="kpi-value">71%</div>
-                        <div class="kpi-change up">Target: +25%</div>
+                        <div class="kpi-label">Revenue Target</div>
+                        <div class="kpi-value">KSh 185M</div>
+                        <div class="kpi-change">Registrations + Trusts</div>
                     </div>
                     <div class="kpi-card kpi-orange">
-                        <div class="kpi-label">Client Satisfaction</div>
-                        <div class="kpi-value">76%</div>
-                        <div class="kpi-change up">Target: +30% by 2027</div>
+                        <div class="kpi-label">Indicators</div>
+                        <div class="kpi-value" id="pc-indicator-count">--</div>
+                        <div class="kpi-change">Across 6 categories</div>
                     </div>
                 </div>
-                <div class="grid-2col">
-                    <div class="card">
-                        <h3>Department Performance Scores</h3>
-                        <canvas id="chartDeptPerformance"></canvas>
-                    </div>
-                    <div class="card">
-                        <h3>Quarterly Targets vs Actual</h3>
-                        <canvas id="chartQuarterlyTargets"></canvas>
-                    </div>
+                <div id="pc-categories-container" class="pc-categories">
+                    <p class="loading-text">Loading performance data...</p>
+                </div>
+            </section>
+
+            <!-- ==================== ORG STRUCTURE ==================== -->
+            <section class="page" id="page-org-structure">
+                <div class="page-header">
+                    <h2>Organizational Structure</h2>
+                    <p class="page-subtitle">3-Tier Hierarchy — Office of the Attorney General & Department of Justice</p>
+                </div>
+                <div id="org-chart-container" class="org-chart">
+                    <p class="loading-text">Rendering org chart...</p>
+                </div>
+            </section>
+
+            <!-- ==================== LEGAL FRAMEWORK ==================== -->
+            <section class="page" id="page-legal-framework">
+                <div class="page-header">
+                    <h2>Legal Framework & Mandate</h2>
+                    <p class="page-subtitle">Constitutional Basis, Statutory Framework & Key Functions</p>
                 </div>
                 <div class="card">
-                    <h3>Staff Performance Summary</h3>
-                    <table class="data-table">
+                    <h3>Constitutional Articles</h3>
+                    <div id="legal-articles" class="legal-articles"></div>
+                </div>
+                <div class="card">
+                    <h3>Key Functions of the Attorney General</h3>
+                    <div id="key-functions" class="key-functions-grid"></div>
+                </div>
+                <div class="card">
+                    <h3>Statutory Framework</h3>
+                    <table class="data-table" id="statutes-table">
+                        <thead><tr><th>Statute</th><th>Reference</th><th>Purpose</th></tr></thead>
+                        <tbody id="statutes-body"></tbody>
+                    </table>
+                </div>
+                <div class="card">
+                    <h3>Key Milestones Timeline</h3>
+                    <div id="legal-timeline" class="timeline"></div>
+                </div>
+            </section>
+
+            <!-- ==================== SDJHCA ==================== -->
+            <section class="page" id="page-sdjhca">
+                <div class="page-header">
+                    <h2>State Department for Justice, Human Rights & Constitutional Affairs</h2>
+                    <p class="page-subtitle">PS: Hon. Judith Pareno</p>
+                </div>
+                <div class="card">
+                    <h3>Directorates</h3>
+                    <div id="sdjhca-directorates" class="dept-grid"></div>
+                </div>
+                <div class="card">
+                    <h3>Semi-Autonomous Agencies</h3>
+                    <div id="sdjhca-agencies" class="dept-grid"></div>
+                </div>
+            </section>
+
+            <!-- ==================== USER MANAGEMENT (Tier 1-2 only) ==================== -->
+            <section class="page" id="page-users">
+                <div class="page-header">
+                    <h2>User Management</h2>
+                    <button class="btn btn-primary" id="btn-create-user">+ Create User</button>
+                </div>
+                <div class="filters-bar">
+                    <select id="userTierFilter">
+                        <option value="">All Tiers</option>
+                        <option value="1">Tier 1 — Full Access</option>
+                        <option value="2">Tier 2 — Executive</option>
+                        <option value="3">Tier 3 — State Dept</option>
+                        <option value="4">Tier 4 — Department</option>
+                        <option value="5">Tier 5 — Operational</option>
+                        <option value="6">Tier 6 — ODA</option>
+                        <option value="7">Tier 7 — One Way</option>
+                    </select>
+                    <select id="userStatusFilter">
+                        <option value="">All Status</option>
+                        <option value="true">Active</option>
+                        <option value="false">Inactive</option>
+                    </select>
+                    <input type="text" placeholder="Search by name, staff ID, or email..." id="userSearch">
+                </div>
+                <div class="table-container">
+                    <table class="data-table" id="usersTable">
                         <thead>
-                            <tr><th>Staff</th><th>Department</th><th>Cases Handled</th><th>Success Rate</th><th>CPD Hours</th><th>Rating</th></tr>
+                            <tr><th>Staff ID</th><th>Name</th><th>Title</th><th>Department</th><th>Tier</th><th>Status</th><th>Actions</th></tr>
                         </thead>
-                        <tbody id="performanceTableBody"></tbody>
+                        <tbody id="usersTableBody">
+                            <tr><td colspan="7" class="loading-text">Loading users...</td></tr>
+                        </tbody>
                     </table>
                 </div>
             </section>
@@ -692,17 +802,49 @@
         </div>
     </div>
 
+    <!-- Site Footer -->
+    <footer class="site-footer" role="contentinfo">
+        <div class="footer-inner">
+            <p>&copy; 2025 Office of the Attorney General &amp; Department of Justice, Republic of Kenya</p>
+            <p class="footer-links">
+                <a href="charter.html">Service Charter</a>
+                <span class="dot">&middot;</span>
+                <a href="https://www.ag.go.ke" target="_blank" rel="noopener">ag.go.ke</a>
+                <span class="dot">&middot;</span>
+                <a href="https://www.ecitizen.go.ke" target="_blank" rel="noopener">eCitizen</a>
+            </p>
+        </div>
+    </footer>
+
     <script src="app.js"></script>
     <script>
     (function(){
-        try {
-            var u = JSON.parse(sessionStorage.getItem('oag_user') || '{}');
-            if (u.name) {
-                document.getElementById('user-name').textContent = u.name;
-                document.getElementById('user-role').textContent = u.role || '';
-                document.getElementById('user-avatar').textContent = u.name.split(' ').map(function(w){return w[0]}).join('').substring(0,2).toUpperCase();
-            }
-        } catch(e) {}
+        // Render user info from server session (set in auth guard above)
+        function renderUser(u) {
+            if (!u) return;
+            document.getElementById('user-name').textContent = u.full_name || u.name || '';
+            document.getElementById('user-role').textContent = u.title || u.tier_name || '';
+            var initials = (u.full_name || '').split(' ').map(function(w){return w[0]}).join('').substring(0,2).toUpperCase();
+            document.getElementById('user-avatar').textContent = initials || 'U';
+            // Store user for app.js to use
+            window.__oagUser = u;
+        }
+
+        // Use data from auth guard if already available, otherwise fetch
+        if (window.__oagUser) {
+            renderUser(window.__oagUser);
+        } else {
+            fetch('/api/auth/me').then(function(r){return r.json()}).then(function(d){
+                if(d.user) renderUser(d.user);
+            }).catch(function(){});
+        }
+
+        // Sign-out handler
+        document.getElementById('btn-signout').addEventListener('click', function(){
+            fetch('/api/auth/logout',{method:'POST'}).finally(function(){
+                window.location.replace('login.html');
+            });
+        });
     })();
     </script>
 </body>

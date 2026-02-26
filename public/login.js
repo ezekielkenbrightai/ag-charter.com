@@ -1,11 +1,13 @@
 (function () {
     'use strict';
 
-    // If already authenticated, go straight to dashboard
-    if (sessionStorage.getItem('oag_authenticated') === '1') {
-        window.location.replace('index.html');
-        return;
-    }
+    // If already authenticated (server session), go straight to dashboard
+    fetch('/api/auth/me')
+        .then(function (res) { return res.ok ? res.json() : null; })
+        .then(function (data) {
+            if (data && data.user) window.location.replace('index.html');
+        })
+        .catch(function () { /* Not authenticated — stay on login */ });
 
     var form = document.getElementById('login-form');
     var staffInput = document.getElementById('staff-id');
@@ -16,13 +18,6 @@
     var btnLogin = document.getElementById('btn-login');
     var btnText = btnLogin.querySelector('.btn-text');
     var btnLoader = btnLogin.querySelector('.btn-loader');
-
-    // Demo credentials
-    var VALID_USERS = [
-        { id: 'admin', password: 'admin', name: 'Admin User', role: 'State Counsel' },
-        { id: 'AG/2024/001', password: 'oag2024', name: 'Amina Wanjiku', role: 'Deputy Director' },
-        { id: 'demo', password: 'demo', name: 'Demo User', role: 'Legal Officer' }
-    ];
 
     // Toggle password visibility
     toggleBtn.addEventListener('click', function () {
@@ -42,7 +37,30 @@
         hideError();
     });
 
-    // Form submission
+    // Toggle demo accounts panel
+    var demoToggle = document.getElementById('demo-toggle');
+    var demoPanel = document.getElementById('demo-accounts');
+    if (demoToggle && demoPanel) {
+        demoToggle.addEventListener('click', function () {
+            var isHidden = demoPanel.hidden;
+            demoPanel.hidden = !isHidden;
+            demoToggle.textContent = isHidden ? '\u25B2 Hide Demo Accounts' : '\u25BC Show Demo Accounts';
+        });
+
+        // Click-to-fill demo credentials
+        demoPanel.addEventListener('click', function (e) {
+            var row = e.target.closest('[data-staff-id]');
+            if (row) {
+                staffInput.value = row.getAttribute('data-staff-id');
+                pwdInput.value = 'oag2025';
+                staffInput.closest('.input-wrapper').classList.remove('error');
+                pwdInput.closest('.input-wrapper').classList.remove('error');
+                hideError();
+            }
+        });
+    }
+
+    // Form submission — calls the server API
     form.addEventListener('submit', function (e) {
         e.preventDefault();
         hideError();
@@ -64,34 +82,34 @@
             return;
         }
 
-        // Show loading state
         setLoading(true);
 
-        // Simulate network delay for realism
-        setTimeout(function () {
-            var user = authenticate(staffId, password);
-            if (user) {
-                sessionStorage.setItem('oag_authenticated', '1');
-                sessionStorage.setItem('oag_user', JSON.stringify(user));
+        fetch('/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ staff_id: staffId, password: password })
+        })
+        .then(function (res) {
+            return res.json().then(function (data) {
+                return { ok: res.ok, data: data };
+            });
+        })
+        .then(function (result) {
+            if (result.ok && result.data.success) {
+                // Server session is now active — redirect
                 window.location.href = 'index.html';
             } else {
                 setLoading(false);
-                showError('Invalid Staff ID or password. Please try again.');
+                showError(result.data.error || 'Login failed. Please try again.');
                 pwdInput.value = '';
                 pwdInput.focus();
             }
-        }, 800);
+        })
+        .catch(function () {
+            setLoading(false);
+            showError('Network error. Please check your connection and try again.');
+        });
     });
-
-    function authenticate(id, pwd) {
-        var idLower = id.toLowerCase();
-        for (var i = 0; i < VALID_USERS.length; i++) {
-            if (VALID_USERS[i].id.toLowerCase() === idLower && VALID_USERS[i].password === pwd) {
-                return { name: VALID_USERS[i].name, role: VALID_USERS[i].role };
-            }
-        }
-        return null;
-    }
 
     function showError(msg) {
         errorMessage.textContent = msg;

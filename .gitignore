@@ -4,3 +4,6 @@ node_modules/
 *.png
 *.jpeg
 *.jpg
+.env
+.env.local
+.env.production

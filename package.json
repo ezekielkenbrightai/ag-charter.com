@@ -4,7 +4,9 @@
   "description": "Office of the Attorney General Kenya - Digital Transformation Platform",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "db:init": "node db/init.js",
+    "db:reset": "node db/init.js --reset"
   },
   "repository": {
     "type": "git",
@@ -27,6 +29,11 @@
   },
   "homepage": "https://github.com/ezekielkenbrightai/ag-charter.com#readme",
   "dependencies": {
-    "express": "^4.22.1"
+    "bcryptjs": "^3.0.3",
+    "connect-pg-simple": "^10.0.0",
+    "dotenv": "^17.3.1",
+    "express": "^4.22.1",
+    "express-session": "^1.19.0",
+    "pg": "^8.19.0"
   }
 }

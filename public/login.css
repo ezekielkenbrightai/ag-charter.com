@@ -316,6 +316,78 @@ body {
 .btn-loader[hidden] { display: none; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
+/* ========== DEMO ACCOUNTS ========== */
+.demo-section {
+    margin-top: 20px;
+    text-align: center;
+}
+.demo-toggle {
+    background: none;
+    border: 1px dashed var(--border);
+    color: var(--text-light);
+    padding: 8px 16px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-size: 12px;
+    font-family: inherit;
+    transition: all 0.2s;
+}
+.demo-toggle:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+.demo-accounts {
+    margin-top: 12px;
+    text-align: left;
+}
+.demo-hint {
+    font-size: 12px;
+    color: var(--text-light);
+    margin-bottom: 8px;
+}
+.demo-hint code {
+    background: var(--bg);
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--primary);
+}
+.demo-table {
+    width: 100%;
+    font-size: 12px;
+    border-collapse: collapse;
+}
+.demo-table thead th {
+    background: var(--bg);
+    padding: 6px 8px;
+    text-align: left;
+    font-weight: 600;
+    color: var(--text);
+    border-bottom: 1px solid var(--border);
+}
+.demo-table tbody tr {
+    cursor: pointer;
+    transition: background 0.15s;
+}
+.demo-table tbody tr:hover {
+    background: #f0faf4;
+}
+.demo-table td {
+    padding: 6px 8px;
+    border-bottom: 1px solid var(--bg);
+    color: var(--text-light);
+}
+.demo-table td:nth-child(1) {
+    font-weight: 600;
+    color: var(--primary);
+    width: 36px;
+}
+.demo-table td:nth-child(2) {
+    font-family: monospace;
+    font-size: 11px;
+}
+
 /* ========== FORM FOOTER ========== */
 .form-footer {
     margin-top: 32px;
