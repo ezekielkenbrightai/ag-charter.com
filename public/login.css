@@ -1,0 +1,352 @@
+/* ========== RESET & VARIABLES ========== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+    --primary: #1a5632;
+    --primary-light: #2a7a48;
+    --primary-dark: #0e3a20;
+    --accent: #c8102e;
+    --accent-light: #e63950;
+    --gold: #d4a017;
+    --bg: #f0f2f5;
+    --card: #ffffff;
+    --text: #1a1a2e;
+    --text-light: #6b7280;
+    --border: #e5e7eb;
+    --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
+    --shadow-lg: 0 4px 12px rgba(0,0,0,0.1);
+    --radius: 8px;
+    --danger: #dc2626;
+}
+html { font-size: 14px; }
+body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+}
+
+/* ========== LAYOUT ========== */
+.login-wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* ========== BRAND PANEL (LEFT) ========== */
+.brand-panel {
+    flex: 0 0 480px;
+    background: linear-gradient(160deg, var(--primary-dark) 0%, var(--primary) 50%, var(--primary-light) 100%);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 48px;
+    position: relative;
+    overflow: hidden;
+}
+.brand-panel::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 300px; height: 300px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 50%;
+}
+.brand-panel::after {
+    content: '';
+    position: absolute;
+    bottom: -60px; left: -60px;
+    width: 200px; height: 200px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 50%;
+}
+
+.brand-content { position: relative; z-index: 1; }
+
+.coat-of-arms { margin-bottom: 28px; }
+.shield {
+    width: 72px; height: 72px;
+    background: var(--accent);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 28px;
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+}
+
+.brand-content h1 {
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.35;
+    margin-bottom: 6px;
+}
+.brand-subtitle {
+    font-size: 13px;
+    opacity: 0.7;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 20px;
+}
+.brand-divider {
+    width: 48px; height: 3px;
+    background: var(--gold);
+    border-radius: 2px;
+    margin-bottom: 20px;
+}
+.brand-tagline {
+    font-size: 16px;
+    font-weight: 500;
+    opacity: 0.9;
+    margin-bottom: 32px;
+}
+
+.brand-features { list-style: none; }
+.brand-features li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    font-size: 14px;
+    opacity: 0.85;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.brand-features li:last-child { border-bottom: none; }
+.feature-icon {
+    width: 28px; height: 28px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    flex-shrink: 0;
+}
+
+.brand-footer {
+    position: absolute;
+    bottom: 24px; left: 48px; right: 48px;
+    font-size: 11px;
+    opacity: 0.45;
+    z-index: 1;
+}
+
+/* ========== FORM PANEL (RIGHT) ========== */
+.form-panel {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 24px;
+    background: var(--bg);
+}
+.form-container {
+    width: 100%;
+    max-width: 420px;
+}
+
+.mobile-logo {
+    display: none;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 24px;
+}
+.shield-sm {
+    width: 36px; height: 36px;
+    background: var(--accent);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 14px;
+    color: #fff;
+}
+.mobile-logo span {
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--primary-dark);
+}
+
+.form-header h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 6px;
+}
+.form-header p {
+    font-size: 14px;
+    color: var(--text-light);
+    margin-bottom: 28px;
+}
+
+/* ========== ERROR BANNER ========== */
+.error-banner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: var(--danger);
+    padding: 12px 16px;
+    border-radius: var(--radius);
+    font-size: 13px;
+    margin-bottom: 20px;
+}
+.error-banner[hidden] { display: none; }
+.error-icon { font-size: 16px; flex-shrink: 0; }
+
+/* ========== FORM FIELDS ========== */
+.field-group {
+    margin-bottom: 18px;
+}
+.field-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 6px;
+}
+.input-wrapper {
+    display: flex;
+    align-items: center;
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+.input-wrapper:focus-within {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(26,86,50,0.1);
+}
+.input-wrapper.error {
+    border-color: var(--danger);
+    box-shadow: 0 0 0 3px rgba(220,38,38,0.1);
+}
+.input-icon {
+    padding: 0 0 0 14px;
+    color: var(--text-light);
+    font-size: 15px;
+    flex-shrink: 0;
+}
+.input-wrapper input {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 12px;
+    font-size: 14px;
+    font-family: inherit;
+    background: transparent;
+    color: var(--text);
+}
+.input-wrapper input::placeholder { color: #9ca3af; }
+
+.toggle-pwd {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0 14px;
+    font-size: 16px;
+    color: var(--text-light);
+    transition: color 0.2s;
+}
+.toggle-pwd:hover { color: var(--text); }
+
+/* ========== REMEMBER / FORGOT ========== */
+.field-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+}
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--text-light);
+    cursor: pointer;
+}
+.checkbox-label input[type="checkbox"] {
+    width: 16px; height: 16px;
+    accent-color: var(--primary);
+    cursor: pointer;
+}
+.forgot-link {
+    font-size: 13px;
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 500;
+}
+.forgot-link:hover { text-decoration: underline; }
+
+/* ========== SUBMIT BUTTON ========== */
+.btn-login {
+    width: 100%;
+    padding: 13px;
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius);
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: inherit;
+}
+.btn-login:hover { background: var(--primary-light); }
+.btn-login:active { transform: scale(0.99); }
+.btn-login:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.btn-loader {
+    width: 18px; height: 18px;
+    border: 2.5px solid rgba(255,255,255,0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+}
+.btn-loader[hidden] { display: none; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ========== FORM FOOTER ========== */
+.form-footer {
+    margin-top: 32px;
+    text-align: center;
+}
+.form-footer p {
+    font-size: 13px;
+    color: var(--text-light);
+    margin-bottom: 16px;
+}
+.footer-links {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 12px;
+}
+.footer-links a {
+    color: var(--text-light);
+    text-decoration: none;
+}
+.footer-links a:hover { color: var(--primary); text-decoration: underline; }
+.dot { color: var(--border); }
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 900px) {
+    .brand-panel { display: none; }
+    .mobile-logo { display: flex; }
+    .form-panel { padding: 32px 20px; }
+}
+@media (max-width: 480px) {
+    .form-header h2 { font-size: 20px; }
+    .field-row { flex-direction: column; align-items: flex-start; gap: 10px; }
+}

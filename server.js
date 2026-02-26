@@ -7,12 +7,12 @@ const PORT = process.env.PORT || 3000;
 // Serve static files from the public directory
 app.use(express.static(path.join(__dirname, 'public'), {
     extensions: ['html'],
-    index: 'index.html'
+    index: 'login.html'
 }));
 
-// Fallback to index.html for any unmatched routes
+// Fallback to login page for any unmatched routes
 app.get('*', function (req, res) {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
 
 app.listen(PORT, '0.0.0.0', function () {

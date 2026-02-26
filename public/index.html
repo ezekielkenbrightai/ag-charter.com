@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OAG Kenya - Digital Transformation Platform</title>
+    <script>if(sessionStorage.getItem('oag_authenticated')!=='1')window.location.replace('login.html');</script>
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
@@ -59,12 +60,13 @@
         </ul>
         <div class="sidebar-footer">
             <div class="user-info">
-                <div class="user-avatar">DO</div>
+                <div class="user-avatar" id="user-avatar">DO</div>
                 <div>
-                    <strong>Admin User</strong>
-                    <span>State Counsel</span>
+                    <strong id="user-name">Admin User</strong>
+                    <span id="user-role">State Counsel</span>
                 </div>
             </div>
+            <button onclick="sessionStorage.clear();window.location.replace('login.html');" style="margin-top:10px;width:100%;padding:8px;background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.7);border:1px solid rgba(255,255,255,0.15);border-radius:6px;cursor:pointer;font-size:12px;font-family:inherit;transition:all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.15)';this.style.color='#fff'" onmouseout="this.style.background='rgba(255,255,255,0.1)';this.style.color='rgba(255,255,255,0.7)'">&#x2192; Sign Out</button>
         </div>
     </nav>
 
@@ -691,5 +693,17 @@
     </div>
 
     <script src="app.js"></script>
+    <script>
+    (function(){
+        try {
+            var u = JSON.parse(sessionStorage.getItem('oag_user') || '{}');
+            if (u.name) {
+                document.getElementById('user-name').textContent = u.name;
+                document.getElementById('user-role').textContent = u.role || '';
+                document.getElementById('user-avatar').textContent = u.name.split(' ').map(function(w){return w[0]}).join('').substring(0,2).toUpperCase();
+            }
+        } catch(e) {}
+    })();
+    </script>
 </body>
 </html>
