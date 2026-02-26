@@ -17,6 +17,13 @@ const { pool } = require('./db');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const isProduction = process.env.NODE_ENV === 'production';
+
+// ─── Trust proxy (Railway / Heroku / Render) ────
+// Required so express-session can set secure cookies behind a reverse proxy
+if (isProduction) {
+  app.set('trust proxy', 1);
+}
 
 // ─── Body parsing ───────────────────────────────
 app.use(express.json());
@@ -27,7 +34,7 @@ app.use(session({
   store: new PgSession({
     pool: pool,
     tableName: 'sessions',
-    createTableIfMissing: false  // We created it in schema.sql
+    createTableIfMissing: true  // Auto-create if missing (Railway first deploy)
   }),
   secret: process.env.SESSION_SECRET || 'fallback-dev-secret',
   resave: false,
@@ -35,7 +42,7 @@ app.use(session({
   cookie: {
     maxAge: 8 * 60 * 60 * 1000,   // 8 hours
     httpOnly: true,                 // Prevent XSS cookie theft
-    secure: false,                  // Set true in production behind HTTPS
+    secure: isProduction,           // HTTPS only in production
     sameSite: 'lax'
   }
 }));

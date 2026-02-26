@@ -12,12 +12,16 @@
 const { Pool } = require('pg');
 require('dotenv').config();
 
+const isProduction = process.env.NODE_ENV === 'production';
+
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   // Pool limits — conservative defaults for a government intranet app
   max: 20,                    // max simultaneous connections
   idleTimeoutMillis: 30000,   // close idle connections after 30s
-  connectionTimeoutMillis: 5000 // fail fast if DB unreachable
+  connectionTimeoutMillis: 5000, // fail fast if DB unreachable
+  // Railway Postgres requires SSL in production
+  ssl: isProduction ? { rejectUnauthorized: false } : false
 });
 
 // Log pool-level errors (don't crash the server)

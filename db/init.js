@@ -17,6 +17,10 @@ require('dotenv').config();
 
 const DEFAULT_PASSWORD = 'oag2025';
 const SALT_ROUNDS = 10;
+const isProduction = process.env.NODE_ENV === 'production';
+
+// SSL config for Railway / cloud Postgres
+const sslConfig = isProduction ? { rejectUnauthorized: false } : false;
 
 // Parse the DATABASE_URL to extract the database name
 function parseDatabaseUrl(url) {
@@ -25,11 +29,18 @@ function parseDatabaseUrl(url) {
 }
 
 // Connect to the default 'postgres' database to create our target DB
+// Skipped on Railway/cloud where the DB is pre-provisioned
 async function ensureDatabase() {
   const dbName = parseDatabaseUrl(process.env.DATABASE_URL);
-  const adminUrl = process.env.DATABASE_URL.replace(/\/[^/?]+(\?|$)/, '/postgres$1');
 
-  const adminPool = new Pool({ connectionString: adminUrl });
+  // On Railway, the database is pre-created as 'railway' — skip creation
+  if (isProduction || dbName === 'railway') {
+    console.log(`Database "${dbName}" (cloud-provisioned) — skipping CREATE DATABASE.`);
+    return;
+  }
+
+  const adminUrl = process.env.DATABASE_URL.replace(/\/[^/?]+(\?|$)/, '/postgres$1');
+  const adminPool = new Pool({ connectionString: adminUrl, ssl: sslConfig });
 
   try {
     // Check if database exists
@@ -79,7 +90,7 @@ async function main() {
 
   // Step 2: Connect to target database
   console.log('Step 2/4: Connecting to target database...');
-  const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+  const pool = new Pool({ connectionString: process.env.DATABASE_URL, ssl: sslConfig });
 
   try {
     // Step 3: Run schema (includes DROP IF EXISTS at top)
