@@ -634,3 +634,104 @@ function loadUsers() {
                 '<tr><td colspan="7" class="error-text">Failed to load users</td></tr>';
         });
 }
+
+/* ========== NOTIFICATION SYSTEM ========== */
+(function() {
+    var notifications = [];
+    var notifToggle = document.getElementById('notifToggle');
+    var notifDropdown = document.getElementById('notifDropdown');
+    var notifBadge = document.getElementById('notifBadge');
+    var notifList = document.getElementById('notifList');
+    var notifMarkAll = document.getElementById('notifMarkAll');
+
+    // System-generated notifications based on platform data
+    function generateNotifications() {
+        var now = new Date();
+        var items = [
+            { id: 1, type: 'warning', icon: '&#9888;', title: 'Performance Contract Deadline',
+              text: 'Q3 FY 2025/26 indicator submissions due in 14 days', time: minutesAgo(12), unread: true },
+            { id: 2, type: 'info', icon: '&#128203;', title: 'New Case Assigned',
+              text: 'OAG/2026/0847 — Constitutional Petition transferred to your department', time: minutesAgo(45), unread: true },
+            { id: 3, type: 'success', icon: '&#9989;', title: 'Workflow Completed',
+              text: 'Contract Clearance WF/2026/0011 approved by SG Office', time: hoursAgo(2), unread: true },
+            { id: 4, type: 'urgent', icon: '&#128308;', title: 'Overdue: Legal Opinion',
+              text: 'Ministry of Finance request pending 18 days (SLA: 14 days)', time: hoursAgo(3), unread: true },
+            { id: 5, type: 'info', icon: '&#128100;', title: 'New User Registered',
+              text: 'Sarah Wambui Njoroge (AG/CIV/015) added by ICT Admin', time: hoursAgo(5), unread: true },
+            { id: 6, type: 'warning', icon: '&#128197;', title: 'Training Enrollment Closing',
+              text: 'AI Governance for Legal Officers — 5 spots remaining', time: hoursAgo(8), unread: false },
+            { id: 7, type: 'success', icon: '&#128200;', title: 'Budget Absorption Update',
+              text: 'Q2 absorption at 47.2% — on track for 95% annual target', time: daysAgo(1), unread: false },
+            { id: 8, type: 'info', icon: '&#127970;', title: 'County Office Update',
+              text: 'Makueni county office operational — 34 of 47 now active', time: daysAgo(1), unread: false }
+        ];
+        return items;
+    }
+
+    function minutesAgo(m) { return m + ' min ago'; }
+    function hoursAgo(h) { return h + 'h ago'; }
+    function daysAgo(d) { return d + 'd ago'; }
+
+    function renderNotifications() {
+        var unreadCount = notifications.filter(function(n){ return n.unread; }).length;
+        notifBadge.textContent = unreadCount;
+        if (unreadCount === 0) {
+            notifBadge.classList.add('hidden');
+        } else {
+            notifBadge.classList.remove('hidden');
+        }
+
+        if (notifications.length === 0) {
+            notifList.innerHTML = '<div class="notif-empty">No notifications</div>';
+            return;
+        }
+
+        notifList.innerHTML = notifications.map(function(n) {
+            return '<div class="notif-item' + (n.unread ? ' unread' : '') + '" data-id="' + n.id + '">' +
+                '<div class="notif-icon-badge ' + n.type + '">' + n.icon + '</div>' +
+                '<div class="notif-body">' +
+                    '<strong>' + n.title + '</strong>' +
+                    '<p>' + n.text + '</p>' +
+                    '<div class="notif-time">' + n.time + '</div>' +
+                '</div>' +
+            '</div>';
+        }).join('');
+
+        // Click individual notification to mark as read
+        notifList.querySelectorAll('.notif-item').forEach(function(el) {
+            el.addEventListener('click', function(e) {
+                e.stopPropagation();
+                var id = parseInt(el.getAttribute('data-id'));
+                notifications.forEach(function(n) { if (n.id === id) n.unread = false; });
+                renderNotifications();
+            });
+        });
+    }
+
+    // Toggle dropdown
+    notifToggle.addEventListener('click', function(e) {
+        e.stopPropagation();
+        notifDropdown.classList.toggle('open');
+    });
+
+    // Prevent dropdown close when clicking inside it
+    notifDropdown.addEventListener('click', function(e) {
+        e.stopPropagation();
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function() {
+        notifDropdown.classList.remove('open');
+    });
+
+    // Mark all as read
+    notifMarkAll.addEventListener('click', function(e) {
+        e.stopPropagation();
+        notifications.forEach(function(n) { n.unread = false; });
+        renderNotifications();
+    });
+
+    // Initialize
+    notifications = generateNotifications();
+    renderNotifications();
+})();
