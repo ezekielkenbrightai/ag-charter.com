@@ -25,11 +25,12 @@ routes/
   users.js             # CRUD (Tier 1-2 only)
   performance.js       # PC categories, indicators, sub-indicators, summary
   org.js               # Department tree, tiers, stats
+  profile.js           # Self-service profile: email, password, sessions, activity
 middleware/
   auth.js              # requireAuth, requireTier(maxLevel)
 public/
-  index.html           # SPA shell (732 lines) — 12 page sections, 5 modals
-  app.js               # Page nav, lazy init, 5 renderers (org, legal, sdjhca, performance, users)
+  index.html           # SPA shell (~860 lines) — 13 page sections, 5 modals
+  app.js               # Page nav, lazy init, 6 renderers (org, legal, sdjhca, performance, users, profile)
   styles.css           # Full CSS with responsive, print, accessibility
   login.html/css/js    # Two-panel login with demo accounts
   charter.html         # Service Charter (standalone page)

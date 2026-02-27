@@ -119,8 +119,11 @@
             <button class="menu-toggle" id="menuToggle">&#9776;</button>
             <h1 class="page-title" id="pageTitle">Executive Dashboard</h1>
             <div class="topbar-actions">
-                <div class="search-box">
-                    <input type="text" placeholder="Search cases, files, staff...">
+                <div class="search-box" id="globalSearchBox">
+                    <input type="text" id="globalSearchInput" placeholder="Search platform..." autocomplete="off">
+                    <div class="search-dropdown" id="searchDropdown">
+                        <div class="search-results" id="searchResults"></div>
+                    </div>
                 </div>
                 <div class="notifications" id="notifToggle" title="Notifications">
                     <span class="notif-icon">&#128276;</span>

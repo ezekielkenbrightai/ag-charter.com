@@ -905,6 +905,221 @@ function revokeSession(sid) {
         .catch(() => alert('Network error'));
 }
 
+/* ========== GLOBAL SEARCH ========== */
+function buildSearchIndex() {
+    var index = [];
+    var O = window.OAG;
+    if (!O) return index;
+
+    function add(text, detail, category, page, icon) {
+        index.push({
+            text: (text + ' ' + (detail || '')).toLowerCase(),
+            display: text,
+            detail: detail || '',
+            category: category,
+            page: page,
+            icon: icon || ''
+        });
+    }
+
+    // Organization — Executive units
+    var org = O.ORG;
+    org.EXECUTIVE.units.forEach(function(u) { add(u.name, u.head, 'Organization', 'org-structure', '&#127970;'); });
+    add(org.EXECUTIVE.head.name, org.EXECUTIVE.head.title, 'Organization', 'org-structure', '&#127970;');
+
+    // Organization — SLO divisions, support, agencies
+    org.SLO.divisions.forEach(function(d) { add(d.name, d.head, 'Organization', 'org-structure', '&#9878;'); });
+    org.SLO.support.forEach(function(d) { add(d.name, d.head, 'Organization', 'org-structure', '&#127970;'); });
+    org.SLO.sagas.forEach(function(s) { add(s.name + ' (' + s.short + ')', s.head, 'Organization', 'org-structure', '&#127970;'); });
+    add(org.SLO.head.name, org.SLO.head.title, 'Organization', 'org-structure', '&#127970;');
+
+    // Organization — SDJHCA directorates + agencies
+    org.SDJHCA.directorates.forEach(function(d) { add(d.name, d.focus, 'Organization', 'sdjhca', '&#128101;'); });
+    org.SDJHCA.agencies.forEach(function(a) { add(a.name + ' (' + a.short + ')', a.mandate, 'Organization', 'sdjhca', '&#128101;'); });
+    add(org.SDJHCA.head.name, org.SDJHCA.head.title, 'Organization', 'sdjhca', '&#128101;');
+
+    // Legal Framework — Articles, Statutes, Timeline
+    O.LEGAL.ARTICLES.forEach(function(a) { add('Article ' + a.article + ' — ' + a.title, a.text.substring(0, 80), 'Legal Framework', 'legal-framework', '&#128220;'); });
+    O.LEGAL.STATUTES.forEach(function(s) { add(s.name, s.cap + ' — ' + s.purpose, 'Statutes', 'legal-framework', '&#128220;'); });
+    O.LEGAL.TIMELINE.forEach(function(t) { add(t.year + ' — ' + t.event, t.type, 'Timeline', 'legal-framework', '&#128197;'); });
+
+    // Key Functions
+    O.KEY_FUNCTIONS.forEach(function(f) { add(f.name, f.desc, 'AG Functions', 'legal-framework', '&#9878;'); });
+
+    // Access Tiers
+    O.ACCESS_TIERS.forEach(function(t) { add('Tier ' + t.level + ' — ' + t.name, t.description, 'Access Tiers', 'org-structure', '&#128274;'); });
+
+    // Workflow stages
+    O.WORKFLOWS.PUBLIC.stages.forEach(function(s) { add(s.name, s.desc, 'Workflows', 'workflows', '&#8635;'); });
+    O.WORKFLOWS.INTERNAL.stages.forEach(function(s) { add(s.name, s.desc, 'Workflows', 'workflows', '&#8635;'); });
+
+    // Cases
+    if (typeof casesData !== 'undefined') {
+        casesData.forEach(function(c) { add(c.caseNo + ' ' + c.title, c.type + ' — ' + c.counsel, 'Cases', 'cases', '&#9998;'); });
+    }
+
+    // Legal Aid
+    if (typeof aidData !== 'undefined') {
+        aidData.forEach(function(a) { add(a.id + ' ' + a.name, a.category + ' — ' + a.county, 'Legal Aid', 'legal-aid', '&#9878;'); });
+    }
+
+    // Training
+    if (typeof trainingData !== 'undefined') {
+        trainingData.forEach(function(t) { add(t.program, t.domain + ' — ' + t.duration, 'Training', 'training', '&#9734;'); });
+    }
+
+    // Workflows (instances)
+    if (typeof workflowData !== 'undefined') {
+        workflowData.forEach(function(w) { add(w.id + ' ' + w.type, w.requester + ' — ' + w.assigned, 'Workflows', 'workflows', '&#8635;'); });
+    }
+
+    // Counties
+    COUNTIES.operational.forEach(function(c) { add(c, 'Operational', 'Counties', 'counties', '&#9873;'); });
+    COUNTIES.opening.forEach(function(c) { add(c, 'Opening 2025', 'Counties', 'counties', '&#9873;'); });
+    COUNTIES.planned.forEach(function(c) { add(c, 'Planned', 'Counties', 'counties', '&#9873;'); });
+
+    // Pages (so users can search for page names)
+    Object.keys(pageTitles).forEach(function(key) {
+        add(pageTitles[key], 'Page', 'Navigation', key, '&#128196;');
+    });
+
+    return index;
+}
+
+(function() {
+    var searchInput = document.getElementById('globalSearchInput');
+    var searchDropdown = document.getElementById('searchDropdown');
+    var searchResults = document.getElementById('searchResults');
+    if (!searchInput || !searchDropdown) return;
+
+    var searchIndex = buildSearchIndex();
+    var debounceTimer = null;
+    var activeIdx = -1;
+
+    function escapeHtml(str) {
+        var d = document.createElement('div');
+        d.textContent = str;
+        return d.innerHTML;
+    }
+
+    function highlightMatch(text, query) {
+        var escaped = escapeHtml(text);
+        var idx = escaped.toLowerCase().indexOf(query);
+        if (idx === -1) return escaped;
+        return escaped.substring(0, idx) + '<mark>' + escaped.substring(idx, idx + query.length) + '</mark>' + escaped.substring(idx + query.length);
+    }
+
+    function openSearch() { searchDropdown.classList.add('open'); }
+    function closeSearch() { searchDropdown.classList.remove('open'); activeIdx = -1; }
+
+    function executeSearch(query) {
+        query = query.trim().toLowerCase();
+        if (query.length < 2) { closeSearch(); return; }
+
+        // Filter: text match + RBAC (skip results whose nav page is hidden)
+        var matches = searchIndex.filter(function(entry) {
+            if (entry.text.indexOf(query) === -1) return false;
+            var nav = document.querySelector('[data-page="' + entry.page + '"]');
+            return nav && nav.style.display !== 'none';
+        });
+
+        if (matches.length > 30) matches = matches.slice(0, 30);
+
+        if (matches.length === 0) {
+            searchResults.innerHTML = '<div class="search-empty">No results for &ldquo;' + escapeHtml(query) + '&rdquo;</div>';
+            openSearch();
+            return;
+        }
+
+        // Group by category
+        var groups = {};
+        matches.forEach(function(m) {
+            if (!groups[m.category]) groups[m.category] = [];
+            groups[m.category].push(m);
+        });
+
+        var html = '';
+        Object.keys(groups).forEach(function(cat) {
+            html += '<div class="search-category-label">' + escapeHtml(cat) + '</div>';
+            groups[cat].forEach(function(item) {
+                html += '<div class="search-result-item" data-page="' + item.page + '">' +
+                    '<div class="search-result-icon">' + item.icon + '</div>' +
+                    '<div class="search-result-body">' +
+                    '<strong>' + highlightMatch(item.display, query) + '</strong>' +
+                    '<small>' + escapeHtml(item.detail) + '</small>' +
+                    '</div></div>';
+            });
+        });
+        html += '<div class="search-footer">' + matches.length + ' result' + (matches.length !== 1 ? 's' : '') + '</div>';
+
+        searchResults.innerHTML = html;
+        activeIdx = -1;
+        openSearch();
+
+        searchResults.querySelectorAll('.search-result-item').forEach(function(el) {
+            el.addEventListener('click', function(e) {
+                e.stopPropagation();
+                navigateToResult(el.getAttribute('data-page'));
+            });
+        });
+    }
+
+    function navigateToResult(page) {
+        var navItem = document.querySelector('[data-page="' + page + '"]');
+        if (navItem) navItem.click();
+        closeSearch();
+        searchInput.value = '';
+        searchInput.blur();
+    }
+
+    // Debounced input
+    searchInput.addEventListener('input', function() {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(function() { executeSearch(searchInput.value); }, 250);
+    });
+
+    // Keyboard navigation
+    searchInput.addEventListener('keydown', function(e) {
+        var items = searchResults.querySelectorAll('.search-result-item');
+        if (e.key === 'Escape') { closeSearch(); searchInput.blur(); return; }
+        if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            activeIdx = Math.min(activeIdx + 1, items.length - 1);
+            updateActive(items);
+        } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            activeIdx = Math.max(activeIdx - 1, 0);
+            updateActive(items);
+        } else if (e.key === 'Enter') {
+            e.preventDefault();
+            if (activeIdx >= 0 && items[activeIdx]) {
+                navigateToResult(items[activeIdx].getAttribute('data-page'));
+            } else if (items.length > 0) {
+                navigateToResult(items[0].getAttribute('data-page'));
+            }
+        }
+    });
+
+    function updateActive(items) {
+        items.forEach(function(el, i) {
+            el.classList.toggle('active', i === activeIdx);
+            if (i === activeIdx) el.scrollIntoView({ block: 'nearest' });
+        });
+    }
+
+    // Close on outside click
+    document.addEventListener('click', function(e) {
+        if (!document.getElementById('globalSearchBox').contains(e.target)) closeSearch();
+    });
+    searchDropdown.addEventListener('click', function(e) { e.stopPropagation(); });
+
+    // Close notification dropdown when search opens
+    searchInput.addEventListener('focus', function() {
+        var nd = document.getElementById('notifDropdown');
+        if (nd) nd.classList.remove('open');
+    });
+})();
+
 /* ========== NOTIFICATION SYSTEM ========== */
 (function() {
     var notifications = [];

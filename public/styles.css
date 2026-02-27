@@ -68,6 +68,47 @@ body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background
     font-size: 13px; width: 220px; outline: none; transition: border 0.2s;
 }
 .search-box input:focus { border-color: var(--primary); }
+
+/* ========== GLOBAL SEARCH DROPDOWN ========== */
+.search-box { position: relative; }
+.search-dropdown {
+    display: none; position: absolute; top: 42px; right: 0; width: 400px;
+    background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border); z-index: 200; max-height: 420px; overflow: hidden;
+}
+.search-dropdown.open { display: block; }
+.search-results { overflow-y: auto; max-height: 380px; }
+.search-category-label {
+    padding: 8px 16px 4px; font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.5px; color: var(--text-light); background: var(--bg);
+    border-bottom: 1px solid var(--border); position: sticky; top: 0;
+}
+.search-result-item {
+    display: flex; gap: 10px; padding: 10px 16px; border-bottom: 1px solid var(--border);
+    cursor: pointer; font-size: 12px; transition: background 0.15s; align-items: flex-start;
+}
+.search-result-item:hover, .search-result-item.active { background: var(--bg); }
+.search-result-icon {
+    width: 28px; height: 28px; border-radius: 50%; background: #f0f7f4;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; flex-shrink: 0; color: var(--primary);
+}
+.search-result-body { flex: 1; min-width: 0; }
+.search-result-body strong {
+    font-size: 12px; display: block; margin-bottom: 1px; color: var(--text);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.search-result-body mark { background: #fef3c7; color: inherit; padding: 0 1px; border-radius: 2px; }
+.search-result-body small {
+    color: var(--text-light); line-height: 1.3; display: block;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.search-empty { padding: 24px; text-align: center; color: var(--text-light); font-size: 13px; }
+.search-footer {
+    padding: 8px 16px; border-top: 1px solid var(--border); font-size: 11px;
+    color: var(--text-light); text-align: center; background: var(--card);
+}
+
 .notifications { position: relative; cursor: pointer; font-size: 20px; }
 .notif-badge {
     position: absolute; top: -6px; right: -8px; background: var(--accent);
