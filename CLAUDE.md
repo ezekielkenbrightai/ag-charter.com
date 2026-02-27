@@ -92,6 +92,25 @@ npm start                # Start server on PORT (default 3000)
 - Public files (login.html/css/js, styles.css, app.js, oag-data.js) served without auth
 - All other static files require session
 
+## Layout & CSS Gotchas
+- `body { display: flex }` — every direct child of `<body>` becomes a flex item
+- The `<footer>` MUST be inside `<main class="main-content">`, not a sibling — otherwise it renders as a third flex column next to the sidebar and main content, creating white space on the right
+- `.main-content` needs `min-width: 0; overflow-x: hidden` — flex items default to `min-width: auto`, which lets wide content (tables, charts) push past 100vw
+- When moving HTML elements between containers, check the parent's `display` mode (flex, grid) — siblings in flex/grid layouts get their own column/row
+
+## JavaScript Error Cascading
+- An uncaught `TypeError` in `app.js` halts ALL subsequent script execution
+- The notification system IIFE is at the bottom of `app.js` — any error above it prevents notifications from initializing
+- Always null-guard `document.getElementById()` calls for elements that may not exist on every page (e.g. `performanceTableBody` was removed when that page moved to API rendering, but the old code referencing it remained)
+- When adding new features at the end of a JS file, verify that no earlier code throws uncaught errors that would block execution
+
+## Notification System
+- Client-side IIFE at bottom of `app.js` — no backend notification table
+- 8 system-generated notifications referencing real platform entities (PC deadlines, cases, workflows)
+- Click individual notification to mark as read, "Mark all read" button clears all
+- Badge shows unread count, hides when zero
+- Dropdown uses `stopPropagation()` to prevent closing when clicking inside; `document.addEventListener('click')` closes on outside click
+
 ## Local Dev (Windows)
 - PostgreSQL 16 binary: `C:\Program Files\PostgreSQL\16\bin\psql.exe`
 - Local DB: `postgresql://postgres:postgres@localhost:5432/oag_kenya`
