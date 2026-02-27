@@ -111,6 +111,16 @@ npm start                # Start server on PORT (default 3000)
 - Badge shows unread count, hides when zero
 - Dropdown uses `stopPropagation()` to prevent closing when clicking inside; `document.addEventListener('click')` closes on outside click
 
+## User Profile System
+- Route: `routes/profile.js` — 6 endpoints, all use `requireAuth` (any tier)
+- Endpoints: `GET /me`, `PUT /email`, `PUT /password`, `GET /sessions`, `DELETE /sessions/:sid`, `GET /activity`
+- Password change invalidates all other sessions via `DELETE FROM sessions WHERE sid != current AND sess::jsonb -> 'user' ->> 'id' = userId`
+- Email update also patches `req.session.user.email` to keep session in sync
+- Sessions table queried with PostgreSQL `sess::jsonb` JSON operators to filter by user ID
+- Sidebar avatar (`.user-info#sidebar-user-link`) clicks trigger `[data-page="profile"]` nav item
+- `renderProfile()` uses `Promise.all()` to fire 3 API calls in parallel (profile, activity, sessions)
+- `wireEmailEdit()` and `wirePasswordChange()` attach event listeners once per init — follows lazy page pattern
+
 ## Local Dev (Windows)
 - PostgreSQL 16 binary: `C:\Program Files\PostgreSQL\16\bin\psql.exe`
 - Local DB: `postgresql://postgres:postgres@localhost:5432/oag_kenya`
