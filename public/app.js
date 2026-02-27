@@ -213,19 +213,22 @@ document.getElementById('workflowTableBody').innerHTML = workflowData.map(w => `
     <td><button class="btn btn-sm btn-primary">Advance</button></td>
 </tr>`).join('');
 
-/* ========== PERFORMANCE TABLE ========== */
+/* ========== PERFORMANCE TABLE (legacy — now API-driven via initPerformance) ========== */
 const departments = ['Civil Litigation','Government Transactions','International Law','Legislative Drafting','Legal Advisory','Registrar General'];
-document.getElementById('performanceTableBody').innerHTML = counselNames.slice(0, 10).map(name => {
-    const cases = randInt(15, 80);
-    const rate = randInt(55, 95);
-    const cpd = randInt(10, 60);
-    const rating = rate >= 80 ? 'Excellent' : rate >= 65 ? 'Good' : 'Needs Improvement';
-    return `<tr>
-        <td><strong>${name}</strong></td><td>${randItem(departments)}</td>
-        <td>${cases}</td><td>${rate}%</td><td>${cpd} hrs</td>
-        <td><span class="badge badge-${rate >= 80 ? 'green' : rate >= 65 ? 'blue' : 'orange'}">${rating}</span></td>
-    </tr>`;
-}).join('');
+const perfBody = document.getElementById('performanceTableBody');
+if (perfBody) {
+    perfBody.innerHTML = counselNames.slice(0, 10).map(name => {
+        const cases = randInt(15, 80);
+        const rate = randInt(55, 95);
+        const cpd = randInt(10, 60);
+        const rating = rate >= 80 ? 'Excellent' : rate >= 65 ? 'Good' : 'Needs Improvement';
+        return `<tr>
+            <td><strong>${name}</strong></td><td>${randItem(departments)}</td>
+            <td>${cases}</td><td>${rate}%</td><td>${cpd} hrs</td>
+            <td><span class="badge badge-${rate >= 80 ? 'green' : rate >= 65 ? 'blue' : 'orange'}">${rating}</span></td>
+        </tr>`;
+    }).join('');
+}
 
 /* ========== COUNTY GRID ========== */
 const countyGrid = document.getElementById('countyGrid');
