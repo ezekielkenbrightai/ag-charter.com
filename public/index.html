@@ -82,6 +82,12 @@
                 <span class="nav-icon">&#128100;</span> User Management
             </li>
 
+            <!-- My Account -->
+            <li class="nav-group-label">My Account</li>
+            <li class="nav-item" data-page="profile">
+                <span class="nav-icon">&#128100;</span> My Profile
+            </li>
+
             <!-- External Portals -->
             <li class="nav-group-label">External Portals</li>
             <li class="nav-item" onclick="window.location.href='charter.html'">
@@ -95,7 +101,7 @@
             </li>
         </ul>
         <div class="sidebar-footer">
-            <div class="user-info">
+            <div class="user-info" id="sidebar-user-link" style="cursor:pointer" title="View my profile">
                 <div class="user-avatar" id="user-avatar">DO</div>
                 <div>
                     <strong id="user-name">Admin User</strong>
@@ -653,6 +659,128 @@
                 <div class="card">
                     <h3>Semi-Autonomous Agencies</h3>
                     <div id="sdjhca-agencies" class="dept-grid"></div>
+                </div>
+            </section>
+
+            <!-- ==================== USER PROFILE ==================== -->
+            <section class="page" id="page-profile">
+                <div class="profile-header">
+                    <div class="avatar-circle" id="profile-avatar">--</div>
+                    <div class="profile-identity">
+                        <h2 id="profile-name">Loading...</h2>
+                        <p id="profile-title" class="profile-subtitle"></p>
+                        <div class="profile-meta">
+                            <span class="profile-tag" id="profile-staff-id"></span>
+                            <span class="profile-tag" id="profile-department"></span>
+                            <span class="tier-badge" id="profile-tier-badge"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="profile-grid">
+                    <!-- Left Column: Contact & Security -->
+                    <div class="profile-col">
+                        <div class="profile-card">
+                            <h3>Contact Information</h3>
+                            <div class="profile-field">
+                                <label>Email Address</label>
+                                <div class="profile-edit-row">
+                                    <input type="email" id="profile-email" class="profile-input" placeholder="No email set" disabled>
+                                    <button class="btn btn-sm" id="btn-edit-email" title="Edit email">&#9998;</button>
+                                </div>
+                                <div class="profile-edit-actions" id="email-actions" style="display:none">
+                                    <button class="btn btn-primary btn-sm" id="btn-save-email">Save</button>
+                                    <button class="btn btn-secondary btn-sm" id="btn-cancel-email">Cancel</button>
+                                </div>
+                                <p class="profile-field-note" id="email-status"></p>
+                            </div>
+                            <div class="profile-field">
+                                <label>Staff ID</label>
+                                <p class="profile-value" id="profile-staff-id-display"></p>
+                            </div>
+                            <div class="profile-field">
+                                <label>Account Created</label>
+                                <p class="profile-value" id="profile-created"></p>
+                            </div>
+                            <div class="profile-field">
+                                <label>Last Updated</label>
+                                <p class="profile-value" id="profile-updated"></p>
+                            </div>
+                        </div>
+
+                        <div class="profile-card">
+                            <h3>Change Password</h3>
+                            <form id="password-form" autocomplete="off">
+                                <div class="profile-field">
+                                    <label for="pw-current">Current Password</label>
+                                    <input type="password" id="pw-current" class="profile-input" required autocomplete="current-password">
+                                </div>
+                                <div class="profile-field">
+                                    <label for="pw-new">New Password</label>
+                                    <input type="password" id="pw-new" class="profile-input" required minlength="6" autocomplete="new-password">
+                                </div>
+                                <div class="profile-field">
+                                    <label for="pw-confirm">Confirm New Password</label>
+                                    <input type="password" id="pw-confirm" class="profile-input" required minlength="6" autocomplete="new-password">
+                                </div>
+                                <p class="profile-field-note" id="pw-status"></p>
+                                <button type="submit" class="btn btn-primary" id="btn-change-pw">Change Password</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Permissions & Activity -->
+                    <div class="profile-col">
+                        <div class="profile-card">
+                            <h3>Access &amp; Permissions</h3>
+                            <div class="profile-field">
+                                <label>Access Tier</label>
+                                <p class="profile-value"><span class="tier-badge" id="profile-tier-detail"></span></p>
+                            </div>
+                            <div class="profile-field">
+                                <label>Tier Description</label>
+                                <p class="profile-value" id="profile-tier-desc"></p>
+                            </div>
+                            <div class="profile-field">
+                                <label>Department</label>
+                                <p class="profile-value" id="profile-dept-full"></p>
+                            </div>
+                            <div class="profile-field">
+                                <label>Organizational Tier</label>
+                                <p class="profile-value" id="profile-dept-tier"></p>
+                            </div>
+                            <div class="profile-field">
+                                <label>Account Status</label>
+                                <p class="profile-value"><span class="badge badge-green" id="profile-status">Active</span></p>
+                            </div>
+                        </div>
+
+                        <div class="profile-card">
+                            <h3>Recent Activity</h3>
+                            <div class="activity-list" id="profile-activity">
+                                <p class="loading-text">Loading activity...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Active Sessions (full width) -->
+                <div class="profile-card profile-sessions-card">
+                    <h3>Active Sessions</h3>
+                    <p class="profile-field-note">Manage your logged-in sessions across devices.</p>
+                    <table class="data-table session-table" id="sessions-table">
+                        <thead>
+                            <tr>
+                                <th>Session</th>
+                                <th>Expires</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="sessions-body">
+                            <tr><td colspan="4" class="loading-text">Loading sessions...</td></tr>
+                        </tbody>
+                    </table>
                 </div>
             </section>
 

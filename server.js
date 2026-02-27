@@ -3,7 +3,7 @@
  *
  * Express application with:
  * - PostgreSQL session store (connect-pg-simple)
- * - API routes: /api/auth, /api/users, /api/performance, /api/org
+ * - API routes: /api/auth, /api/users, /api/performance, /api/org, /api/profile
  * - Auth-protected static file serving
  * - Unprotected: login.html, login.css, login.js, and API auth endpoints
  */
@@ -52,6 +52,7 @@ app.use('/api/auth', require('./routes/auth'));
 app.use('/api/users', require('./routes/users'));
 app.use('/api/performance', require('./routes/performance'));
 app.use('/api/org', require('./routes/org'));
+app.use('/api/profile', require('./routes/profile'));
 
 // ─── Public static files (no auth required) ─────
 // Login page and its assets must be accessible without a session

@@ -28,7 +28,8 @@ const pageTitles = {
     counties: 'County Office Decentralization',
     training: 'Training & Capacity Building',
     sdjhca: 'State Department for Justice, Human Rights & Constitutional Affairs',
-    users: 'User Management'
+    users: 'User Management',
+    profile: 'My Profile'
 };
 
 // Track which pages have been initialized (lazy rendering)
@@ -70,6 +71,12 @@ setTimeout(applyTierVisibility, 500);
 
 document.getElementById('menuToggle').addEventListener('click', () => {
     document.getElementById('sidebar').classList.toggle('open');
+});
+
+// Sidebar avatar → navigate to profile page
+document.getElementById('sidebar-user-link').addEventListener('click', () => {
+    const profileNav = document.querySelector('[data-page="profile"]');
+    if (profileNav) profileNav.click();
 });
 
 /* ========== MODALS ========== */
@@ -386,6 +393,7 @@ function initPage(page) {
         case 'sdjhca': renderSDJHCA(); break;
         case 'performance': renderPerformanceContract(); break;
         case 'users': renderUserManagement(); break;
+        case 'profile': renderProfile(); break;
     }
 }
 
@@ -636,6 +644,265 @@ function loadUsers() {
             document.getElementById('usersTableBody').innerHTML =
                 '<tr><td colspan="7" class="error-text">Failed to load users</td></tr>';
         });
+}
+
+/* ========== USER PROFILE PAGE ========== */
+function renderProfile() {
+    // Fetch profile data, activity, and sessions in parallel
+    Promise.all([
+        fetch('/api/profile/me').then(r => r.json()),
+        fetch('/api/profile/activity').then(r => r.json()),
+        fetch('/api/profile/sessions').then(r => r.json())
+    ]).then(([profileData, activityData, sessionData]) => {
+        const u = profileData.user;
+        if (!u) return;
+
+        // Avatar initials
+        const initials = (u.full_name || '').split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
+        document.getElementById('profile-avatar').textContent = initials || '--';
+
+        // Identity header
+        document.getElementById('profile-name').textContent = u.full_name;
+        document.getElementById('profile-title').textContent = u.title || '';
+        document.getElementById('profile-staff-id').textContent = u.staff_id;
+        document.getElementById('profile-department').textContent = u.department_name || 'Unassigned';
+
+        // Tier badge in header
+        const tierBadge = document.getElementById('profile-tier-badge');
+        tierBadge.textContent = `Tier ${u.tier_level} — ${u.tier_name || ''}`;
+        tierBadge.setAttribute('data-tier', u.tier_level);
+
+        // Contact info
+        document.getElementById('profile-email').value = u.email || '';
+        document.getElementById('profile-staff-id-display').textContent = u.staff_id;
+        document.getElementById('profile-created').textContent = formatDate(u.created_at);
+        document.getElementById('profile-updated').textContent = formatDate(u.updated_at);
+
+        // Access & permissions card
+        const tierDetail = document.getElementById('profile-tier-detail');
+        tierDetail.textContent = `Tier ${u.tier_level} — ${u.tier_name || ''}`;
+        tierDetail.setAttribute('data-tier', u.tier_level);
+        document.getElementById('profile-tier-desc').textContent = u.tier_description || '';
+        document.getElementById('profile-dept-full').textContent = u.department_name || 'Unassigned';
+        document.getElementById('profile-dept-tier').textContent = u.department_tier || '';
+        document.getElementById('profile-status').textContent = u.is_active ? 'Active' : 'Inactive';
+        document.getElementById('profile-status').className = u.is_active ? 'badge badge-green' : 'badge badge-red';
+
+        // Render activity
+        renderProfileActivity(activityData.activities || []);
+
+        // Render sessions
+        renderProfileSessions(sessionData.sessions || []);
+
+        // Wire up email editing
+        wireEmailEdit();
+
+        // Wire up password change
+        wirePasswordChange();
+
+    }).catch(err => {
+        console.error('Profile load error:', err);
+        document.getElementById('profile-name').textContent = 'Failed to load profile';
+    });
+}
+
+function formatDate(dateStr) {
+    if (!dateStr) return 'N/A';
+    const d = new Date(dateStr);
+    return d.toLocaleDateString('en-KE', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+}
+
+function formatTimeAgo(dateStr) {
+    const d = new Date(dateStr);
+    const now = new Date();
+    const diff = Math.floor((now - d) / 1000);
+    if (diff < 60) return 'Just now';
+    if (diff < 3600) return Math.floor(diff / 60) + ' min ago';
+    if (diff < 86400) return Math.floor(diff / 3600) + 'h ago';
+    if (diff < 604800) return Math.floor(diff / 86400) + 'd ago';
+    return formatDate(dateStr);
+}
+
+function renderProfileActivity(activities) {
+    const container = document.getElementById('profile-activity');
+    if (!activities.length) {
+        container.innerHTML = '<p class="profile-field-note">No recent activity</p>';
+        return;
+    }
+    container.innerHTML = activities.slice(0, 15).map(a => `
+        <div class="activity-item">
+            <div>
+                <div class="activity-action">${formatAction(a.action)}</div>
+                ${a.details ? `<div class="activity-detail">${a.details}</div>` : ''}
+            </div>
+            <div class="activity-time">${formatTimeAgo(a.created_at)}</div>
+        </div>
+    `).join('');
+}
+
+function formatAction(action) {
+    const map = {
+        login: 'Signed in',
+        logout: 'Signed out',
+        update_email: 'Updated email',
+        change_password: 'Changed password',
+        revoke_session: 'Revoked session',
+        create_user: 'Created user',
+        update_user: 'Updated user',
+        deactivate_user: 'Deactivated user'
+    };
+    return map[action] || action.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+}
+
+function renderProfileSessions(sessions) {
+    const tbody = document.getElementById('sessions-body');
+    if (!sessions.length) {
+        tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:#6b7280">No active sessions</td></tr>';
+        return;
+    }
+    tbody.innerHTML = sessions.map(s => `<tr>
+        <td>${s.is_current ? '<span class="badge-current">Current Session</span>' : `Session ...${s.sid.substring(s.sid.length - 8)}`}</td>
+        <td>${formatDate(s.expires)}</td>
+        <td>${s.is_current ? '<span class="badge badge-green">Active</span>' : '<span class="badge badge-blue">Active</span>'}</td>
+        <td>${s.is_current ? '<span style="color:#6b7280;font-size:0.82rem">Current</span>' :
+            `<button class="btn-revoke" onclick="revokeSession('${s.sid}')">Revoke</button>`}</td>
+    </tr>`).join('');
+}
+
+function wireEmailEdit() {
+    const emailInput = document.getElementById('profile-email');
+    const btnEdit = document.getElementById('btn-edit-email');
+    const btnSave = document.getElementById('btn-save-email');
+    const btnCancel = document.getElementById('btn-cancel-email');
+    const actions = document.getElementById('email-actions');
+    const status = document.getElementById('email-status');
+    let originalEmail = emailInput.value;
+
+    btnEdit.addEventListener('click', () => {
+        emailInput.disabled = false;
+        emailInput.focus();
+        actions.style.display = 'flex';
+        btnEdit.style.display = 'none';
+        status.textContent = '';
+    });
+
+    btnCancel.addEventListener('click', () => {
+        emailInput.value = originalEmail;
+        emailInput.disabled = true;
+        actions.style.display = 'none';
+        btnEdit.style.display = '';
+        status.textContent = '';
+    });
+
+    btnSave.addEventListener('click', () => {
+        const newEmail = emailInput.value.trim();
+        if (!newEmail) { status.textContent = 'Email cannot be empty'; status.className = 'profile-field-note error'; return; }
+
+        btnSave.disabled = true;
+        btnSave.textContent = 'Saving...';
+
+        fetch('/api/profile/email', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: newEmail })
+        })
+        .then(r => r.json().then(data => ({ ok: r.ok, data })))
+        .then(({ ok, data }) => {
+            if (ok) {
+                originalEmail = data.email;
+                emailInput.value = data.email;
+                emailInput.disabled = true;
+                actions.style.display = 'none';
+                btnEdit.style.display = '';
+                status.textContent = 'Email updated successfully';
+                status.className = 'profile-field-note success';
+            } else {
+                status.textContent = data.error || 'Failed to update email';
+                status.className = 'profile-field-note error';
+            }
+        })
+        .catch(() => {
+            status.textContent = 'Network error — please try again';
+            status.className = 'profile-field-note error';
+        })
+        .finally(() => {
+            btnSave.disabled = false;
+            btnSave.textContent = 'Save';
+        });
+    });
+}
+
+function wirePasswordChange() {
+    const form = document.getElementById('password-form');
+    const status = document.getElementById('pw-status');
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const current = document.getElementById('pw-current').value;
+        const newPw = document.getElementById('pw-new').value;
+        const confirm = document.getElementById('pw-confirm').value;
+
+        if (newPw !== confirm) {
+            status.textContent = 'New passwords do not match';
+            status.className = 'profile-field-note error';
+            return;
+        }
+        if (newPw.length < 6) {
+            status.textContent = 'Password must be at least 6 characters';
+            status.className = 'profile-field-note error';
+            return;
+        }
+
+        const btn = document.getElementById('btn-change-pw');
+        btn.disabled = true;
+        btn.textContent = 'Changing...';
+
+        fetch('/api/profile/password', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ current_password: current, new_password: newPw })
+        })
+        .then(r => r.json().then(data => ({ ok: r.ok, data })))
+        .then(({ ok, data }) => {
+            if (ok) {
+                status.textContent = 'Password changed. Other sessions signed out.';
+                status.className = 'profile-field-note success';
+                form.reset();
+                // Refresh sessions table
+                fetch('/api/profile/sessions').then(r => r.json()).then(d => renderProfileSessions(d.sessions || []));
+            } else {
+                status.textContent = data.error || 'Failed to change password';
+                status.className = 'profile-field-note error';
+            }
+        })
+        .catch(() => {
+            status.textContent = 'Network error — please try again';
+            status.className = 'profile-field-note error';
+        })
+        .finally(() => {
+            btn.disabled = false;
+            btn.textContent = 'Change Password';
+        });
+    });
+}
+
+// Global: revoke session from table button
+function revokeSession(sid) {
+    if (!confirm('Revoke this session? The device will be signed out.')) return;
+
+    fetch('/api/profile/sessions/' + encodeURIComponent(sid), { method: 'DELETE' })
+        .then(r => r.json().then(data => ({ ok: r.ok, data })))
+        .then(({ ok, data }) => {
+            if (ok) {
+                // Re-fetch sessions
+                fetch('/api/profile/sessions').then(r => r.json()).then(d => renderProfileSessions(d.sessions || []));
+                // Re-fetch activity
+                fetch('/api/profile/activity').then(r => r.json()).then(d => renderProfileActivity(d.activities || []));
+            } else {
+                alert(data.error || 'Failed to revoke session');
+            }
+        })
+        .catch(() => alert('Network error'));
 }
 
 /* ========== NOTIFICATION SYSTEM ========== */

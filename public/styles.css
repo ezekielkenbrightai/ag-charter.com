@@ -428,6 +428,86 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
     .key-functions-grid { grid-template-columns: 1fr; }
 }
 
+/* ========== USER PROFILE ========== */
+.profile-header {
+    display: flex; align-items: center; gap: 24px; padding: 28px 32px;
+    background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow);
+    margin-bottom: 24px;
+}
+.avatar-circle {
+    width: 80px; height: 80px; border-radius: 50%; background: var(--primary);
+    color: #fff; display: flex; align-items: center; justify-content: center;
+    font-size: 28px; font-weight: 700; flex-shrink: 0; letter-spacing: 1px;
+}
+.profile-identity h2 { font-size: 1.6rem; margin-bottom: 4px; }
+.profile-subtitle { color: var(--text-light); font-size: 1rem; margin-bottom: 8px; }
+.profile-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+.profile-tag {
+    background: var(--bg); padding: 3px 10px; border-radius: 12px;
+    font-size: 0.82rem; color: var(--text-light); border: 1px solid var(--border);
+}
+.tier-badge {
+    display: inline-block; padding: 3px 10px; border-radius: 12px;
+    font-size: 0.82rem; font-weight: 600; color: #fff;
+    background: var(--primary);
+}
+.tier-badge[data-tier="1"] { background: #c8102e; }
+.tier-badge[data-tier="2"] { background: #d4a017; }
+.tier-badge[data-tier="3"] { background: #1e3a5f; }
+.tier-badge[data-tier="4"] { background: var(--primary); }
+.tier-badge[data-tier="5"] { background: #6366f1; }
+.tier-badge[data-tier="6"] { background: #0891b2; }
+.tier-badge[data-tier="7"] { background: #6b7280; }
+
+.profile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; }
+.profile-card {
+    background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow);
+    padding: 24px;
+}
+.profile-card h3 { font-size: 1.1rem; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+.profile-sessions-card { margin-bottom: 24px; }
+
+.profile-field { margin-bottom: 14px; }
+.profile-field label { display: block; font-size: 0.82rem; color: var(--text-light); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
+.profile-value { font-size: 0.95rem; color: var(--text); }
+.profile-input {
+    width: 100%; padding: 8px 12px; border: 1px solid var(--border); border-radius: 6px;
+    font-size: 0.95rem; font-family: inherit; background: var(--bg); transition: border-color 0.2s;
+}
+.profile-input:not(:disabled) { background: #fff; border-color: var(--primary); }
+.profile-input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(26,86,50,0.1); }
+
+.profile-edit-row { display: flex; gap: 8px; align-items: center; }
+.profile-edit-row .profile-input { flex: 1; }
+.profile-edit-actions { display: flex; gap: 8px; margin-top: 8px; }
+.profile-field-note { font-size: 0.82rem; color: var(--text-light); margin-top: 4px; }
+.profile-field-note.success { color: var(--primary); }
+.profile-field-note.error { color: var(--accent); }
+
+.btn-sm { padding: 6px 12px; font-size: 0.82rem; }
+
+/* Activity list */
+.activity-list { max-height: 400px; overflow-y: auto; }
+.activity-item {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    padding: 10px 0; border-bottom: 1px solid var(--border); gap: 12px;
+}
+.activity-item:last-child { border-bottom: none; }
+.activity-action { font-weight: 500; font-size: 0.9rem; }
+.activity-detail { font-size: 0.82rem; color: var(--text-light); }
+.activity-time { font-size: 0.78rem; color: var(--text-light); white-space: nowrap; flex-shrink: 0; }
+
+/* Session table tweaks */
+.session-table .badge-current { background: var(--primary); color: #fff; padding: 2px 8px; border-radius: 10px; font-size: 0.78rem; font-weight: 600; }
+.session-table .btn-revoke { padding: 4px 10px; font-size: 0.78rem; background: var(--accent); color: #fff; border: none; border-radius: 4px; cursor: pointer; }
+.session-table .btn-revoke:hover { background: var(--accent-light); }
+
+@media (max-width: 768px) {
+    .profile-header { flex-direction: column; text-align: center; padding: 20px; }
+    .profile-grid { grid-template-columns: 1fr; }
+    .profile-meta { justify-content: center; }
+}
+
 /* ========== PRINT ========== */
 @media print {
     .sidebar, .topbar, .menu-toggle, .skip-nav, .modal-overlay, .btn { display: none !important; }
