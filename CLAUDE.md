@@ -122,6 +122,16 @@ npm start                # Start server on PORT (default 3000)
 - `renderProfile()` uses `Promise.all()` to fire 3 API calls in parallel (profile, activity, sessions)
 - `wireEmailEdit()` and `wirePasswordChange()` attach event listeners once per init — follows lazy page pattern
 
+## Global Search
+- `buildSearchIndex()` + IIFE in `app.js` (between profile code and notification IIFE)
+- Builds ~210-entry flat array from `window.OAG` namespace + generated data arrays (`casesData`, `aidData`, `trainingData`, `workflowData`, `COUNTIES`) + `pageTitles`
+- Search: `String.includes()` on debounced input (250ms), grouped by category, `<mark>` highlights
+- RBAC: checks `navItem.style.display !== 'none'` at query time — reuses `applyTierVisibility()` mechanism
+- Navigation: clicking a result triggers `document.querySelector('[data-page="..."]').click()`
+- Keyboard: ArrowUp/Down, Enter to select, Escape to close
+- Dropdown follows notification pattern: `stopPropagation()`, outside click close, `position: absolute`
+- Null-guard at IIFE top prevents error cascading to notification system below
+
 ## Local Dev (Windows)
 - PostgreSQL 16 binary: `C:\Program Files\PostgreSQL\16\bin\psql.exe`
 - Local DB: `postgresql://postgres:postgres@localhost:5432/oag_kenya`
