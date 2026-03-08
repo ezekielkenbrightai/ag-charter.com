@@ -21,18 +21,16 @@ INSERT INTO access_tiers (level, name, description) VALUES
 INSERT INTO departments (id, name, short_name, tier, type, parent_id, head_title, color, sort_order) VALUES
 (1,  'Executive Office of the Attorney General', 'Executive Office', 'Executive Office', 'office', NULL, 'Attorney General', '#1a5632', 1),
 (2,  'Office of the Attorney General', 'AG Office', 'Executive Office', 'unit', 1, 'Attorney General', '#1a5632', 2),
-(3,  'Office of the Solicitor General', 'SG Office', 'Executive Office', 'unit', 1, 'Solicitor General', '#1a5632', 3),
-(4,  'Chief of Staff Office', 'Chief of Staff', 'Executive Office', 'unit', 1, 'Chief of Staff', '#1a5632', 4),
-(5,  'Executive Secretariat', 'Exec Secretariat', 'Executive Office', 'unit', 1, 'Head of Executive Secretariat', '#1a5632', 5),
-(6,  'ICT Advisory Unit', 'ICT Advisory', 'Executive Office', 'unit', 1, 'ICT Advisor', '#1a5632', 6);
+(5,  'Executive Secretariat', 'Exec Secretariat', 'Executive Office', 'unit', 1, 'Chief of Staff', '#1a5632', 5),
+(6,  'Advisory Unit', 'Advisory', 'Executive Office', 'unit', 1, 'ICT and Partnerships Advisors', '#1a5632', 6);
 
 -- === TIER 2: State Law Office ===
 INSERT INTO departments (id, name, short_name, tier, type, parent_id, head_title, color, sort_order) VALUES
 (10, 'State Law Office', 'SLO', 'SLO', 'office', NULL, 'Solicitor General', '#c8102e', 10),
 -- SLO Departments
 (11, 'Civil Litigation Division', 'Civil Litigation', 'SLO', 'division', 10, 'Deputy Solicitor General', '#c8102e', 11),
-(12, 'International Law Division', 'International Law', 'SLO', 'division', 10, 'Deputy Solicitor General', '#c8102e', 12),
-(13, 'Treaties Division', 'Treaties', 'SLO', 'division', 10, 'Senior Assistant Solicitor General', '#c8102e', 13),
+(12, 'International Law Division', 'International Law', 'SLO', 'division', 10, 'Senior Deputy Solicitor General', '#c8102e', 12),
+(13, 'Treaties Division', 'Treaties', 'SLO', 'division', 10, 'Senior Deputy Solicitor General', '#c8102e', 13),
 (14, 'Government Transactions Division', 'Govt Transactions', 'SLO', 'division', 10, 'Deputy Solicitor General', '#c8102e', 14),
 (15, 'Legislative Drafting Division', 'Legislative Drafting', 'SLO', 'division', 10, 'Deputy Solicitor General', '#c8102e', 15),
 (16, 'Legal Advisory and Research Division', 'Legal Advisory', 'SLO', 'division', 10, 'Deputy Solicitor General', '#c8102e', 16),
@@ -60,18 +58,17 @@ INSERT INTO departments (id, name, short_name, tier, type, parent_id, head_title
 INSERT INTO departments (id, name, short_name, tier, type, parent_id, head_title, color, sort_order) VALUES
 (50, 'State Department for Justice, Human Rights and Constitutional Affairs', 'SDJHCA', 'SDJHCA', 'office', NULL, 'Principal Secretary', '#1e3a5f', 50),
 -- SDJHCA Divisions
-(51, 'Directorate of Human Rights and Legal Education', 'Human Rights', 'SDJHCA', 'directorate', 50, 'Director', '#1e3a5f', 51),
+(51, 'Directorate of Human Rights', 'Human Rights', 'SDJHCA', 'directorate', 50, 'Deputy Solicitor General', '#1e3a5f', 51),
 (52, 'Directorate of Constitutional Implementation, Democracy and Good Governance', 'Constitutional Affairs', 'SDJHCA', 'directorate', 50, 'Director', '#1e3a5f', 52),
 (53, 'Directorate of Ethics, Integrity, Anti-Corruption and Economic Crimes', 'Anti-Corruption', 'SDJHCA', 'directorate', 50, 'Director', '#1e3a5f', 53),
 (54, 'GJLOS Sector Coordination', 'GJLOS', 'SDJHCA', 'division', 50, 'Coordinator', '#1e3a5f', 54),
-(55, 'National Anti-Corruption Campaign Steering Committee', 'NACC-SC', 'SDJHCA', 'committee', 50, 'Chairperson', '#1e3a5f', 55),
+(55, 'National Anti-Corruption Campaign Steering Committee', 'NACC-SC', 'SDJHCA', 'committee', 50, 'Director', '#1e3a5f', 55),
 (56, 'National Coroners Service', 'Coroners', 'SDJHCA', 'division', 50, 'Chief Coroner', '#1e3a5f', 56),
 -- SDJHCA Semi-Autonomous Agencies
 (60, 'National Legal Aid Service', 'NLAS', 'SDJHCA', 'agency', 50, 'Director General', '#1e3a5f', 60),
 (61, 'Victim Protection Board', 'VPB', 'SDJHCA', 'agency', 50, 'Chairperson', '#1e3a5f', 61),
 (62, 'Witness Protection Agency', 'WPA', 'SDJHCA', 'agency', 50, 'Director', '#1e3a5f', 62),
-(63, 'Assets Recovery Agency', 'ARA', 'SDJHCA', 'agency', 50, 'Director', '#1e3a5f', 63),
-(64, 'Multi-Agency Anti-Corruption Team', 'MAT', 'SDJHCA', 'agency', 50, 'Head of Secretariat', '#1e3a5f', 64);
+(63, 'Assets Recovery Agency', 'ARA', 'SDJHCA', 'agency', 50, 'Director', '#1e3a5f', 63);
 
 -- Reset sequence
 SELECT setval('departments_id_seq', 70);
@@ -89,15 +86,15 @@ INSERT INTO users (staff_id, email, password_hash, full_name, title, department_
 
 -- === TIER 2: Executive Dashboard (4 users) ===
 INSERT INTO users (staff_id, email, password_hash, full_name, title, department_id, tier_level) VALUES
-('AG/EXE/001', 'ag@ag.go.ke', '__HASH__', 'Hon. Dorcas Aganda Oduor, SC, OGW, EBS', 'Attorney General', 2, 2),
+('AG/EXE/001', 'ag@ag.go.ke', '__HASH__', 'Hon. Dorcas Agik Oduor, SC, OGW, EBS', 'Attorney General', 2, 2),
 ('AG/EXE/002', 'secretariat@ag.go.ke', '__HASH__', 'Dr. Kennedy Ogeto', 'Head of Executive Secretariat', 5, 2),
 ('AG/EXE/003', 'advisor1@ag.go.ke', '__HASH__', 'Prof. Patricia Kameri-Mbote', 'Senior Advisor (Legal Policy)', 2, 2),
 ('AG/EXE/004', 'advisor2@ag.go.ke', '__HASH__', 'Dr. Githu Muigai', 'Senior Advisor (International Law)', 2, 2);
 
 -- === TIER 3: Full State Dept Access (5 users) ===
 INSERT INTO users (staff_id, email, password_hash, full_name, title, department_id, tier_level) VALUES
-('AG/SG/001', 'sg@ag.go.ke', '__HASH__', 'Shadrack Mose', 'Solicitor General', 3, 3),
-('DOJ/PS/001', 'ps@justice.go.ke', '__HASH__', 'Hon. Judith Pareno', 'Principal Secretary, SDJHCA', 50, 3),
+('AG/SG/001', 'sg@ag.go.ke', '__HASH__', 'Hon. Shadrack J. Mose', 'Solicitor General', 3, 3),
+('DOJ/PS/001', 'ps@justice.go.ke', '__HASH__', 'Hon. Judith R. Pareno', 'Principal Secretary, SDJHCA', 50, 3),
 ('AG/ICT/002', 'ict.director@ag.go.ke', '__HASH__', 'Eng. David Njoroge', 'ICT Director', 23, 3),
 ('AG/ICT/003', 'ict.deputy@ag.go.ke', '__HASH__', 'Grace Wanjiku Maina', 'Deputy ICT Director', 23, 3),
 ('AG/EXE/005', 'tech.advisor@ag.go.ke', '__HASH__', 'Dr. Samuel Kiama', 'Technical Advisor', 1, 3);

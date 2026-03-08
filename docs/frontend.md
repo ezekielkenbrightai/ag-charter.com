@@ -61,6 +61,6 @@ Lines 1072-1222— Notification System: IIFE with bell toggle, badge, dropdown
 
 ## Style Guide
 - Government green: `#1a5632`, Red: `#c8102e`, Gold: `#d4a017`, Navy: `#1e3a5f`
-- AG honorific: `Hon. Dorcas Aganda Oduor, SC, OGW, EBS`
-- PS honorific: `Hon. Judith Pareno`
-- SG: `Shadrack Mose`
+- AG honorific: `Hon. Dorcas Agik Oduor, SC, OGW, EBS`
+- PS honorific: `Hon. Judith R. Pareno`
+- SG: `Hon. Shadrack J. Mose`
