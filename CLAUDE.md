@@ -18,7 +18,7 @@ db/
   index.js             # PG Pool (SSL in prod, max 20)
   init.js              # Schema + seed runner (__HASH__ → bcrypt)
   schema.sql           # 8 tables: access_tiers, departments, users, sessions, pc_*, audit_log
-  seed.sql             # 7 tiers, 43 departments, 80 users, 6 PC categories, 36 indicators, 65 sub-indicators
+  seed.sql             # 7 tiers, 40 departments, 80 users, 6 PC categories, 36 indicators, 65 sub-indicators
 routes/
   auth.js              # POST login/logout, GET me
   users.js             # CRUD (Tier 1-2 only)
@@ -48,6 +48,26 @@ npm run db:reset         # Same as db:init (schema has DROP IF EXISTS)
 npm start                # Start server on PORT (default 3000)
 ```
 
+## Railway Deployment
+
+### Token & CLI Access
+- **Railway project token** is stored in `.env` as `RAILWAY_TOKEN`
+- Read it from `.env` and prefix commands: `RAILWAY_TOKEN=<token> railway <command> --service ag-charter.com`
+- Project tokens support: `status`, `vars`, `logs`, `service` — NOT `link`, `list`, `whoami`
+
+### Seeding Production DB
+```bash
+# 1. Get the DATABASE_PUBLIC_URL from Railway Postgres service:
+RAILWAY_TOKEN=<token> railway vars --service Postgres
+# 2. Run init.js against the public proxy URL:
+DATABASE_URL="postgresql://postgres:<pw>@turntable.proxy.rlwy.net:31389/railway" NODE_ENV=production node db/init.js
+```
+
+### Deploy Flow
+1. `git push origin main` triggers Railway auto-deploy (~60s)
+2. If `seed.sql` changed, also re-seed the DB (auto-deploy does NOT re-seed)
+3. Verify: `curl https://ag-charter.com/login.html`
+
 ## Critical Rules
 1. **Footer placement**: `<footer>` MUST be inside `<main>`, not a sibling — `body { display: flex }` creates columns. See [gotchas](docs/gotchas.md).
 2. **JS error cascading**: An uncaught error in `app.js` blocks everything below it (search, notifications). Always null-guard `getElementById()`. See [gotchas](docs/gotchas.md).
@@ -55,3 +75,6 @@ npm start                # Start server on PORT (default 3000)
 4. **Auth field name**: Backend expects `staff_id` (snake_case), NOT `staffId`.
 5. **RBAC**: Lower tier number = more access. `requireTier(n)` allows `tier_level <= n`.
 6. **Search index**: Adding new data sources? Update `buildSearchIndex()` in `app.js`. See [frontend](docs/frontend.md).
+7. **Sidebar user name**: Comes from the **database** (`users.full_name`), NOT `oag-data.js`. If you change a name in `oag-data.js`, also update `seed.sql` and re-seed.
+8. **Department FK constraint**: When removing departments from `seed.sql`, check that no users reference the deleted `department_id`. Grep for `, <id>,` in the users section.
+9. **Select event listeners**: Use `change` event for `<select>` elements, NOT `input`. The `input` event doesn't fire reliably on dropdowns.
