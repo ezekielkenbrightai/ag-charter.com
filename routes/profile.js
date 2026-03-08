@@ -223,4 +223,49 @@ router.get('/activity', async (req, res) => {
   }
 });
 
+// GET /api/profile/action-logs — full action logs for last 30 days (paginated)
+router.get('/action-logs', async (req, res) => {
+  try {
+    const days = Math.min(parseInt(req.query.days) || 30, 90);
+    const pageOffset = Math.max(parseInt(req.query.offset) || 0, 0);
+    const limit = 50;
+    const { action } = req.query;
+
+    let sql = `
+      SELECT id, action, details, ip_address, created_at
+      FROM audit_log
+      WHERE user_id = $1 AND created_at >= NOW() - INTERVAL '1 day' * $2
+    `;
+    const params = [req.user.id, days];
+    let idx = 3;
+
+    if (action) {
+      sql += ` AND action = $${idx++}`;
+      params.push(action);
+    }
+
+    // Count total
+    const countSql = sql.replace(/SELECT[\s\S]*?FROM/, 'SELECT COUNT(*) as total FROM');
+    const countResult = await db.query(countSql, params);
+    const total = parseInt(countResult.rows[0].total);
+
+    sql += ` ORDER BY created_at DESC LIMIT $${idx++} OFFSET $${idx++}`;
+    params.push(limit, pageOffset);
+
+    const result = await db.query(sql, params);
+
+    res.json({
+      entries: result.rows,
+      total,
+      limit,
+      offset: pageOffset,
+      has_more: pageOffset + limit < total,
+      days
+    });
+  } catch (err) {
+    console.error('Action logs error:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 module.exports = router;

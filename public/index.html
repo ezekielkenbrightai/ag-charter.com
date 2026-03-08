@@ -81,11 +81,17 @@
             <li class="nav-item nav-admin-only" data-page="users" data-max-tier="2">
                 <span class="nav-icon">&#128100;</span> User Management
             </li>
+            <li class="nav-item nav-admin-only" data-page="audit-trail" data-max-tier="2">
+                <span class="nav-icon">&#128270;</span> Audit Trail
+            </li>
 
             <!-- My Account -->
             <li class="nav-group-label">My Account</li>
             <li class="nav-item" data-page="profile">
                 <span class="nav-icon">&#128100;</span> My Profile
+            </li>
+            <li class="nav-item" data-page="action-logs">
+                <span class="nav-icon">&#128203;</span> Action Logs
             </li>
 
             <!-- External Portals -->
@@ -821,6 +827,99 @@
                         </tbody>
                     </table>
                 </div>
+            </section>
+
+            <!-- ==================== ACTION LOGS (My Account) ==================== -->
+            <section class="page" id="page-action-logs">
+                <div class="page-header">
+                    <h2>My Action Logs</h2>
+                    <div class="action-logs-controls">
+                        <select id="actionLogDaysFilter">
+                            <option value="7">Last 7 days</option>
+                            <option value="14">Last 14 days</option>
+                            <option value="30" selected>Last 30 days</option>
+                            <option value="60">Last 60 days</option>
+                            <option value="90">Last 90 days</option>
+                        </select>
+                        <select id="actionLogTypeFilter">
+                            <option value="">All Actions</option>
+                            <option value="login">Sign In</option>
+                            <option value="logout">Sign Out</option>
+                            <option value="update_email">Email Update</option>
+                            <option value="change_password">Password Change</option>
+                            <option value="revoke_session">Session Revoke</option>
+                            <option value="update_indicator">Indicator Update</option>
+                            <option value="create_user">User Created</option>
+                            <option value="update_user">User Updated</option>
+                            <option value="deactivate_user">User Deactivated</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="action-logs-summary" id="actionLogsSummary"></div>
+                <div class="table-container">
+                    <table class="data-table" id="actionLogsTable">
+                        <thead>
+                            <tr>
+                                <th>Date &amp; Time</th>
+                                <th>Action</th>
+                                <th>Details</th>
+                                <th>IP Address</th>
+                            </tr>
+                        </thead>
+                        <tbody id="actionLogsBody">
+                            <tr><td colspan="4" class="loading-text">Loading action logs...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pagination-bar" id="actionLogsPagination"></div>
+            </section>
+
+            <!-- ==================== AUDIT TRAIL (Admin Tier 1-2) ==================== -->
+            <section class="page" id="page-audit-trail">
+                <div class="page-header">
+                    <h2>System Audit Trail</h2>
+                    <div class="audit-trail-controls">
+                        <select id="auditDaysFilter">
+                            <option value="1">Last 24 hours</option>
+                            <option value="7">Last 7 days</option>
+                            <option value="14">Last 14 days</option>
+                            <option value="30" selected>Last 30 days</option>
+                            <option value="90">Last 90 days</option>
+                        </select>
+                        <select id="auditActionFilter">
+                            <option value="">All Actions</option>
+                            <option value="login">Sign In</option>
+                            <option value="logout">Sign Out</option>
+                            <option value="update_email">Email Update</option>
+                            <option value="change_password">Password Change</option>
+                            <option value="revoke_session">Session Revoke</option>
+                            <option value="update_indicator">Indicator Update</option>
+                            <option value="create_user">User Created</option>
+                            <option value="update_user">User Updated</option>
+                            <option value="deactivate_user">User Deactivated</option>
+                        </select>
+                        <input type="text" placeholder="Search by name, staff ID, or details..." id="auditSearch">
+                    </div>
+                </div>
+                <div class="audit-trail-stats" id="auditTrailStats"></div>
+                <div class="table-container">
+                    <table class="data-table" id="auditTrailTable">
+                        <thead>
+                            <tr>
+                                <th>Date &amp; Time</th>
+                                <th>User</th>
+                                <th>Staff ID</th>
+                                <th>Action</th>
+                                <th>Details</th>
+                                <th>IP Address</th>
+                            </tr>
+                        </thead>
+                        <tbody id="auditTrailBody">
+                            <tr><td colspan="6" class="loading-text">Loading audit trail...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pagination-bar" id="auditTrailPagination"></div>
             </section>
         </div>
 

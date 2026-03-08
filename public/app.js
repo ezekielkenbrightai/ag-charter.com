@@ -29,7 +29,9 @@ const pageTitles = {
     training: 'Training & Capacity Building',
     sdjhca: 'State Department for Justice, Human Rights and Constitutional Affairs',
     users: 'User Management',
-    profile: 'My Profile'
+    'audit-trail': 'System Audit Trail',
+    profile: 'My Profile',
+    'action-logs': 'My Action Logs'
 };
 
 // Track which pages have been initialized (lazy rendering)
@@ -490,7 +492,9 @@ function initPage(page) {
         case 'sdjhca': renderSDJHCA(); break;
         case 'performance': renderPerformanceContract(); break;
         case 'users': renderUserManagement(); break;
+        case 'audit-trail': renderAuditTrail(); break;
         case 'profile': renderProfile(); break;
+        case 'action-logs': renderActionLogs(); break;
     }
 }
 
@@ -1003,6 +1007,160 @@ function revokeSession(sid) {
             }
         })
         .catch(() => alert('Network error'));
+}
+
+/* ========== ACTION LOGS PAGE (My Account) ========== */
+function renderActionLogs() {
+    fetchActionLogs();
+
+    // Wire up filters
+    var daysFilter = document.getElementById('actionLogDaysFilter');
+    var typeFilter = document.getElementById('actionLogTypeFilter');
+    if (daysFilter) daysFilter.addEventListener('change', function() { fetchActionLogs(); });
+    if (typeFilter) typeFilter.addEventListener('change', function() { fetchActionLogs(); });
+}
+
+function fetchActionLogs(offset) {
+    offset = offset || 0;
+    var days = document.getElementById('actionLogDaysFilter').value || 30;
+    var action = document.getElementById('actionLogTypeFilter').value;
+    var url = '/api/profile/action-logs?days=' + days + '&offset=' + offset;
+    if (action) url += '&action=' + encodeURIComponent(action);
+
+    var tbody = document.getElementById('actionLogsBody');
+    tbody.innerHTML = '<tr><td colspan="4" class="loading-text">Loading...</td></tr>';
+
+    fetch(url).then(function(r) { return r.json(); }).then(function(data) {
+        var entries = data.entries || [];
+        var summary = document.getElementById('actionLogsSummary');
+
+        // Summary stats
+        summary.innerHTML = '<div class="log-stats">' +
+            '<div class="log-stat"><span class="log-stat-num">' + data.total + '</span><span class="log-stat-label">Total Actions</span></div>' +
+            '<div class="log-stat"><span class="log-stat-num">' + data.days + '</span><span class="log-stat-label">Day Range</span></div>' +
+            '</div>';
+
+        if (entries.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:#6b7280;padding:32px">No actions found in the selected period</td></tr>';
+            document.getElementById('actionLogsPagination').innerHTML = '';
+            return;
+        }
+
+        tbody.innerHTML = entries.map(function(e) {
+            return '<tr>' +
+                '<td>' + formatDate(e.created_at) + '</td>' +
+                '<td><span class="action-badge action-' + e.action + '">' + formatAction(e.action) + '</span></td>' +
+                '<td>' + escapeHtmlSafe(e.details || '—') + '</td>' +
+                '<td><code>' + escapeHtmlSafe(e.ip_address || '—') + '</code></td>' +
+                '</tr>';
+        }).join('');
+
+        // Pagination
+        renderPagination('actionLogsPagination', data.offset, data.limit, data.total, function(newOffset) {
+            fetchActionLogs(newOffset);
+        });
+    }).catch(function() {
+        tbody.innerHTML = '<tr><td colspan="4" class="error-text">Failed to load action logs</td></tr>';
+    });
+}
+
+/* ========== AUDIT TRAIL PAGE (Admin Tier 1-2) ========== */
+function renderAuditTrail() {
+    fetchAuditTrail();
+
+    // Wire up filters
+    var daysFilter = document.getElementById('auditDaysFilter');
+    var actionFilter = document.getElementById('auditActionFilter');
+    var searchInput = document.getElementById('auditSearch');
+    var debounce = null;
+
+    if (daysFilter) daysFilter.addEventListener('change', function() { fetchAuditTrail(); });
+    if (actionFilter) actionFilter.addEventListener('change', function() { fetchAuditTrail(); });
+    if (searchInput) searchInput.addEventListener('input', function() {
+        clearTimeout(debounce);
+        debounce = setTimeout(function() { fetchAuditTrail(); }, 400);
+    });
+}
+
+function fetchAuditTrail(offset) {
+    offset = offset || 0;
+    var days = document.getElementById('auditDaysFilter').value || 30;
+    var action = document.getElementById('auditActionFilter').value;
+    var search = document.getElementById('auditSearch').value.trim();
+    var url = '/api/users/audit-log?days=' + days + '&offset=' + offset;
+    if (action) url += '&action=' + encodeURIComponent(action);
+    if (search) url += '&search=' + encodeURIComponent(search);
+
+    var tbody = document.getElementById('auditTrailBody');
+    tbody.innerHTML = '<tr><td colspan="6" class="loading-text">Loading...</td></tr>';
+
+    fetch(url).then(function(r) { return r.json(); }).then(function(data) {
+        var entries = data.entries || [];
+        var stats = document.getElementById('auditTrailStats');
+
+        stats.innerHTML = '<div class="log-stats">' +
+            '<div class="log-stat"><span class="log-stat-num">' + data.total + '</span><span class="log-stat-label">Total Entries</span></div>' +
+            '</div>';
+
+        if (entries.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#6b7280;padding:32px">No audit entries found</td></tr>';
+            document.getElementById('auditTrailPagination').innerHTML = '';
+            return;
+        }
+
+        tbody.innerHTML = entries.map(function(e) {
+            return '<tr>' +
+                '<td>' + formatDate(e.created_at) + '</td>' +
+                '<td>' + escapeHtmlSafe(e.user_name || 'System') + '</td>' +
+                '<td><code>' + escapeHtmlSafe(e.user_staff_id || '—') + '</code></td>' +
+                '<td><span class="action-badge action-' + e.action + '">' + formatAction(e.action) + '</span></td>' +
+                '<td>' + escapeHtmlSafe(e.details || '—') + '</td>' +
+                '<td><code>' + escapeHtmlSafe(e.ip_address || '—') + '</code></td>' +
+                '</tr>';
+        }).join('');
+
+        // Pagination
+        renderPagination('auditTrailPagination', data.offset, data.limit, data.total, function(newOffset) {
+            fetchAuditTrail(newOffset);
+        });
+    }).catch(function() {
+        tbody.innerHTML = '<tr><td colspan="6" class="error-text">Failed to load audit trail</td></tr>';
+    });
+}
+
+/* ========== SHARED PAGINATION HELPER ========== */
+function renderPagination(containerId, offset, limit, total, onPage) {
+    var container = document.getElementById(containerId);
+    if (!container) return;
+    if (total <= limit) { container.innerHTML = ''; return; }
+
+    var currentPage = Math.floor(offset / limit) + 1;
+    var totalPages = Math.ceil(total / limit);
+    var html = '<div class="pagination">';
+
+    if (currentPage > 1) {
+        html += '<button class="btn btn-sm btn-secondary" data-offset="' + ((currentPage - 2) * limit) + '">Previous</button>';
+    }
+    html += '<span class="pagination-info">Page ' + currentPage + ' of ' + totalPages + ' (' + total + ' entries)</span>';
+    if (currentPage < totalPages) {
+        html += '<button class="btn btn-sm btn-secondary" data-offset="' + (currentPage * limit) + '">Next</button>';
+    }
+    html += '</div>';
+    container.innerHTML = html;
+
+    container.querySelectorAll('button[data-offset]').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            onPage(parseInt(btn.getAttribute('data-offset')));
+        });
+    });
+}
+
+/* ========== HTML ESCAPE HELPER ========== */
+function escapeHtmlSafe(str) {
+    if (!str) return '';
+    var d = document.createElement('div');
+    d.textContent = str;
+    return d.innerHTML;
 }
 
 /* ========== GLOBAL SEARCH ========== */

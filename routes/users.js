@@ -1,11 +1,12 @@
 /**
  * User Management Routes (Admin-only: Tier 1-2)
  *
- * GET    /api/users       — List all users (with department & tier info)
- * GET    /api/users/:id   — Get single user
- * POST   /api/users       — Create new user
- * PUT    /api/users/:id   — Update user
- * DELETE /api/users/:id   — Soft-delete (deactivate) user
+ * GET    /api/users            — List all users (with department & tier info)
+ * GET    /api/users/audit-log  — Full audit trail (Tier 1-2 only)
+ * GET    /api/users/:id        — Get single user
+ * POST   /api/users            — Create new user
+ * PUT    /api/users/:id        — Update user
+ * DELETE /api/users/:id        — Soft-delete (deactivate) user
  */
 const express = require('express');
 const bcrypt = require('bcryptjs');
@@ -58,6 +59,61 @@ router.get('/', async (req, res) => {
     res.json({ users: result.rows, total: result.rows.length });
   } catch (err) {
     console.error('List users error:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// GET /api/users/audit-log — Full audit trail for admins (Tier 1-2)
+router.get('/audit-log', async (req, res) => {
+  try {
+    const { user_id, action, days, search, offset } = req.query;
+    const daysLimit = Math.min(parseInt(days) || 30, 365);
+    const pageOffset = Math.max(parseInt(offset) || 0, 0);
+    const limit = 50;
+
+    let sql = `
+      SELECT a.id, a.user_id, a.action, a.details, a.ip_address, a.created_at,
+             u.full_name as user_name, u.staff_id as user_staff_id
+      FROM audit_log a
+      LEFT JOIN users u ON a.user_id = u.id
+      WHERE a.created_at >= NOW() - INTERVAL '1 day' * $1
+    `;
+    const params = [daysLimit];
+    let idx = 2;
+
+    if (user_id) {
+      sql += ` AND a.user_id = $${idx++}`;
+      params.push(user_id);
+    }
+    if (action) {
+      sql += ` AND a.action = $${idx++}`;
+      params.push(action);
+    }
+    if (search) {
+      sql += ` AND (a.details ILIKE $${idx} OR u.full_name ILIKE $${idx} OR u.staff_id ILIKE $${idx})`;
+      params.push(`%${search}%`);
+      idx++;
+    }
+
+    // Count total matching records
+    const countSql = sql.replace(/SELECT[\s\S]*?FROM/, 'SELECT COUNT(*) as total FROM');
+    const countResult = await db.query(countSql, params);
+    const total = parseInt(countResult.rows[0].total);
+
+    sql += ` ORDER BY a.created_at DESC LIMIT $${idx++} OFFSET $${idx++}`;
+    params.push(limit, pageOffset);
+
+    const result = await db.query(sql, params);
+
+    res.json({
+      entries: result.rows,
+      total,
+      limit,
+      offset: pageOffset,
+      has_more: pageOffset + limit < total
+    });
+  } catch (err) {
+    console.error('Audit log error:', err);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
