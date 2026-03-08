@@ -41,13 +41,11 @@ window.OAG = (function () {
     EXECUTIVE: {
       name: 'Executive Office of the Attorney General',
       color: '#1a5632',
-      head: { title: 'Attorney General', name: 'Hon. Dorcas Aganda Oduor, SC, OGW, EBS' },
+      head: { title: 'Attorney General', name: 'Hon. Dorcas Agik Oduor, SC, OGW, EBS' },
       units: [
         { name: 'Office of the Attorney General', head: 'Attorney General' },
-        { name: 'Office of the Solicitor General', head: 'Solicitor General' },
-        { name: 'Chief of Staff Office', head: 'Chief of Staff' },
-        { name: 'Executive Secretariat', head: 'Head of Executive Secretariat' },
-        { name: 'ICT Advisory Unit', head: 'ICT Advisor' }
+        { name: 'Executive Secretariat', head: 'Chief of Staff' },
+        { name: 'Advisory Unit', head: 'ICT and Partnerships Advisors' }
       ]
     },
 
@@ -55,11 +53,11 @@ window.OAG = (function () {
     SLO: {
       name: 'State Law Office',
       color: '#c8102e',
-      head: { title: 'Solicitor General', name: 'Shadrack Mose' },
+      head: { title: 'Solicitor General', name: 'Hon. Shadrack J. Mose' },
       divisions: [
         { name: 'Civil Litigation Division', head: 'Deputy Solicitor General' },
-        { name: 'International Law Division', head: 'Deputy Solicitor General' },
-        { name: 'Treaties Division', head: 'Senior Asst Solicitor General' },
+        { name: 'International Law Division', head: 'Senior Deputy Solicitor General' },
+        { name: 'Treaties Division', head: 'Senior Deputy Solicitor General' },
         { name: 'Government Transactions Division', head: 'Deputy Solicitor General' },
         { name: 'Legislative Drafting Division', head: 'Deputy Solicitor General' },
         { name: 'Legal Advisory and Research Division', head: 'Deputy Solicitor General' },
@@ -90,23 +88,22 @@ window.OAG = (function () {
 
     // Tier 3: State Department for Justice, HR & Constitutional Affairs
     SDJHCA: {
-      name: 'State Department for Justice, Human Rights & Constitutional Affairs',
+      name: 'State Department for Justice, Human Rights and Constitutional Affairs',
       color: '#1e3a5f',
-      head: { title: 'Principal Secretary', name: 'Hon. Judith Pareno' },
+      head: { title: 'Principal Secretary', name: 'Hon. Judith R. Pareno' },
       directorates: [
-        { name: 'Directorate of Human Rights & Legal Education', head: 'Director', focus: 'UDHR, ICCPR, ICESCR compliance; civic education' },
+        { name: 'Directorate of Human Rights', head: 'Deputy Solicitor General', focus: 'UDHR, ICCPR, ICESCR compliance; civic education' },
         { name: 'Directorate of Constitutional Implementation', head: 'Director', focus: 'Chapter 4 Bill of Rights; constitutional commissions oversight' },
         { name: 'Directorate of Ethics & Anti-Corruption', head: 'Director', focus: 'NEAP implementation; Whistleblower Protection' },
         { name: 'GJLOS Sector Coordination', head: 'Coordinator', focus: 'Justice sector reform coordination' },
-        { name: 'National Anti-Corruption Campaign Steering Committee', head: 'Chairperson', focus: 'National Ethics and Anti-Corruption Policy' },
+        { name: 'National Anti-Corruption Campaign Steering Committee', head: 'Director', focus: 'National Ethics and Anti-Corruption Policy' },
         { name: 'National Coroners Service', head: 'Chief Coroner', focus: 'Death investigation and certification' }
       ],
       agencies: [
         { name: 'National Legal Aid Service', short: 'NLAS', head: 'Director General', mandate: 'Legal aid in all 47 counties; target 80,000 citizens FY 2025/26' },
         { name: 'Victim Protection Board', short: 'VPB', head: 'Chairperson', mandate: 'Victim protection and compensation' },
         { name: 'Witness Protection Agency', short: 'WPA', head: 'Director', mandate: 'Witness safety and relocation' },
-        { name: 'Assets Recovery Agency', short: 'ARA', head: 'Director', mandate: 'Recovery of proceeds of crime' },
-        { name: 'Multi-Agency Anti-Corruption Team', short: 'MAT', head: 'Head of Secretariat', mandate: 'Inter-agency anti-corruption coordination' }
+        { name: 'Assets Recovery Agency', short: 'ARA', head: 'Director', mandate: 'Recovery of proceeds of crime' }
       ]
     }
   };

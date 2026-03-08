@@ -27,7 +27,7 @@ const pageTitles = {
     'legal-aid': 'Legal Aid Services — Sheria Mtaani',
     counties: 'County Office Decentralization',
     training: 'Training & Capacity Building',
-    sdjhca: 'State Department for Justice, Human Rights & Constitutional Affairs',
+    sdjhca: 'State Department for Justice, Human Rights and Constitutional Affairs',
     users: 'User Management',
     profile: 'My Profile'
 };
@@ -93,6 +93,32 @@ function populateCountySelect(selectEl) {
 }
 document.querySelectorAll('#caseCountyFilter, #caseModalCounty, #aidModalCounty').forEach(populateCountySelect);
 
+/* ========== POPULATE COUNSEL DROPDOWNS (staff with IDs) ========== */
+const staffCounsel = [
+    { id: 'AG/CIV/002', name: 'Amina Wanjiku' },
+    { id: 'AG/CIV/003', name: 'Brian Ochieng' },
+    { id: 'AG/CIV/004', name: 'Catherine Njeri' },
+    { id: 'AG/INT/002', name: 'David Kiplagat' },
+    { id: 'AG/INT/003', name: 'Elizabeth Akinyi' },
+    { id: 'AG/TRE/002', name: 'Francis Munyao' },
+    { id: 'AG/GTD/002', name: 'Gladys Cheruiyot' },
+    { id: 'AG/GTD/003', name: 'Hassan Omar' },
+    { id: 'AG/GTD/004', name: 'Irene Nzisa' },
+    { id: 'AG/LEG/002', name: 'John Mwenda' },
+    { id: 'AG/LEG/003', name: 'Kavata Mwikali' },
+    { id: 'AG/LAR/002', name: 'Lydia Nyaga' },
+    { id: 'AG/LAR/003', name: 'Moses Simiyu' },
+    { id: 'AG/LAR/004', name: 'Nelly Tanui' }
+];
+function populateCounselSelect(selectEl) {
+    staffCounsel.forEach(s => {
+        const opt = document.createElement('option');
+        opt.value = s.name; opt.textContent = s.id + ' — ' + s.name;
+        selectEl.appendChild(opt);
+    });
+}
+document.querySelectorAll('#caseModalCounsel').forEach(populateCounselSelect);
+
 /* ========== SAMPLE DATA GENERATORS ========== */
 const caseTypes = ['Civil Litigation','Government Transactions','International Law','Constitutional Petition','Arbitration','Legal Advisory'];
 const statuses = ['Open','In Progress','Under Review','Resolved','Closed'];
@@ -151,21 +177,27 @@ function renderCases(data) {
 renderCases(casesData);
 
 // Case filters
-['caseTypeFilter','caseStatusFilter','casePriorityFilter','caseCountyFilter','caseSearch'].forEach(id => {
-    document.getElementById(id).addEventListener('input', () => {
-        const type = document.getElementById('caseTypeFilter').value;
-        const status = document.getElementById('caseStatusFilter').value;
-        const priority = document.getElementById('casePriorityFilter').value;
-        const county = document.getElementById('caseCountyFilter').value;
-        const search = document.getElementById('caseSearch').value.toLowerCase();
-        const filtered = casesData.filter(c =>
-            (!type || c.type === type) && (!status || c.status === status) &&
-            (!priority || c.priority === priority) && (!county || c.county === county) &&
-            (!search || c.caseNo.toLowerCase().includes(search) || c.title.toLowerCase().includes(search))
-        );
-        renderCases(filtered);
+['caseTypeFilter','caseStatusFilter','casePriorityFilter','caseCountyFilter'].forEach(id => {
+    document.getElementById(id).addEventListener('change', () => {
+        applyFilters();
     });
 });
+document.getElementById('caseSearch').addEventListener('input', () => {
+    applyFilters();
+});
+function applyFilters() {
+    const type = document.getElementById('caseTypeFilter').value;
+    const status = document.getElementById('caseStatusFilter').value;
+    const priority = document.getElementById('casePriorityFilter').value;
+    const county = document.getElementById('caseCountyFilter').value;
+    const search = document.getElementById('caseSearch').value.toLowerCase();
+    const filtered = casesData.filter(c =>
+        (!type || c.type === type) && (!status || c.status === status) &&
+        (!priority || c.priority === priority) && (!county || c.county === county) &&
+        (!search || c.caseNo.toLowerCase().includes(search) || c.title.toLowerCase().includes(search))
+    );
+    renderCases(filtered);
+}
 
 /* ========== LEGAL AID TABLE ========== */
 const aidCategories = ['Land Disputes','Probate & Administration','Children in Conflict with Law','Family Law','Employment Disputes','Criminal Defense'];
@@ -213,12 +245,77 @@ const workflowData = Array.from({length: 12}, (_, i) => ({
     days: randInt(1, 21),
     status: randItem(['Pending','In Progress','Awaiting Approval'])
 }));
-document.getElementById('workflowTableBody').innerHTML = workflowData.map(w => `<tr>
-    <td><strong>${w.id}</strong></td><td>${w.type}</td><td>${w.requester}</td>
-    <td>${w.step}</td><td>${w.assigned}</td><td>${w.days}</td>
-    <td>${statusBadge(w.status === 'Pending' ? 'Open' : w.status === 'In Progress' ? 'In Progress' : 'Under Review')}</td>
-    <td><button class="btn btn-sm btn-primary">Advance</button></td>
-</tr>`).join('');
+function renderWorkflows(data) {
+    document.getElementById('workflowTableBody').innerHTML = data.map((w, idx) => `<tr>
+        <td><strong>${w.id}</strong></td><td>${w.type}</td><td>${w.requester}</td>
+        <td>${w.step}</td><td>${w.assigned}</td><td>${w.days}</td>
+        <td>${statusBadge(w.status === 'Pending' ? 'Open' : w.status === 'In Progress' ? 'In Progress' : 'Under Review')}</td>
+        <td><button class="btn btn-sm btn-primary" data-wf-idx="${idx}">Advance</button></td>
+    </tr>`).join('');
+}
+renderWorkflows(workflowData);
+
+// Advance button handler (event delegation)
+document.getElementById('workflowTableBody').addEventListener('click', function(e) {
+    const btn = e.target.closest('[data-wf-idx]');
+    if (!btn) return;
+    const idx = parseInt(btn.dataset.wfIdx);
+    const wf = workflowData[idx];
+    if (!wf) return;
+    const stepIdx = wfSteps.indexOf(wf.step);
+    if (stepIdx < wfSteps.length - 1) {
+        wf.step = wfSteps[stepIdx + 1];
+        wf.status = wf.step === 'Completed' ? 'Completed' : 'In Progress';
+        renderWorkflows(workflowData);
+    }
+});
+
+/* ========== NEW CASE FORM HANDLER ========== */
+document.getElementById('registerCaseBtn').addEventListener('click', function() {
+    const title = document.getElementById('caseModalTitle').value.trim();
+    const type = document.getElementById('caseModalType').value;
+    const county = document.getElementById('caseModalCounty').value;
+    const priority = document.getElementById('caseModalPriority').value;
+    const counsel = document.getElementById('caseModalCounsel').value;
+    const date = document.getElementById('caseModalDate').value;
+    if (!title) { alert('Please enter a case title.'); return; }
+    if (!counsel) { alert('Please select assigned counsel.'); return; }
+    const newCase = {
+        caseNo: `OAG/2026/${padNum(casesData.length + 1, 4)}`,
+        title: title,
+        type: type,
+        county: county || 'Nairobi',
+        priority: priority,
+        status: 'Open',
+        counsel: counsel,
+        filed: date || new Date().toISOString().split('T')[0]
+    };
+    casesData.unshift(newCase);
+    renderCases(casesData);
+    closeModal('newCaseModal');
+    // Reset form
+    document.getElementById('caseModalTitle').value = '';
+    document.getElementById('caseModalDate').value = '';
+});
+
+/* ========== NEW WORKFLOW FORM HANDLER ========== */
+document.getElementById('submitWorkflowBtn').addEventListener('click', function() {
+    const type = document.getElementById('wfModalType').value;
+    const requester = document.getElementById('wfModalRequester').value;
+    if (!requester) { alert('Please select a requester MDA.'); return; }
+    const newWf = {
+        id: `WF/2026/${padNum(workflowData.length + 1, 4)}`,
+        type: type,
+        requester: requester,
+        step: 'Submitted',
+        assigned: randItem(counselNames),
+        days: 0,
+        status: 'Pending'
+    };
+    workflowData.unshift(newWf);
+    renderWorkflows(workflowData);
+    closeModal('newWorkflowModal');
+});
 
 /* ========== PERFORMANCE TABLE (legacy — now API-driven via initPerformance) ========== */
 const departments = ['Civil Litigation','Government Transactions','International Law','Legislative Drafting','Legal Advisory','Registrar General'];
@@ -534,15 +631,18 @@ function renderSDJHCA() {
 /* ========== PERFORMANCE CONTRACT PAGE (API-driven) ========== */
 function renderPerformanceContract() {
     fetch('/api/performance/summary')
-        .then(r => r.json())
+        .then(r => { if (!r.ok) throw new Error('summary'); return r.json(); })
         .then(data => {
             document.getElementById('pc-overall-score').textContent = data.overall_score + '%';
             document.getElementById('pc-indicator-count').textContent =
                 data.categories.reduce((s, c) => s + parseInt(c.total_indicators), 0);
+        })
+        .catch(() => {
+            document.getElementById('pc-overall-score').textContent = '--';
         });
 
     fetch('/api/performance/indicators')
-        .then(r => r.json())
+        .then(r => { if (!r.ok) throw new Error('indicators'); return r.json(); })
         .then(data => {
             // Group by category
             const groups = {};

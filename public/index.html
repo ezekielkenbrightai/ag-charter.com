@@ -652,8 +652,8 @@
             <!-- ==================== SDJHCA ==================== -->
             <section class="page" id="page-sdjhca">
                 <div class="page-header">
-                    <h2>State Department for Justice, Human Rights & Constitutional Affairs</h2>
-                    <p class="page-subtitle">PS: Hon. Judith Pareno</p>
+                    <h2>State Department for Justice, Human Rights and Constitutional Affairs</h2>
+                    <p class="page-subtitle">PS: Hon. Judith R. Pareno</p>
                 </div>
                 <div class="card">
                     <h3>Directorates</h3>
@@ -848,18 +848,18 @@
             </div>
             <div class="modal-body">
                 <div class="form-grid">
-                    <div class="form-group"><label>Case Title</label><input type="text" placeholder="Enter case title"></div>
-                    <div class="form-group"><label>Case Type</label><select><option>Civil Litigation</option><option>Government Transactions</option><option>International Law</option><option>Constitutional Petition</option><option>Arbitration</option><option>Legal Advisory</option></select></div>
+                    <div class="form-group"><label>Case Title</label><input type="text" placeholder="Enter case title" id="caseModalTitle"></div>
+                    <div class="form-group"><label>Case Type</label><select id="caseModalType"><option>Civil Litigation</option><option>Government Transactions</option><option>International Law</option><option>Constitutional Petition</option><option>Arbitration</option><option>Legal Advisory</option></select></div>
                     <div class="form-group"><label>County</label><select id="caseModalCounty"></select></div>
-                    <div class="form-group"><label>Priority</label><select><option>Low</option><option>Medium</option><option>High</option><option>Critical</option></select></div>
-                    <div class="form-group"><label>Assigned Counsel</label><input type="text" placeholder="State Counsel name"></div>
-                    <div class="form-group"><label>Filing Date</label><input type="date"></div>
+                    <div class="form-group"><label>Priority</label><select id="caseModalPriority"><option>Low</option><option>Medium</option><option>High</option><option>Critical</option></select></div>
+                    <div class="form-group"><label>Assigned Counsel</label><select id="caseModalCounsel"><option value="">Select State Counsel</option></select></div>
+                    <div class="form-group"><label>Filing Date</label><input type="date" id="caseModalDate"></div>
                     <div class="form-group full-width"><label>Description</label><textarea rows="3" placeholder="Brief case description..."></textarea></div>
                 </div>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" onclick="closeModal('newCaseModal')">Cancel</button>
-                <button class="btn btn-primary" onclick="closeModal('newCaseModal')">Register Case</button>
+                <button class="btn btn-primary" id="registerCaseBtn">Register Case</button>
             </div>
         </div>
     </div>
@@ -918,8 +918,8 @@
             </div>
             <div class="modal-body">
                 <div class="form-grid">
-                    <div class="form-group"><label>Request Type</label><select><option>Contract Clearance</option><option>Legal Opinion</option><option>Treaty Review</option><option>Legislative Draft</option><option>Marriage Certificate</option><option>Society Registration</option><option>Estate Administration</option></select></div>
-                    <div class="form-group"><label>Requester</label><input type="text" placeholder="Ministry / Department"></div>
+                    <div class="form-group"><label>Request Type</label><select id="wfModalType"><option>Contract Clearance</option><option>Legal Opinion</option><option>Treaty Review</option><option>Legislative Draft</option><option>Marriage Certificate</option><option>Society Registration</option><option>Estate Administration</option></select></div>
+                    <div class="form-group"><label>Requester</label><select id="wfModalRequester"><option value="">Select MDA</option><option>Ministry of Health</option><option>Ministry of Finance</option><option>Ministry of Education</option><option>Ministry of Transport</option><option>Ministry of Interior</option><option>Ministry of Foreign Affairs</option><option>Ministry of Defence</option><option>Ministry of Agriculture</option><option>Ministry of Lands</option><option>Ministry of Energy</option><option>Ministry of ICT</option><option>Ministry of Trade</option><option>KEMSA</option><option>KRA</option><option>ODPP</option><option>DCI</option><option>EACC</option><option>National Treasury</option><option>State House</option><option>Kenya Ports Authority</option></select></div>
                     <div class="form-group full-width"><label>Details</label><textarea rows="3" placeholder="Request details..."></textarea></div>
                     <div class="form-group"><label>Urgency</label><select><option>Standard</option><option>Expedited</option><option>Urgent</option></select></div>
                     <div class="form-group"><label>Attachments</label><input type="file" multiple></div>
@@ -927,7 +927,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" onclick="closeModal('newWorkflowModal')">Cancel</button>
-                <button class="btn btn-primary" onclick="closeModal('newWorkflowModal')">Submit Request</button>
+                <button class="btn btn-primary" id="submitWorkflowBtn">Submit Request</button>
             </div>
         </div>
     </div>
