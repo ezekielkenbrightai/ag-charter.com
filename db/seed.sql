@@ -93,7 +93,7 @@ INSERT INTO users (staff_id, email, password_hash, full_name, title, department_
 
 -- === TIER 3: Full State Dept Access (5 users) ===
 INSERT INTO users (staff_id, email, password_hash, full_name, title, department_id, tier_level) VALUES
-('AG/SG/001', 'sg@ag.go.ke', '__HASH__', 'Hon. Shadrack J. Mose', 'Solicitor General', 3, 3),
+('AG/SG/001', 'sg@ag.go.ke', '__HASH__', 'Hon. Shadrack J. Mose', 'Solicitor General', 10, 3),
 ('DOJ/PS/001', 'ps@justice.go.ke', '__HASH__', 'Hon. Judith R. Pareno', 'Principal Secretary, SDJHCA', 50, 3),
 ('AG/ICT/002', 'ict.director@ag.go.ke', '__HASH__', 'Eng. David Njoroge', 'ICT Director', 23, 3),
 ('AG/ICT/003', 'ict.deputy@ag.go.ke', '__HASH__', 'Grace Wanjiku Maina', 'Deputy ICT Director', 23, 3),
